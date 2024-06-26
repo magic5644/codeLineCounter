@@ -8,7 +8,7 @@ namespace CodeLineCounter.Services
     {
         public (List<NamespaceMetrics>, Dictionary<string, int>, int) AnalyzeSolution(string solutionFilePath)
         {
-            string solutionDirectory = Path.GetDirectoryName(solutionFilePath);
+            string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
 
             var namespaceMetrics = new List<NamespaceMetrics>();
@@ -17,10 +17,11 @@ namespace CodeLineCounter.Services
 
             foreach (var projectFile in projectFiles)
             {
-                string projectDirectory = Path.GetDirectoryName(projectFile);
-                string projectName = Path.GetFileNameWithoutExtension(projectFile);
-                string relativeProjectPath = Path.GetRelativePath(solutionDirectory, projectFile);
-                var files = FileUtils.GetAllCsFiles(projectDirectory);
+                string? projectDirectory = Path.GetDirectoryName(projectFile);
+                string? projectName = Path.GetFileNameWithoutExtension(projectFile);
+                string relativeProjectPath = solutionDirectory != null ? Path.GetRelativePath(solutionDirectory, projectFile) : projectFile;
+                
+                var files = projectDirectory != null ? FileUtils.GetAllCsFiles(projectDirectory) : new List<string>();
 
                 int projectLineCount = 0;
                 var projectNamespaceMetrics = new Dictionary<string, int>();
@@ -28,7 +29,7 @@ namespace CodeLineCounter.Services
                 foreach (var file in files)
                 {
                     var lines = File.ReadAllLines(file);
-                    string currentNamespace = null;
+                    string? currentNamespace = null;
                     int fileLineCount = 0;
                     int fileCyclomaticComplexity = 0;
 
@@ -71,7 +72,7 @@ namespace CodeLineCounter.Services
                             ProjectPath = relativeProjectPath,
                             NamespaceName = currentNamespace,
                             FileName = Path.GetFileName(file),
-                            FilePath = Path.GetRelativePath(solutionDirectory, file),
+                            FilePath = solutionDirectory != null ? Path.GetRelativePath(solutionDirectory, file) :file,
                             LineCount = fileLineCount,
                             CyclomaticComplexity = fileCyclomaticComplexity
                         });
@@ -85,7 +86,7 @@ namespace CodeLineCounter.Services
                             ProjectPath = relativeProjectPath,
                             NamespaceName = "No Namespace",
                             FileName = Path.GetFileName(file),
-                            FilePath = Path.GetRelativePath(solutionDirectory, file),
+                            FilePath = solutionDirectory != null ? Path.GetRelativePath(solutionDirectory, file) : file,
                             LineCount = fileLineCount,
                             CyclomaticComplexity = fileCyclomaticComplexity
                         });

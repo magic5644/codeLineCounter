@@ -10,7 +10,7 @@ namespace CodeLineCounter.Utils
             var csvBuilder = new StringBuilder();
             csvBuilder.AppendLine("Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity");
 
-            string currentProject = null;
+            string? currentProject = null;
             foreach (var metric in metrics)
             {
                 if (currentProject != metric.ProjectName)
