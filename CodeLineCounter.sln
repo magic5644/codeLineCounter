@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLineCounter", "CodeLineCounter\CodeLineCounter.csproj", "{F60AAFF8-A3B6-4D3C-9372-06A0F1B6F82B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLineCounter.Tests", "CodeLineCounter.Tests\CodeLineCounter.Tests.csproj", "{8CEF5E81-508D-4CAC-8CEC-CEC1BB6EF4B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{F60AAFF8-A3B6-4D3C-9372-06A0F1B6F82B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F60AAFF8-A3B6-4D3C-9372-06A0F1B6F82B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F60AAFF8-A3B6-4D3C-9372-06A0F1B6F82B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CEF5E81-508D-4CAC-8CEC-CEC1BB6EF4B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CEF5E81-508D-4CAC-8CEC-CEC1BB6EF4B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CEF5E81-508D-4CAC-8CEC-CEC1BB6EF4B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CEF5E81-508D-4CAC-8CEC-CEC1BB6EF4B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -2,5 +2,7 @@
 /.vs
 /CodeLineCounter/bin
 /CodeLineCounter/obj
+/CodeLineCounter.tests/bin
+/CodeLineCounter.tests/obj
 /CodeLineCounter.zip
 /CodeMetrics.csv

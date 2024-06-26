@@ -81,8 +81,20 @@ NBLignesCount/
 │   │   └── FileUtils.cs
 │   ├── Program.cs
 │   └── CodeLineCounter.csproj
+├── CodeLineCounter.Tests/
+│   ├── CodeAnalyzerTests.cs
+│   ├── CyclomaticComplexityCalculatorTests.cs
+│   └── CodeLineCounter.Tests.csproj
 ├── README.md
 └── NBLignesCount.sln
+```
+
+## Tests Unitaires
+
+Pour exécuter les tests unitaires, utilisez la commande suivante :
+
+```sh
+dotnet test
 ```
 
 ## Contribuer
