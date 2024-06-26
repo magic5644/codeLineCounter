@@ -1,7 +1,4 @@
 using System.Text.RegularExpressions; // Ajoutez cette ligne
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace CodeLineCounter.Utils
 {
@@ -31,7 +28,7 @@ namespace CodeLineCounter.Utils
                 if (match.Success)
                 {
                     var relativePath = match.Groups[1].Value;
-                    var projectPath = Path.Combine(Path.GetDirectoryName(solutionFilePath), relativePath);
+                    var projectPath = Path.Combine(Path.GetDirectoryName(solutionFilePath) ?? string.Empty, relativePath);
                     projectFiles.Add(projectPath);
                 }
             }

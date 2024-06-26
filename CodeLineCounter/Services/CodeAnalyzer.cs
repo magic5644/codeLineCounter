@@ -1,10 +1,6 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace CodeLineCounter.Services
 {
@@ -52,10 +48,7 @@ namespace CodeLineCounter.Services
                             if (parts.Length >= 2)
                             {
                                 currentNamespace = parts[1];
-                                if (!projectNamespaceMetrics.ContainsKey(currentNamespace))
-                                {
-                                    projectNamespaceMetrics[currentNamespace] = 0;
-                                }
+                                projectNamespaceMetrics.TryAdd(currentNamespace, 0);
                             }
                         }
 

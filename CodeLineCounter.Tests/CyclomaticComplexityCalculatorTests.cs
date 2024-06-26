@@ -1,7 +1,5 @@
 using CodeLineCounter.Services;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Xunit;
 
 namespace CodeLineCounter.Tests
 {

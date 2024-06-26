@@ -1,6 +1,5 @@
 ﻿using CodeLineCounter.Services;
 using CodeLineCounter.Utils;
-using System.Linq;
 
 namespace CodeLineCounter
 {

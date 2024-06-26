@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq;
 
 namespace CodeLineCounter.Services
 {
@@ -14,15 +13,10 @@ namespace CodeLineCounter.Services
             return walker.Complexity;
         }
 
-        private class ComplexityWalker : CSharpSyntaxWalker
+        private class ComplexityWalker(SemanticModel semanticModel) : CSharpSyntaxWalker
         {
-            private readonly SemanticModel _semanticModel;
+            private readonly SemanticModel _semanticModel = semanticModel;
             public int Complexity { get; private set; } = 1;
-
-            public ComplexityWalker(SemanticModel semanticModel)
-            {
-                _semanticModel = semanticModel;
-            }
 
             public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
             {

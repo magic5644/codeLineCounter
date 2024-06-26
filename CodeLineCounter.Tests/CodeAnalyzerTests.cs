@@ -1,6 +1,4 @@
 using CodeLineCounter.Services;
-using System.IO;
-using Xunit;
 
 namespace CodeLineCounter.Tests
 {
@@ -20,6 +18,7 @@ namespace CodeLineCounter.Tests
             // Assert
             Assert.NotNull(metrics);
             Assert.NotEmpty(metrics);
+            Assert.Empty(projectTotals);
             Assert.NotEqual(0, totalLines);
         }
     }
