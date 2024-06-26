@@ -18,7 +18,7 @@ namespace CodeLineCounter.Tests
             // Assert
             Assert.NotNull(metrics);
             Assert.NotEmpty(metrics);
-            Assert.Empty(projectTotals);
+            Assert.NotEmpty(projectTotals);
             Assert.NotEqual(0, totalLines);
         }
     }
