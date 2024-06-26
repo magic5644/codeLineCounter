@@ -1,5 +1,6 @@
 /.sarif
 /.vs
-/CodeLineCounter
+/CodeLineCounter/bin
+/CodeLineCounter/obj
 /CodeLineCounter.zip
 /CodeMetrics.csv
