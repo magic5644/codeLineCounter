@@ -10,7 +10,8 @@ namespace CodeLineCounter.Tests
         public void TestAnalyzeSolution()
         {
             // Arrange
-            var solutionPath = @"..\..\..\..\CodeLineCounter.sln";
+            var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
             var analyzer = new CodeAnalyzer();
 
             // Act
