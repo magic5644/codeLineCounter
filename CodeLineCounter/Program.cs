@@ -36,7 +36,8 @@ namespace CodeLineCounter
             if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0 && choice <= solutionFiles.Count)
             {
                 string solutionPath = solutionFiles[choice - 1];
-                string csvFilePath = "CodeMetrics.csv";  // Vous pouvez modifier ce chemin selon vos besoins
+                string solutionFilename = Path.GetFileName(solutionPath);
+                string csvFilePath = solutionFilename + "-" + "CodeMetrics.csv";  // Vous pouvez modifier ce chemin selon vos besoins
 
                 var analyzer = new CodeAnalyzer();
                 var (metrics, projectTotals, totalLines) = analyzer.AnalyzeSolution(solutionPath);

@@ -17,7 +17,7 @@ namespace CodeLineCounter.Utils
                 {
                     if (currentProject != null)
                     {
-                        csvBuilder.AppendLine($"{currentProject},,,,,,Total,{projectTotals[currentProject]},");
+                        csvBuilder.AppendLine($"{currentProject},Total,,,,{projectTotals[currentProject]},");
                     }
                     currentProject = metric.ProjectName;
                 }
@@ -26,10 +26,10 @@ namespace CodeLineCounter.Utils
 
             if (currentProject != null)
             {
-                csvBuilder.AppendLine($"{currentProject},,,,,Total,{projectTotals[currentProject]},");
+                csvBuilder.AppendLine($"{currentProject},Total,,,,{projectTotals[currentProject]},");
             }
 
-            csvBuilder.AppendLine($",,,,,Total,{totalLines},");
+            csvBuilder.AppendLine($"Total,,,,,{totalLines},");
 
             File.WriteAllText(filePath, csvBuilder.ToString());
         }

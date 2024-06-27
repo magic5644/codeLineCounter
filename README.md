@@ -20,14 +20,19 @@ Le projet `CodeLineCounter` est un outil permettant de compter le nombre de lign
 ## Installation
 
 1. Clonez le dépôt :
+
     ```sh
     git clone https://github.com/magic5644/NBLignesCount.git
     ```
+
 2. Accédez au répertoire du projet :
+
     ```sh
     cd NBLignesCount
     ```
+
 3. Installez les packages NuGet nécessaires :
+
     ```sh
     dotnet restore
     ```
@@ -35,10 +40,13 @@ Le projet `CodeLineCounter` est un outil permettant de compter le nombre de lign
 ## Utilisation
 
 1. Compilez le projet :
+
     ```sh
     dotnet build
     ```
+
 2. Exécutez le programme en fournissant le chemin du répertoire contenant les solutions à analyser :
+
     ```sh
     dotnet run --project CodeLineCounter/CodeLineCounter.csproj "chemin/du/répertoire/avec/solutions"
     ```
@@ -48,6 +56,7 @@ Le projet `CodeLineCounter` est un outil permettant de compter le nombre de lign
 ## Fichiers générés
 
 Le programme génère un fichier CSV nommé `CodeMetrics.csv` contenant les métriques suivantes :
+
 - `Project`: Nom du projet.
 - `ProjectPath`: Chemin relatif du projet.
 - `Namespace`: Nom du namespace.
@@ -58,16 +67,31 @@ Le programme génère un fichier CSV nommé `CodeMetrics.csv` contenant les mét
 
 ## Exemple de sortie
 
-```
+``` csv
 Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity
-Client.Application.EnvDev,Client.Application.EnvDev\Client.Application.EnvDev.csproj,Isagri.Compta.Client.EnvDev.Properties,Settings.Designer.cs,Client.Application.EnvDev\Properties\Settings.Designer.cs,12,3
-Client.Application.EnvDev,Client.Application.EnvDev\Client.Application.EnvDev.csproj,Isagri.Compta.Client.EnvDev.Properties,Total,E:\_TFS\Isagri.CO\Main\Isaco\DotNet\Sources\Client.Application.EnvDev,12,0
-Client.Application.EnvDev,,,,,Total,12,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Program.cs,CodeLineCounter\Program.cs,56,7
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,NamespaceMetrics.cs,CodeLineCounter\Models\NamespaceMetrics.cs,13,1
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,CodeAnalyzer.cs,CodeLineCounter\Services\CodeAnalyzer.cs,101,10
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,CyclomaticComplexityCalculator.cs,CodeLineCounter\Services\CyclomaticComplexityCalculator.cs,65,12
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,CsvExporter.cs,CodeLineCounter\Utils\CsvExporter.cs,32,5
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,FileUtils.cs,CodeLineCounter\Utils\FileUtils.cs,33,3
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Total,.\CodeLineCounter,54,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,Total,.\CodeLineCounter,13,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,Total,.\CodeLineCounter,114,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,Total,.\CodeLineCounter,46,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,Total,.\CodeLineCounter,62,0
+CodeLineCounter,Total,,,,300,
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CodeAnalyzerTests.cs,CodeLineCounter.Tests\CodeAnalyzerTests.cs,19,1
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,TestNamespace,CyclomaticComplexityCalculatorTests.cs,CodeLineCounter.Tests\CyclomaticComplexityCalculatorTests.cs,32,1
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,Total,.\CodeLineCounter.Tests,27,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,TestNamespace,Total,.\CodeLineCounter.Tests,21,0
+CodeLineCounter.Tests,Total,,,,51,
+Total,,,,,351,
 ```
 
 ## Structure du Projet
 
-```
+``` cmd
 NBLignesCount/
 │
 ├── CodeLineCounter/
