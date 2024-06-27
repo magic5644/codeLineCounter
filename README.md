@@ -118,8 +118,10 @@ The program generates a CSV file named `CodeMetrics.csv` containing the followin
     │   ├── CodeAnalyzerTests.cs
     │   ├── CyclomaticComplexityCalculatorTests.cs
     │   └── CodeLineCounter.Tests.csproj
+    ├── .gitignore
     ├── README.md
-    └── NBLignesCount.sln
+    ├── LICENSE
+    └── CodeLineCounter.sln
     ```
 
 ## Unit Tests
