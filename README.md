@@ -5,7 +5,6 @@
 
 <div align="center"><img src="./assets/logo.webp" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
-
 ## Description
 
 The `CodeLineCounter` project is a tool that counts the number of lines of code per file, namespace, and project in a .NET solution. It also calculates the cyclomatic complexity of each file.
@@ -20,11 +19,11 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 
 - .NET 8.0 SDK installed.
 - The following NuGet packages:
-    - `Microsoft.CodeAnalysis.CSharp`
-    - `coverlet.collector`
-    - `Microsoft.NET.Test.Sdk`
-    - `xunit`
-    - `xunit.runner.visualstudio`
+  - `Microsoft.CodeAnalysis.CSharp`
+  - `coverlet.collector`
+  - `Microsoft.NET.Test.Sdk`
+  - `xunit`
+  - `xunit.runner.visualstudio`
 
 ## Installation
 
