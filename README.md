@@ -16,6 +16,10 @@ Le projet `CodeLineCounter` est un outil permettant de compter le nombre de lign
 - .NET 8.0 SDK installé.
 - Les packages NuGet suivants :
   - `Microsoft.CodeAnalysis.CSharp`
+  - `coverlet.collector`
+  - `Microsoft.NET.Test.Sdk`
+  - `xunit`
+  - `xunit.runner.visualstudio`
 
 ## Installation
 
