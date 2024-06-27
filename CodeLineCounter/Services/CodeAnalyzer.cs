@@ -33,7 +33,7 @@ namespace CodeLineCounter.Services
                     int fileLineCount = 0;
                     int fileCyclomaticComplexity = 0;
 
-                    // Analyser le fichier pour obtenir la complexité cyclomatique
+                    // Analyze the file to obtain cyclomatic complexity
                     var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(file));
                     var compilation = CSharpCompilation.Create("CodeAnalysis", new[] { tree });
                     var model = compilation.GetSemanticModel(tree);
@@ -63,7 +63,7 @@ namespace CodeLineCounter.Services
                         }
                     }
 
-                    // Ajouter les métriques par fichier
+                    // Add file metrics
                     if (currentNamespace != null)
                     {
                         namespaceMetrics.Add(new NamespaceMetrics
@@ -79,7 +79,7 @@ namespace CodeLineCounter.Services
                     }
                     else
                     {
-                        // Fichier sans namespace
+                        // File without namespace
                         namespaceMetrics.Add(new NamespaceMetrics
                         {
                             ProjectName = projectName,
@@ -94,7 +94,7 @@ namespace CodeLineCounter.Services
                     projectLineCount += fileLineCount;
                 }
 
-                // Ajouter les sous-totaux par namespace dans le projet
+                // Add subtotals by namespace in the project
                 foreach (var kvp in projectNamespaceMetrics)
                 {
                     namespaceMetrics.Add(new NamespaceMetrics
@@ -105,11 +105,11 @@ namespace CodeLineCounter.Services
                         FileName = "Total",
                         FilePath = projectDirectory,
                         LineCount = kvp.Value,
-                        CyclomaticComplexity = 0  // Les sous-totaux ne nécessitent pas la complexité cyclomatique
+                        CyclomaticComplexity = 0  // Subtotals do not require cyclomatic complexity
                     });
                 }
 
-                // Ajouter le total du projet
+                // Add project total
                 projectTotals[projectName] = projectLineCount;
                 totalLines += projectLineCount;
             }

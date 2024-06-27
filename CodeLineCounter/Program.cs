@@ -10,7 +10,7 @@ namespace CodeLineCounter
             string directoryPath;
             if (args.Length == 0)
             {
-                Console.WriteLine("Veuillez fournir le chemin du répertoire contenant les solutions à analyser.");
+                Console.WriteLine("Please provide the directory path containing the solutions to analyze.");
                 return;
             }
             else
@@ -22,22 +22,22 @@ namespace CodeLineCounter
 
             if (solutionFiles.Count == 0)
             {
-                Console.WriteLine("Aucune solution (.sln) trouvée dans le répertoire spécifié.");
+                Console.WriteLine("No solution (.sln) found in the specified directory.");
                 return;
             }
 
-            Console.WriteLine("Solutions disponibles :");
+            Console.WriteLine("Available solutions:");
             for (int i = 0; i < solutionFiles.Count; i++)
             {
                 Console.WriteLine($"{i + 1}. {Path.GetFileName(solutionFiles[i])}");
             }
 
-            Console.Write("Choisissez une solution à analyser (entrez le numéro) : ");
+            Console.Write("Choose a solution to analyze (enter the number): ");
             if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0 && choice <= solutionFiles.Count)
             {
                 string solutionPath = solutionFiles[choice - 1];
                 string solutionFilename = Path.GetFileName(solutionPath);
-                string csvFilePath = solutionFilename + "-" + "CodeMetrics.csv";  // Vous pouvez modifier ce chemin selon vos besoins
+                string csvFilePath = solutionFilename + "-" + "CodeMetrics.csv";  // You can modify this path according to your needs
 
                 var analyzer = new CodeAnalyzer();
                 var (metrics, projectTotals, totalLines) = analyzer.AnalyzeSolution(solutionPath);
@@ -54,13 +54,13 @@ namespace CodeLineCounter
 
                 Console.WriteLine($"Total lines of code: {totalLines}");
 
-                // Exporter les données au format CSV
+                // Export the data to CSV format
                 CsvExporter.ExportToCsv(csvFilePath, metrics, projectTotals, totalLines);
-                Console.WriteLine($"Les données ont été exportées vers {csvFilePath}");
+                Console.WriteLine($"The data has been exported to {csvFilePath}");
             }
             else
             {
-                Console.WriteLine("Sélection invalide. Veuillez relancer le programme et choisir une option valide.");
+                Console.WriteLine("Invalid selection. Please restart the program and choose a valid option.");
             }
         }
     }

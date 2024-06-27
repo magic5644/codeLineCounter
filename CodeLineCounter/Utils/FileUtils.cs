@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions; // Ajoutez cette ligne
+using System.Text.RegularExpressions; // Add this line
 
 namespace CodeLineCounter.Utils
 {
@@ -23,7 +23,7 @@ namespace CodeLineCounter.Utils
 
             foreach (var line in lines)
             {
-                // Rechercher les lignes contenant les projets (Project("...") = "...", "...", "...")
+                // Search for lines containing projects (Project("...") = "...", "...", "...")
                 var match = Regex.Match(line, @"Project\(""{.*}""\) = "".*"", ""(.*\.csproj)""");
                 if (match.Success)
                 {

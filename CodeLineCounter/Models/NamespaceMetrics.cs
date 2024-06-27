@@ -8,6 +8,6 @@ namespace CodeLineCounter.Models
         public string? FileName { get; set; }
         public string? FilePath { get; set; }
         public int LineCount { get; set; }
-        public int CyclomaticComplexity { get; set; }  // Ajout de la complexité cyclomatique
+        public int CyclomaticComplexity { get; set; }  // Addition of cyclomatic complexity
     }
 }
