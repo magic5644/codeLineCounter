@@ -56,7 +56,13 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 2. Run the program by providing the directory path containing the solutions to analyze:
 
         ```sh
-        dotnet run --project CodeLineCounter/CodeLineCounter.csproj "path/to/directory/with/solutions"
+        dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions"
+        ```
+
+    or if you want verbose mode on :
+
+        ```sh
+        dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions" -v
         ```
 
 3. Select the solution to analyze by entering the corresponding number.
@@ -75,7 +81,7 @@ The program generates a CSV file named `CodeMetrics.csv` containing the followin
 
 ## Example Output
 
-    ``` csv
+    ```csv
     Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity
     CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Program.cs,CodeLineCounter\Program.cs,56,7
     CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,NamespaceMetrics.cs,CodeLineCounter\Models\NamespaceMetrics.cs,13,1
@@ -99,7 +105,7 @@ The program generates a CSV file named `CodeMetrics.csv` containing the followin
 
 ## Project Structure
 
-    ``` cmd
+    ```sh
     NBLignesCount/
     │
     ├── CodeLineCounter/

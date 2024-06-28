@@ -1,5 +1,7 @@
 ﻿using CodeLineCounter.Services;
 using CodeLineCounter.Utils;
+using System;
+using System.IO;
 
 namespace CodeLineCounter
 {
@@ -7,15 +9,27 @@ namespace CodeLineCounter
     {
         static void Main(string[] args)
         {
-            string directoryPath;
-            if (args.Length == 0)
+            bool verbose = false;
+            string directoryPath = null;
+
+            // Parse arguments
+            for (int i = 0; i < args.Length; i++)
             {
-                Console.WriteLine("Please provide the directory path containing the solutions to analyze.");
-                return;
+                if (args[i] == "-v")
+                {
+                    verbose = true;
+                }
+                else if (args[i] == "-d" && i + 1 < args.Length)
+                {
+                    directoryPath = args[i + 1];
+                    i++; // Skip next argument as it is the directory path
+                }
             }
-            else
+
+            if (directoryPath == null)
             {
-                directoryPath = args[0];
+                Console.WriteLine("Please provide the directory path containing the solutions to analyze using the -d switch.");
+                return;
             }
 
             var solutionFiles = FileUtils.GetSolutionFiles(directoryPath);
@@ -42,16 +56,19 @@ namespace CodeLineCounter
                 var analyzer = new CodeAnalyzer();
                 var (metrics, projectTotals, totalLines) = analyzer.AnalyzeSolution(solutionPath);
 
-                foreach (var metric in metrics)
+                if (verbose)
                 {
-                    Console.WriteLine($"Project {metric.ProjectName} ({metric.ProjectPath}) - Namespace {metric.NamespaceName} in file {metric.FileName} ({metric.FilePath}) has {metric.LineCount} lines of code and a cyclomatic complexity of {metric.CyclomaticComplexity}.");
-                }
+                    foreach (var metric in metrics)
+                    {
+                        Console.WriteLine($"Project {metric.ProjectName} ({metric.ProjectPath}) - Namespace {metric.NamespaceName} in file {metric.FileName} ({metric.FilePath}) has {metric.LineCount} lines of code and a cyclomatic complexity of {metric.CyclomaticComplexity}.");
+                    }
 
-                foreach (var projectTotal in projectTotals)
-                {
-                    Console.WriteLine($"Project {projectTotal.Key} has {projectTotal.Value} total lines of code.");
+                    foreach (var projectTotal in projectTotals)
+                    {
+                        Console.WriteLine($"Project {projectTotal.Key} has {projectTotal.Value} total lines of code.");
+                    }
                 }
-
+                Console.WriteLine($"Processing completed, number of source files processed : " + metrics.Count);
                 Console.WriteLine($"Total lines of code: {totalLines}");
 
                 // Export the data to CSV format
@@ -65,3 +82,4 @@ namespace CodeLineCounter
         }
     }
 }
+
