@@ -6,7 +6,7 @@ namespace CodeLineCounter.Services
 {
     public class CodeAnalyzer
     {
-        public (List<NamespaceMetrics>, Dictionary<string, int>, int) AnalyzeSolution(string solutionFilePath)
+        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int) AnalyzeSolution(string solutionFilePath)
         {
             string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
@@ -14,6 +14,7 @@ namespace CodeLineCounter.Services
             var namespaceMetrics = new List<NamespaceMetrics>();
             var projectTotals = new Dictionary<string, int>();
             int totalLines = 0;
+            int totalFilesanalyzed = 0;
 
             foreach (var projectFile in projectFiles)
             {
@@ -28,6 +29,7 @@ namespace CodeLineCounter.Services
 
                 foreach (var file in files)
                 {
+                    totalFilesanalyzed += 1;
                     var lines = File.ReadAllLines(file);
                     string? currentNamespace = null;
                     int fileLineCount = 0;
@@ -92,6 +94,7 @@ namespace CodeLineCounter.Services
                         });
                     }
                     projectLineCount += fileLineCount;
+
                 }
 
                 // Add subtotals by namespace in the project
@@ -114,7 +117,7 @@ namespace CodeLineCounter.Services
                 totalLines += projectLineCount;
             }
 
-            return (namespaceMetrics, projectTotals, totalLines);
+            return (namespaceMetrics, projectTotals, totalLines, totalFilesanalyzed );
         }
     }
 }

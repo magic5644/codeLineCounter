@@ -13,13 +13,14 @@ namespace CodeLineCounter.Tests
             var analyzer = new CodeAnalyzer();
 
             // Act
-            var (metrics, projectTotals, totalLines) = analyzer.AnalyzeSolution(solutionPath);
+            var (metrics, projectTotals, totalLines, totalFiles) = analyzer.AnalyzeSolution(solutionPath);
 
             // Assert
             Assert.NotNull(metrics);
             Assert.NotEmpty(metrics);
             Assert.NotEmpty(projectTotals);
             Assert.NotEqual(0, totalLines);
+            Assert.NotEqual(0, totalFiles);
         }
     }
 }

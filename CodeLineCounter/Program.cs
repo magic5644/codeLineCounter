@@ -54,7 +54,7 @@ namespace CodeLineCounter
                 string csvFilePath = solutionFilename + "-" + "CodeMetrics.csv";  // You can modify this path according to your needs
 
                 var analyzer = new CodeAnalyzer();
-                var (metrics, projectTotals, totalLines) = analyzer.AnalyzeSolution(solutionPath);
+                var (metrics, projectTotals, totalLines, totalFiles) = analyzer.AnalyzeSolution(solutionPath);
 
                 if (verbose)
                 {
@@ -68,7 +68,7 @@ namespace CodeLineCounter
                         Console.WriteLine($"Project {projectTotal.Key} has {projectTotal.Value} total lines of code.");
                     }
                 }
-                Console.WriteLine($"Processing completed, number of source files processed : " + metrics.Count);
+                Console.WriteLine($"Processing completed, number of source files processed : " + totalFiles);
                 Console.WriteLine($"Total lines of code: {totalLines}");
 
                 // Export the data to CSV format
