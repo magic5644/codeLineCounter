@@ -10,7 +10,7 @@ namespace CodeLineCounter
         static void Main(string[] args)
         {
             bool verbose = false;
-            string directoryPath = null;
+            string? directoryPath = null;
 
             // Parse arguments
             for (int i = 0; i < args.Length; i++)
