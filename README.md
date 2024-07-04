@@ -1,7 +1,11 @@
 
 # CodeLineCounter
 
-[![.NET](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/DataMasker/actions/workflows/dotnet.yml)
+[![.NET](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml)
+[![Coverage](./coverage-report/badge_linecoverage.svg)](./coverage-report/index.html)
+
+<!-- README.md -->
++ [![cov](https://magic5644.github.io/NBLignesCount/badges/badge_combined.svg)](https://github.com/magic5644/NBLignesCount/actionsbadges/badge_combined.svg)
 
 <div align="center"><img src="./assets/logo.webp" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
@@ -134,6 +138,20 @@ To run the unit tests, use the following command:
 
     ```sh
     dotnet test
+    ```
+
+To generate code coverage, use the following command:
+
+    ```sh
+    dotnet test --collect:"XPlat Code Coverage;Format=json,lcov,cobertura"  --results-directory CodeLineCounter.Tests\TestResults
+    ```
+
+## Publishing
+
+To publish the project, use the following command:
+
+    ```sh
+    dotnet publish -c Release -o publish -a x64 --sc true
     ```
 
 ## Contributing
