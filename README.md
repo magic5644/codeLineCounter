@@ -82,25 +82,24 @@ The program generates a CSV file named `CodeMetrics.csv` containing the followin
 ## Example Output
 
     ```csv
-    Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Program.cs,CodeLineCounter\Program.cs,56,7
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,NamespaceMetrics.cs,CodeLineCounter\Models\NamespaceMetrics.cs,13,1
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,CodeAnalyzer.cs,CodeLineCounter\Services\CodeAnalyzer.cs,101,10
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,CyclomaticComplexityCalculator.cs,CodeLineCounter\Services\CyclomaticComplexityCalculator.cs,65,12
+    Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity,
     CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,CsvExporter.cs,CodeLineCounter\Utils\CsvExporter.cs,32,5
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Program.cs,CodeLineCounter\Program.cs,71,11
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,CyclomaticComplexityCalculator.cs,CodeLineCounter\Services\CyclomaticComplexityCalculator.cs,65,12
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,NamespaceMetrics.cs,CodeLineCounter\Models\NamespaceMetrics.cs,13,1
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,CodeAnalyzer.cs,CodeLineCounter\Services\CodeAnalyzer.cs,142,8
     CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,FileUtils.cs,CodeLineCounter\Utils\FileUtils.cs,33,3
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Total,.\CodeLineCounter,54,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,Total,.\CodeLineCounter,13,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,Total,.\CodeLineCounter,114,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,Total,.\CodeLineCounter,46,0
     CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,Total,.\CodeLineCounter,62,0
-    CodeLineCounter,Total,,,,300,
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CodeAnalyzerTests.cs,CodeLineCounter.Tests\CodeAnalyzerTests.cs,19,1
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,TestNamespace,CyclomaticComplexityCalculatorTests.cs,CodeLineCounter.Tests\CyclomaticComplexityCalculatorTests.cs,32,1
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,Total,.\CodeLineCounter.Tests,27,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,TestNamespace,Total,.\CodeLineCounter.Tests,21,0
-    CodeLineCounter.Tests,Total,,,,51,
-    Total,,,,,351,
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Total,.\CodeLineCounter,67,0
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,Total,.\CodeLineCounter,13,0
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,Total,.\CodeLineCounter,101,0
+    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,Total,.\CodeLineCounter,100,0
+    CodeLineCounter,Total,,,,356,
+    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CodeAnalyzerTests.cs,CodeLineCounter.Tests\CodeAnalyzerTests.cs,68,1
+    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CyclomaticComplexityCalculatorTests.cs,CodeLineCounter.Tests\CyclomaticComplexityCalculatorTests.cs,54,1
+    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,Total,.\CodeLineCounter.Tests,118,0
+    CodeLineCounter.Tests,Total,,,,122,
+    Total,,,,,478,
     ```
 
 ## Project Structure

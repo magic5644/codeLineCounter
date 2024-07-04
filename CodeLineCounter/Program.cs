@@ -1,5 +1,6 @@
 ﻿using CodeLineCounter.Services;
 using CodeLineCounter.Utils;
+using System.Diagnostics;
 using System;
 using System.IO;
 
@@ -49,12 +50,18 @@ namespace CodeLineCounter
             Console.Write("Choose a solution to analyze (enter the number): ");
             if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0 && choice <= solutionFiles.Count)
             {
+                // Add watch
+                var timer = new Stopwatch();
+                timer.Start();
                 string solutionPath = solutionFiles[choice - 1];
                 string solutionFilename = Path.GetFileName(solutionPath);
                 string csvFilePath = solutionFilename + "-" + "CodeMetrics.csv";  // You can modify this path according to your needs
 
                 var analyzer = new CodeAnalyzer();
                 var (metrics, projectTotals, totalLines, totalFiles) = analyzer.AnalyzeSolution(solutionPath);
+                timer.Stop();
+                TimeSpan timeTaken = timer.Elapsed;
+                string processingTime = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
 
                 if (verbose)
                 {
@@ -72,8 +79,9 @@ namespace CodeLineCounter
                 Console.WriteLine($"Total lines of code: {totalLines}");
 
                 // Export the data to CSV format
-                CsvExporter.ExportToCsv(csvFilePath, metrics, projectTotals, totalLines);
+                CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines);
                 Console.WriteLine($"The data has been exported to {csvFilePath}");
+                Console.WriteLine(processingTime);
             }
             else
             {
