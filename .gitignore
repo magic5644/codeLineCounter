@@ -4,5 +4,8 @@
 /CodeLineCounter/obj
 /CodeLineCounter.tests/bin
 /CodeLineCounter.tests/obj
+/codeLineCounter.tests/TestResults
+/CodeLineCounter.tests/coverageReport
+/publish
 /*.zip
 /*.csv

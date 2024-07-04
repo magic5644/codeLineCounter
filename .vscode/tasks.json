@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Generate coverage stats",
+            "command": "reportgenerator",
+            "type": "shell",
+            "args": [
+                "-reports:${workspaceFolder}/CodeLineCounter.Tests/TestResults/coverage.cobertura.xml",
+                "-targetdir:${workspaceFolder}/CodeLineCounter.Tests/coverageReport",
+                "-reporttypes:Html"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

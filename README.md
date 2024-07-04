@@ -136,6 +136,20 @@ To run the unit tests, use the following command:
     dotnet test
     ```
 
+To generate code coverage, use the following command:
+
+    ```sh
+    dotnet test --collect:"XPlat Code Coverage;Format=json,lcov,cobertura"  --results-directory CodeLineCounter.Tests\TestResults
+    ```
+
+## Publishing
+
+To publish the project, use the following command:
+
+    ```sh
+    dotnet publish -c Release -o publish -a x64 --sc true
+    ```
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or a pull request for any suggestions or improvements.
