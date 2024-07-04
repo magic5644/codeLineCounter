@@ -26,16 +26,6 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Install Required Tools
-      run: |
-        dotnet new tool-manifest
-        dotnet tool install dotnet-reportgenerator-globaltool
-        dotnet tool install dotnet-coverage
-    - name: Run the unit tests with code coverage
-      run: dotnet coverage collect dotnet test --output ${{ github.workspace }}/Tests/Coverage --output-format cobertura
-    - name: Generate Report
-      run: |
-        dotnet reportgenerator -reports:${{ github.workspace }}/Tests/Coverage.cobertura.xml -targetdir:"${{ github.workspace }}/Tests/coveragereport" -reporttypes:Html -assemblyfilters:+MinimalApi
   
   test:
     runs-on: ubuntu-latest
