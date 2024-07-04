@@ -116,7 +116,7 @@ namespace CodeLineCounter.Services
                     fileLineCount++;
                     if (currentNamespace != null)
                     {
-                        projectNamespaceMetrics[currentNamespace]++;
+                        projectNamespaceMetrics[currentNamespace] = fileLineCount;
                     }
                 }
             }

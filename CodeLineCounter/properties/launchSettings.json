@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "CodeLineCounter": {
+      "commandName": "Project",
+      "commandLineArgs": "-d .",
+      "workingDirectory": "E:\\_GITHUB\\NBLignesCount"
+    }
+  }
+}
