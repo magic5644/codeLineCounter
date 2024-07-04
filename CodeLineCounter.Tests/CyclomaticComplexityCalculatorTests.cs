@@ -11,9 +11,6 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var code = @"
-                using System;
-                namespace TestNamespace
-                {
                     public class TestClass
                     {
                         public void TestMethod()
@@ -22,7 +19,6 @@ namespace CodeLineCounter.Tests
                             for (int i = 0; i < 10; i++) {}
                         }
                     }
-                }
             ";
             var tree = CSharpSyntaxTree.ParseText(code);
             var compilation = CSharpCompilation.Create("Test", new[] { tree });
