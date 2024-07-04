@@ -15,7 +15,7 @@ namespace CodeLineCounter
             // Parse arguments
             for (int i = 0; i < args.Length; i++)
             {
-                if (args[i] == "-v")
+                if (args[i] == "-verbose")
                 {
                     verbose = true;
                 }

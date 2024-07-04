@@ -62,7 +62,7 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
     or if you want verbose mode on :
 
         ```sh
-        dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions" -v
+        dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to/directory/with/solutions"
         ```
 
 3. Select the solution to analyze by entering the corresponding number.

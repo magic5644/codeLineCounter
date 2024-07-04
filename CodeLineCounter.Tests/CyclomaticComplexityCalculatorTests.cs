@@ -1,5 +1,6 @@
 using CodeLineCounter.Services;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeLineCounter.Tests
 {
@@ -33,6 +34,39 @@ namespace CodeLineCounter.Tests
 
             // Assert
             Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
+        }
+
+        [Fact]
+        public void Calculate_Should_Return_Correct_Complexity()
+        {
+            // Arrange
+            var calculator = new CyclomaticComplexityCalculator();
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+                public class MyClass
+                {
+                    public void MyMethod()
+                    {
+                        if (true)
+                        {
+                            // Do something
+                        }
+                        else
+                        {
+                            // Do something else
+                        }
+                    }
+                }
+            ");
+            var root = syntaxTree.GetRoot();
+            var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
+            var compilation = CSharpCompilation.Create("TestCompilation", new[] { syntaxTree });
+            var semanticModel = compilation.GetSemanticModel(syntaxTree);
+
+            // Act
+            var complexity = calculator.Calculate(methodDeclaration, semanticModel);
+
+            // Assert
+            Assert.Equal(2, complexity);
         }
     }
 }
