@@ -1,7 +1,7 @@
 
 # CodeLineCounter
 
-[![.NET](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/DataMasker/actions/workflows/dotnet.yml)
+[![.NET](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml)
 [![Coverage](./coverage-report/badge_linecoverage.svg)](./coverage-report/index.html)
 
 <!-- README.md -->
