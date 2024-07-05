@@ -79,6 +79,7 @@ jobs:
       - name: Checkout gh-pages
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GH_PAT }}
           repository: 'magic5644/magic5644'
           ref: gh-pages
 
