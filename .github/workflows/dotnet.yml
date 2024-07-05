@@ -26,21 +26,19 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - run: dotnet test --results-directory "test-results" --collect:"Code Coverage"
-    - run: dotnet tool update --global dotnet-coverage
-    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
-    - run: dotnet tool install --global dotnet-reportgenerator-globaltool
-    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummaryGithub"
-    - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
   
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: dotnet test --no-build --verbosity normal
       - run: dotnet test --results-directory "test-results" --collect:"Code Coverage"
       - run: dotnet tool update --global dotnet-coverage
       - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
       - run: dotnet tool install --global dotnet-reportgenerator-globaltool
       - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummaryGithub"
       - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      - name: Update Coverage Badge
+        # GitHub actions: default branch variable
+        # https://stackoverflow.com/questions/64781462/github-actions-default-branch-variable
+        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: we-cli/coverage-badge-action@main

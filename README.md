@@ -2,6 +2,8 @@
 # CodeLineCounter
 
 [![.NET](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/DataMasker/actions/workflows/dotnet.yml)
+<!-- README.md -->
++ [![cov](https://magic5644.github.io/NBLignesCount/badges/coverage.svg)](https://github.com/magic5644/NBLignesCount/actions)
 
 <div align="center"><img src="./assets/logo.webp" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
