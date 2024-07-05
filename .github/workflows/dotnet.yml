@@ -37,7 +37,7 @@ jobs:
       - run: dotnet tool install --global dotnet-reportgenerator-globaltool
       - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
       - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
-      - run: cp coverage-report/badge_combined.svg $GITHUB_OUTPUT
+
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.3.7
         with:
