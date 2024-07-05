@@ -75,6 +75,7 @@ jobs:
       
   publish_badge:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Checkout gh-pages
         uses: actions/checkout@v4
