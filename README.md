@@ -5,7 +5,7 @@
 [![Coverage](./coverage-report/badge_linecoverage.svg)](./coverage-report/index.html)
 
 <!-- README.md -->
-+ [![cov](https://magic5644.github.io/NBLignesCount/badges/badge_combined.svg)](https://github.com/magic5644/NBLignesCount/actions)
++ [![cov](https://magic5644.github.io/NBLignesCount/badges/badge_combined.svg)](https://github.com/magic5644/NBLignesCount/actionsbadges/badge_combined.svg)
 
 <div align="center"><img src="./assets/logo.webp" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
