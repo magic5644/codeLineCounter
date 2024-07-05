@@ -79,7 +79,7 @@ jobs:
       - name: Checkout gh-pages
         uses: actions/checkout@v4
         with:
-          repository: 'magic5644\magic5644'
+          repository: 'magic5644/magic5644'
           ref: gh-pages
 
       - name: download badge
