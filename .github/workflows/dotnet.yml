@@ -35,10 +35,28 @@ jobs:
       - run: dotnet tool update --global dotnet-coverage
       - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
       - run: dotnet tool install --global dotnet-reportgenerator-globaltool
-      - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummaryGithub"
+      - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:Html;JsonSummary;MarkdownSummaryGithub;Badges"
       - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
-      - name: Update Coverage Badge
-        # GitHub actions: default branch variable
-        # https://stackoverflow.com/questions/64781462/github-actions-default-branch-variable
-        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-        uses: we-cli/coverage-badge-action@main
+      - name: ReportGenerator
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.7
+        with:
+          reports: 'test-result.cobertura.xml'
+          targetdir: 'coverage-report'
+          reporttypes: 'Html;JsonSummary;MarkdownSummaryGithub;Badges'
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+
+      - name: Add comment to PR
+        if: github.event_name == 'pull_request'
+        run: gh pr comment $PR_NUMBER --body-file coverage-report/SummaryGithub.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
+        run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
+        shell: bash
