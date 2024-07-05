@@ -2,16 +2,7 @@
 # CodeLineCounter
 
 [![.NET](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml)
-[![Coverage](./coverage-report/badge_linecoverage.svg)](./coverage-report/index.html)
-
-//insert coverage badge from github actions
-//insert coverage badge from coverage report (dotnet.yml)
-[![cov](https://magic5644.github.io/NBLignesCount/badges/badge_combined.svg)](https://github.com/magic5644/NBLignesCount/actionsbadges/badge_combined.svg)
-
-
-
-<!-- README.md -->
-+ [![cov](https://magic5644.github.io/NBLignesCount/badges/badge_combined.svg)](https://github.com/magic5644/NBLignesCount/actionsbadges/badge_combined.svg)
+[![Coverage](https://magic5644.github.io/magic5644/coverage-report/badge_combined.svg/badge_combined.svg)]([./coverage-report/index.html](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml))
 
 <div align="center"><img src="./assets/logo.webp" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
