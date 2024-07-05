@@ -26,6 +26,12 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - run: dotnet test --results-directory "test-results" --collect:"Code Coverage"
+    - run: dotnet tool update --global dotnet-coverage
+    - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+    - run: dotnet tool install --global dotnet-reportgenerator-globaltool
+    - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"MarkdownSummaryGithub"
+    - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
   
   test:
     runs-on: ubuntu-latest
