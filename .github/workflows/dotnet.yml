@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: dotnet test --no-build --verbosity normal
       - run: dotnet test --results-directory "test-results" --collect:"Code Coverage"
       - run: dotnet tool update --global dotnet-coverage
       - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
