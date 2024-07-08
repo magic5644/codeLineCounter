@@ -48,7 +48,8 @@ namespace CodeLineCounter.Tests
             var checker = new CodeDuplicationChecker();
 
             // Act
-            var result = checker.DetectCodeDuplicationInFiles(files);
+            checker.DetectCodeDuplicationInFiles(files);
+            var result = checker.GetCodeDuplicationMap();
 
             // Assert
             Assert.NotEmpty(result);
@@ -98,16 +99,13 @@ namespace CodeLineCounter.Tests
             // Act
             checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
             checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
-            var result = checker.DetectCodeDuplicationInFiles(new List<string> { file1, file2 });
+            var result = checker.GetCodeDuplicationMap();
 
             // Assert
             Assert.NotEmpty(result);
             var duplicateEntry = result.First();
             Assert.Equal(2, duplicateEntry.Value.Count); // Both methods should be detected as duplicates
 
-            // Clean up
-            File.Delete(file1);
-            File.Delete(file2);
         }
 
         [Fact]
@@ -144,14 +142,11 @@ namespace CodeLineCounter.Tests
             // Act
             checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
             checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
-            var result = checker.DetectCodeDuplicationInFiles(new List<string> { file1, file2 });
+            var result = checker.GetCodeDuplicationMap();
 
             // Assert
             Assert.Empty(result); // No duplicates should be detected
 
-            // Clean up
-            File.Delete(file1);
-            File.Delete(file2);
         }
     }
 }

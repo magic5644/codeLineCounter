@@ -23,9 +23,10 @@ namespace CodeLineCounter.Services
             foreach (var projectFile in projectFiles)
             {
                 AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals, codeDuplicationChecker);
+                codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
             }
 
-            var duplicationMap = codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
+            var duplicationMap = codeDuplicationChecker.GetCodeDuplicationMap();
 
             return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationMap);
         }
