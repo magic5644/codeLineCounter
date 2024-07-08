@@ -47,8 +47,8 @@ namespace CodeLineCounter.Services
                 totalFilesAnalyzed++;
                 projectLineCount = AnalyzeSourceFile(solutionDirectory, namespaceMetrics, projectName, relativeProjectPath, projectLineCount, projectNamespaceMetrics, file);
 
-                var sourceCode = File.ReadAllText(file);
-                codeDuplicationChecker.DetectCodeDuplicationInSourceCode(file, sourceCode);
+                //var sourceCode = File.ReadAllText(file);
+                //codeDuplicationChecker.DetectCodeDuplicationInSourceCode(file, sourceCode);
             }
 
             AddProjectMetrics(projectName, relativeProjectPath, projectDirectory, projectNamespaceMetrics, namespaceMetrics, projectTotals, projectLineCount);

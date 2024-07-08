@@ -15,23 +15,35 @@ namespace CodeLineCounter.Services
 {
     public class CodeDuplicationChecker
     {
-        private readonly ConcurrentDictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap;
-        private readonly ConcurrentDictionary<string, List<(string filePath, string methodName, int startLine)>> hashMap;
+        private readonly ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>> duplicationMap;
+        private readonly ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>> hashMap;
+        private readonly object duplicationLock = new object();
 
         public CodeDuplicationChecker()
         {
-            duplicationMap = new ConcurrentDictionary<string, List<(string filePath, string methodName, int startLine)>>();
-            hashMap = new ConcurrentDictionary<string, List<(string filePath, string methodName, int startLine)>>();
+            duplicationMap = new ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>>();
+            hashMap = new ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>>();
         }
 
-        public void  DetectCodeDuplicationInFiles(List<string> files)
+        public void DetectCodeDuplicationInFiles(List<string> files)
         {
-            foreach (var file in files)
+            Parallel.ForEach(files, file =>
             {
                 var normalizedPath = Path.GetFullPath(file);
                 var sourceCode = File.ReadAllText(normalizedPath);
-                DetectCodeDuplicationInSourceCode(normalizedPath, File.ReadAllText(normalizedPath));
-            };
+                DetectCodeDuplicationInSourceCode(normalizedPath, sourceCode);
+            });
+
+            lock (duplicationLock)
+            {
+                foreach (var entry in hashMap)
+                {
+                    if (entry.Value.Count > 1)
+                    {
+                        duplicationMap[entry.Key] = entry.Value;
+                    }
+                }
+            }
         }
 
         public void DetectCodeDuplicationInSourceCode(string normalizedPath, string sourceCode)
@@ -40,7 +52,7 @@ namespace CodeLineCounter.Services
             var root = tree.GetRoot();
             var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
-            foreach (var method in methods)
+            Parallel.ForEach(methods, method =>
             {
                 var blocks = ExtractBlocks(method);
 
@@ -50,30 +62,39 @@ namespace CodeLineCounter.Services
                     var hash = HashUtils.ComputeHash(code);
                     var location = block.GetLocation().GetLineSpan().StartLinePosition.Line;
 
-                    hashMap.AddOrUpdate(hash, new List<(string filePath, string methodName, int startLine)>
+                    hashMap.AddOrUpdate(hash, new HashSet<(string filePath, string methodName, int startLine)>
                     {
                         (normalizedPath, method.Identifier.Text, location)
                     },
-                    (key, list) =>
+                    (key, set) =>
                     {
-                        list.Add((normalizedPath, method.Identifier.Text, location));
-                        return list;
+                        lock (set)
+                        {
+                            set.Add((normalizedPath, method.Identifier.Text, location));
+                        }
+                        return set;
                     });
-                }
-            }
 
-            foreach (var entry in hashMap)
+                    // Debugging output
+                    //Console.WriteLine($"Added block hash: {hash} from file: {normalizedPath}, method: {method.Identifier.Text}, line: {location}");
+                }
+            });
+
+            lock (duplicationLock)
             {
-                if (entry.Value.Count > 1)
+                foreach (var entry in hashMap)
                 {
-                    duplicationMap[entry.Key] = entry.Value;
+                    if (entry.Value.Count > 1)
+                    {
+                        duplicationMap[entry.Key] = entry.Value;
+                    }
                 }
             }
         }
 
         public Dictionary<string, List<(string filePath, string methodName, int startLine)>> GetCodeDuplicationMap()
         {
-            return duplicationMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            return duplicationMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToList());
         }
 
         private static IEnumerable<BlockSyntax> ExtractBlocks(MethodDeclarationSyntax method)

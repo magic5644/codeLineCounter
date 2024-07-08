@@ -23,7 +23,6 @@ namespace CodeLineCounter.Tests
                         // Some code
                         var i = 1;
                         var j = 2;
-
                         var k = i + j;
                     }
                 }";
@@ -36,7 +35,6 @@ namespace CodeLineCounter.Tests
                         // Some code
                         var i = 1;
                         var j = 2;
-
                         var k = i + j;
                     }
                 }";
@@ -50,6 +48,12 @@ namespace CodeLineCounter.Tests
             // Act
             checker.DetectCodeDuplicationInFiles(files);
             var result = checker.GetCodeDuplicationMap();
+
+            // Debugging output
+            foreach (var entry in result)
+            {
+                Console.WriteLine($"Hash: {entry.Key}, Entries: {string.Join(", ", entry.Value.Select(v => v.filePath + ":" + v.methodName + ":" + v.startLine))}");
+            }
 
             // Assert
             Assert.NotEmpty(result);
@@ -75,7 +79,6 @@ namespace CodeLineCounter.Tests
                         // Some code
                         var i = 1;
                         var j = 2;
-
                         var k = i + j;
                     }
                 }";
@@ -88,7 +91,6 @@ namespace CodeLineCounter.Tests
                         // Some code
                         var i = 1;
                         var j = 2;
-
                         var k = i + j;
                     }
                 }";
@@ -101,11 +103,16 @@ namespace CodeLineCounter.Tests
             checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
             var result = checker.GetCodeDuplicationMap();
 
+            // Debugging output
+            foreach (var entry in result)
+            {
+                Console.WriteLine($"Hash: {entry.Key}, Entries: {string.Join(", ", entry.Value.Select(v => v.filePath + ":" + v.methodName + ":" + v.startLine))}");
+            }
+
             // Assert
             Assert.NotEmpty(result);
             var duplicateEntry = result.First();
             Assert.Equal(2, duplicateEntry.Value.Count); // Both methods should be detected as duplicates
-
         }
 
         [Fact]
@@ -122,7 +129,6 @@ namespace CodeLineCounter.Tests
                         // Some code
                         var i = 1;
                         var j = 2 + i;
-
                         var k = j * j;
                     }
                 }";
@@ -144,9 +150,14 @@ namespace CodeLineCounter.Tests
             checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
             var result = checker.GetCodeDuplicationMap();
 
+            // Debugging output
+            foreach (var entry in result)
+            {
+                Console.WriteLine($"Hash: {entry.Key}, Entries: {string.Join(", ", entry.Value.Select(v => v.filePath + ":" + v.methodName + ":" + v.startLine))}");
+            }
+
             // Assert
             Assert.Empty(result); // No duplicates should be detected
-
         }
     }
 }
