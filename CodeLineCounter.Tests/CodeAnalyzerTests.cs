@@ -13,7 +13,7 @@ namespace CodeLineCounter.Tests
             var analyzer = new CodeAnalyzer();
 
             // Act
-            var (metrics, projectTotals, totalLines, totalFiles) = analyzer.AnalyzeSolution(solutionPath);
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = analyzer.AnalyzeSolution(solutionPath);
 
             // Assert
             Assert.NotNull(metrics);

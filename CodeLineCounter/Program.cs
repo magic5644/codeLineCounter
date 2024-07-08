@@ -83,7 +83,7 @@ namespace CodeLineCounter
             string csvFilePath = $"{solutionFilename}-CodeMetrics.csv";
 
             var analyzer = new CodeAnalyzer();
-            var (metrics, projectTotals, totalLines, totalFiles) = analyzer.AnalyzeSolution(solutionPath);
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = analyzer.AnalyzeSolution(solutionPath);
             timer.Stop();
             TimeSpan timeTaken = timer.Elapsed;
             string processingTime = $"Time taken: {timeTaken:m\\:ss\\.fff}";

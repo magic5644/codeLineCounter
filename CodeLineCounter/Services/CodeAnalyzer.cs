@@ -9,25 +9,28 @@ namespace CodeLineCounter.Services
 {
     public class CodeAnalyzer
     {
-        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int) AnalyzeSolution(string solutionFilePath)
+        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int, Dictionary<string, List<(string filePath, string methodName, int startLine)>>) AnalyzeSolution(string solutionFilePath)
         {
             string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
 
             var namespaceMetrics = new List<NamespaceMetrics>();
             var projectTotals = new Dictionary<string, int>();
+            var codeDuplicationChecker = new CodeDuplicationChecker();
             int totalLines = 0;
             int totalFilesAnalyzed = 0;
 
             foreach (var projectFile in projectFiles)
             {
-                AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals);
+                AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals, codeDuplicationChecker);
             }
 
-            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed);
+            var duplicationMap = codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
+
+            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationMap);
         }
 
-        private void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals)
+        private void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals, CodeDuplicationChecker codeDuplicationChecker)
         {
             string? projectDirectory = Path.GetDirectoryName(projectFile);
             string projectName = Path.GetFileNameWithoutExtension(projectFile);
@@ -42,6 +45,9 @@ namespace CodeLineCounter.Services
             {
                 totalFilesAnalyzed++;
                 projectLineCount = AnalyzeSourceFile(solutionDirectory, namespaceMetrics, projectName, relativeProjectPath, projectLineCount, projectNamespaceMetrics, file);
+
+                var sourceCode = File.ReadAllText(file);
+                codeDuplicationChecker.DetectCodeDuplicationInSourceCode(file, sourceCode);
             }
 
             AddProjectMetrics(projectName, relativeProjectPath, projectDirectory, projectNamespaceMetrics, namespaceMetrics, projectTotals, projectLineCount);

@@ -15,58 +15,71 @@ namespace CodeLineCounter.Services
 {
     public class CodeDuplicationChecker
     {
-        public Dictionary<string, List<string>> DetectCodeDuplicationInFiles(List<string> files)
-        {
-            var duplicationMap = new ConcurrentDictionary<string, List<string>>();
-            var hashMap = new ConcurrentDictionary<string, string>();
+        private readonly ConcurrentDictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap;
+        private readonly ConcurrentDictionary<string, string> hashMap;
 
-            Parallel.ForEach(files, file =>
+        public CodeDuplicationChecker()
+        {
+            duplicationMap = new ConcurrentDictionary<string, List<(string filePath, string methodName, int startLine)>>();
+            hashMap = new ConcurrentDictionary<string, string>();
+        }
+
+        public Dictionary<string, List<(string filePath, string methodName, int startLine)>> DetectCodeDuplicationInFiles(List<string> files)
+        {
+            foreach(var file in files)
             {
                 var normalizedPath = Path.GetFullPath(file);
                 var sourceCode = File.ReadAllText(normalizedPath);
-                DetectCodeDuplicationInSourceCode(duplicationMap, hashMap, normalizedPath, sourceCode);
-            });
+                DetectCodeDuplicationInSourceCode(normalizedPath, sourceCode);
+            }
 
             return duplicationMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        public void DetectCodeDuplicationInSourceCode(ConcurrentDictionary<string, List<string>> duplicationMap, ConcurrentDictionary<string, string> hashMap, string normalizedPath, string sourceCode)
+        public void DetectCodeDuplicationInSourceCode(string normalizedPath, string sourceCode)
         {
             var tree = CSharpSyntaxTree.ParseText(sourceCode);
             var root = tree.GetRoot();
             var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
-            Parallel.ForEach(methods, method =>
+            foreach (var method in methods)
             {
                 var blocks = ExtractBlocks(method);
-                //Console.WriteLine(blocks.ToString());
 
                 foreach (var block in blocks)
                 {
                     var code = NormalizeCode(block.ToFullString());
-                    //Console.WriteLine(code);
                     var hash = HashUtils.ComputeHash(code);
-                    hashMap.AddOrUpdate(hash, normalizedPath + ": " + method.Identifier.Text, (key, oldValue) =>
+                    var location = block.GetLocation().GetLineSpan().StartLinePosition.Line;
+
+                    if (hashMap.TryGetValue(hash, out var existingValue))
                     {
-                        duplicationMap.AddOrUpdate(oldValue, new List<string> { oldValue, normalizedPath + ": " + method.Identifier.Text }, (key, list) =>
+                        duplicationMap.AddOrUpdate(existingValue, new List<(string filePath, string methodName, int startLine)>
                         {
-                            list.Add(normalizedPath + ": " + method.Identifier.Text);
+                            (normalizedPath, method.Identifier.Text, location)
+                        },
+                        (key, list) =>
+                        {
+                            if (!list.Any(entry => entry.filePath == normalizedPath && entry.methodName == method.Identifier.Text && entry.startLine == location))
+                            {
+                                list.Add((normalizedPath, method.Identifier.Text, location));
+                            }
                             return list;
                         });
-                        return oldValue;
-                    });
+                    }
+                    else
+                    {
+                        hashMap[hash] = normalizedPath + ": " + method.Identifier.Text;
+                    }
                 }
-
-            });
+            }
         }
 
-        // Extracts and returns the blocks of syntax within the method declaration syntax provided.
         private static IEnumerable<BlockSyntax> ExtractBlocks(MethodDeclarationSyntax method)
         {
             return method.DescendantNodes().OfType<BlockSyntax>();
         }
 
-        // Normalizes the input code by removing white spaces and returns the resulting string.
         private string NormalizeCode(string code)
         {
             var stringBuilder = new StringBuilder();
