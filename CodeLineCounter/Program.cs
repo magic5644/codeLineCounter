@@ -104,8 +104,8 @@ namespace CodeLineCounter
             Console.WriteLine($"Processing completed, number of source files processed: {totalFiles}");
             Console.WriteLine($"Total lines of code: {totalLines}");
 
-            CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap);
-            CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap);
+            CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap, solutionPath);
+            CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap, solutionPath);
             Console.WriteLine($"The data has been exported to {csvFilePath}");
             Console.WriteLine($"The code duplications have been exported to {duplicationCsvFilePath}");
             Console.WriteLine(processingTime);

@@ -11,7 +11,7 @@ namespace CodeLineCounter.Utils
     {
         private static readonly object exportLock = new object();
 
-        public static void ExportToCsv(string filePath, List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals, int totalLines, Dictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap)
+        public static void ExportToCsv(string filePath, List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals, int totalLines, Dictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap, string? solutionPath)
         {
             lock (exportLock)
             {
@@ -20,6 +20,7 @@ namespace CodeLineCounter.Utils
 
                 string? currentProject = null;
                 var duplicationCounts = GetDuplicationCounts(duplicationMap);
+
 
                 foreach (var metric in metrics)
                 {
@@ -31,7 +32,7 @@ namespace CodeLineCounter.Utils
                         }
                         currentProject = metric.ProjectName;
                     }
-                    int fileDuplicationCount = GetFileDuplicationsCount(duplicationCounts, metric);
+                    int fileDuplicationCount = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
 
                     csvBuilder.AppendLine($"{metric.ProjectName},{metric.ProjectPath},{metric.NamespaceName},{metric.FileName},{metric.FilePath},{metric.LineCount},{metric.CyclomaticComplexity},{fileDuplicationCount}");
                 }
@@ -47,7 +48,7 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static void ExportCodeDuplicationsToCsv(string filePath, Dictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap)
+        public static void ExportCodeDuplicationsToCsv(string filePath, Dictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap, string? solutionPath)
         {
             lock (exportLock)
             {
@@ -74,13 +75,14 @@ namespace CodeLineCounter.Utils
             {
                 foreach (var detail in entry.Value)
                 {
-                    if (duplicationCounts.ContainsKey(detail.filePath))
+                    var normalizedPath = Path.GetFullPath(detail.filePath);
+                    if (duplicationCounts.ContainsKey(normalizedPath))
                     {
-                        duplicationCounts[detail.filePath]++;
+                        duplicationCounts[normalizedPath]++;
                     }
                     else
                     {
-                        duplicationCounts[detail.filePath] = 1;
+                        duplicationCounts[normalizedPath] = 1;
                     }
                 }
             }
@@ -88,12 +90,25 @@ namespace CodeLineCounter.Utils
             return duplicationCounts;
         }
 
-        public static int GetFileDuplicationsCount(Dictionary<string, int> duplicationCounts, NamespaceMetrics metric)
+        public static int GetFileDuplicationsCount(Dictionary<string, int> duplicationCounts, NamespaceMetrics metric, string? solutionPath)
         {
-            var normalizedPath = Path.GetFullPath(metric.FilePath);
-            int count = duplicationCounts.ContainsKey(normalizedPath) ? duplicationCounts[normalizedPath] : 0;
-            Console.WriteLine($"filepath : {normalizedPath}, count : {count}");
+            int count = 0;
+            if (solutionPath == null)  {
+                solutionPath = string.Empty;
+            }
+            else
+            {
+                solutionPath = Path.GetDirectoryName(solutionPath);
+            }
+            if (metric.FilePath !=null) 
+            {
+                var normalizedPath = solutionPath != string.Empty ? Path.GetFullPath(metric.FilePath, solutionPath) : Path.GetFullPath(metric.FilePath);
+                count = duplicationCounts.ContainsKey(normalizedPath) ? duplicationCounts[normalizedPath] : 0;
+                Console.WriteLine($"filepath : {normalizedPath}, count : {count}");
+            }
+            
             return count;
         }
     }
 }
+

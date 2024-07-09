@@ -49,12 +49,6 @@ namespace CodeLineCounter.Tests
             checker.DetectCodeDuplicationInFiles(files);
             var result = checker.GetCodeDuplicationMap();
 
-            // Debugging output
-            foreach (var entry in result)
-            {
-                Console.WriteLine($"Hash: {entry.Key}, Entries: {string.Join(", ", entry.Value.Select(v => v.filePath + ":" + v.methodName + ":" + v.startLine))}");
-            }
-
             // Assert
             Assert.NotEmpty(result);
             var duplicateEntry = result.First();
@@ -103,12 +97,6 @@ namespace CodeLineCounter.Tests
             checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
             var result = checker.GetCodeDuplicationMap();
 
-            // Debugging output
-            foreach (var entry in result)
-            {
-                Console.WriteLine($"Hash: {entry.Key}, Entries: {string.Join(", ", entry.Value.Select(v => v.filePath + ":" + v.methodName + ":" + v.startLine))}");
-            }
-
             // Assert
             Assert.NotEmpty(result);
             var duplicateEntry = result.First();
@@ -149,12 +137,6 @@ namespace CodeLineCounter.Tests
             checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
             checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
             var result = checker.GetCodeDuplicationMap();
-
-            // Debugging output
-            foreach (var entry in result)
-            {
-                Console.WriteLine($"Hash: {entry.Key}, Entries: {string.Join(", ", entry.Value.Select(v => v.filePath + ":" + v.methodName + ":" + v.startLine))}");
-            }
 
             // Assert
             Assert.Empty(result); // No duplicates should be detected

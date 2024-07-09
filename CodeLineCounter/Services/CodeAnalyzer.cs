@@ -22,16 +22,18 @@ namespace CodeLineCounter.Services
 
             foreach (var projectFile in projectFiles)
             {
-                AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals, codeDuplicationChecker);
-                codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
+                AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals);
+                
             }
+
+            codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
 
             var duplicationMap = codeDuplicationChecker.GetCodeDuplicationMap();
 
             return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationMap);
         }
 
-        private void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals, CodeDuplicationChecker codeDuplicationChecker)
+        private void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals)
         {
             string? projectDirectory = Path.GetDirectoryName(projectFile);
             string projectName = Path.GetFileNameWithoutExtension(projectFile);
@@ -46,9 +48,6 @@ namespace CodeLineCounter.Services
             {
                 totalFilesAnalyzed++;
                 projectLineCount = AnalyzeSourceFile(solutionDirectory, namespaceMetrics, projectName, relativeProjectPath, projectLineCount, projectNamespaceMetrics, file);
-
-                //var sourceCode = File.ReadAllText(file);
-                //codeDuplicationChecker.DetectCodeDuplicationInSourceCode(file, sourceCode);
             }
 
             AddProjectMetrics(projectName, relativeProjectPath, projectDirectory, projectNamespaceMetrics, namespaceMetrics, projectTotals, projectLineCount);

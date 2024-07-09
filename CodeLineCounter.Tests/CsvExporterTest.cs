@@ -14,6 +14,7 @@ namespace CodeLineCounter.Tests
             var file1 = "file1.cs";
             var file2 = "file2.cs";
             var file3 = "file3.cs";
+            var solutionPath = ".";
 
             File.WriteAllText(file1, "");
             File.WriteAllText(file2, "");
@@ -35,7 +36,7 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            int result = CsvExporter.GetFileDuplicationsCount(duplicationCounts, metric);
+            int result = CsvExporter.GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
 
             // Assert
             Assert.Equal(3, result);
