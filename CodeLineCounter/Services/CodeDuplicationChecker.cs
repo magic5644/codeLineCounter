@@ -75,8 +75,6 @@ namespace CodeLineCounter.Services
                         return set;
                     });
 
-                    // Debugging output
-                    //Console.WriteLine($"Added block hash: {hash} from file: {normalizedPath}, method: {method.Identifier.Text}, line: {location}");
                 }
             });
 
