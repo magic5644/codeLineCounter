@@ -9,22 +9,28 @@ namespace CodeLineCounter.Services
 {
     public class CodeAnalyzer
     {
-        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int) AnalyzeSolution(string solutionFilePath)
+        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int, Dictionary<string, List<(string filePath, string methodName, int startLine)>>) AnalyzeSolution(string solutionFilePath)
         {
             string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
 
             var namespaceMetrics = new List<NamespaceMetrics>();
             var projectTotals = new Dictionary<string, int>();
+            var codeDuplicationChecker = new CodeDuplicationChecker();
             int totalLines = 0;
             int totalFilesAnalyzed = 0;
 
             foreach (var projectFile in projectFiles)
             {
                 AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals);
+                
             }
 
-            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed);
+            codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
+
+            var duplicationMap = codeDuplicationChecker.GetCodeDuplicationMap();
+
+            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationMap);
         }
 
         private void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals)

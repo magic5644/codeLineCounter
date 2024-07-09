@@ -81,9 +81,10 @@ namespace CodeLineCounter
             timer.Start();
             string solutionFilename = Path.GetFileName(solutionPath);
             string csvFilePath = $"{solutionFilename}-CodeMetrics.csv";
+            string duplicationCsvFilePath = $"{solutionFilename}-CodeDuplications.csv";
 
             var analyzer = new CodeAnalyzer();
-            var (metrics, projectTotals, totalLines, totalFiles) = analyzer.AnalyzeSolution(solutionPath);
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = analyzer.AnalyzeSolution(solutionPath);
             timer.Stop();
             TimeSpan timeTaken = timer.Elapsed;
             string processingTime = $"Time taken: {timeTaken:m\\:ss\\.fff}";
@@ -103,9 +104,12 @@ namespace CodeLineCounter
             Console.WriteLine($"Processing completed, number of source files processed: {totalFiles}");
             Console.WriteLine($"Total lines of code: {totalLines}");
 
-            CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines);
+            CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap, solutionPath);
+            CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap, solutionPath);
             Console.WriteLine($"The data has been exported to {csvFilePath}");
+            Console.WriteLine($"The code duplications have been exported to {duplicationCsvFilePath}");
             Console.WriteLine(processingTime);
         }
+
     }
 }
