@@ -11,7 +11,7 @@ namespace CodeLineCounter
     {
         static void Main(string[] args)
         {
-            var settings = ParseArguments(args);
+            var settings = CoreUtils.ParseArguments(args);
             if (settings.DirectoryPath == null)
             {
                 Console.WriteLine("Please provide the directory path containing the solutions to analyze using the -d switch.");
@@ -32,25 +32,6 @@ namespace CodeLineCounter
             AnalyzeAndExportSolution(solutionFiles[choice - 1], settings.Verbose);
         }
 
-        private static (bool Verbose, string? DirectoryPath) ParseArguments(string[] args)
-        {
-            bool verbose = false;
-            string? directoryPath = null;
-            for (int i = 0; i < args.Length; i++)
-            {
-                switch (args[i])
-                {
-                    case "-verbose":
-                        verbose = true;
-                        break;
-                    case "-d" when i + 1 < args.Length:
-                        directoryPath = args[i + 1];
-                        i++;
-                        break;
-                }
-            }
-            return (verbose, directoryPath);
-        }
 
         private static void DisplaySolutions(System.Collections.Generic.List<string> solutionFiles)
         {
