@@ -98,7 +98,11 @@ namespace CodeLineCounter.Utils.Tests
                 CoreUtils.DisplaySolutions(solutionFiles);
 
                 // Assert
-                string expectedOutput = "Available solutions:\r\n1. Solution1.sln\r\n2. Solution2.sln\r\n3. Solution3.sln\r\n";
+                string expectedOutput = "Available solutions:\r\n";
+                for (int i = 0; i < solutionFiles.Count; i++)
+                {
+                    expectedOutput += $"{i + 1}. {solutionFiles[i]}\r\n";
+                }
                 Assert.Equal(expectedOutput, sw.ToString());
             }
         }
