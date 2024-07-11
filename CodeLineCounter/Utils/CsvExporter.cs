@@ -26,10 +26,7 @@ namespace CodeLineCounter.Utils
                 {
                     if (currentProject != metric.ProjectName)
                     {
-                        if (currentProject != null)
-                        {
-                            csvBuilder.AppendLine($"{currentProject},Total,,,,{projectTotals[currentProject]},,");
-                        }
+                        AppenProjectLineToCsv(projectTotals, csvBuilder, currentProject);
                         currentProject = metric.ProjectName;
                     }
                     int fileDuplicationCount = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
@@ -37,14 +34,19 @@ namespace CodeLineCounter.Utils
                     csvBuilder.AppendLine($"{metric.ProjectName},{metric.ProjectPath},{metric.NamespaceName},{metric.FileName},{metric.FilePath},{metric.LineCount},{metric.CyclomaticComplexity},{fileDuplicationCount}");
                 }
 
-                if (currentProject != null)
-                {
-                    csvBuilder.AppendLine($"{currentProject},Total,,,,{projectTotals[currentProject]},,");
-                }
+                AppenProjectLineToCsv(projectTotals, csvBuilder, currentProject);
 
                 csvBuilder.AppendLine($"Total,,,,,{totalLines},");
 
                 File.WriteAllText(filePath, csvBuilder.ToString());
+            }
+        }
+
+        private static void AppenProjectLineToCsv(Dictionary<string, int> projectTotals, StringBuilder csvBuilder, string? currentProject)
+        {
+            if (currentProject != null)
+            {
+                csvBuilder.AppendLine($"{currentProject},Total,,,,{projectTotals[currentProject]},,");
             }
         }
 

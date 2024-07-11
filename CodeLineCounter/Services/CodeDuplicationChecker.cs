@@ -33,17 +33,7 @@ namespace CodeLineCounter.Services
                 var sourceCode = File.ReadAllText(normalizedPath);
                 DetectCodeDuplicationInSourceCode(normalizedPath, sourceCode);
             });
-
-            lock (duplicationLock)
-            {
-                foreach (var entry in hashMap)
-                {
-                    if (entry.Value.Count > 1)
-                    {
-                        duplicationMap[entry.Key] = entry.Value;
-                    }
-                }
-            }
+            UpdateDuplicationMap();
         }
 
         public void DetectCodeDuplicationInSourceCode(string normalizedPath, string sourceCode)
@@ -78,6 +68,11 @@ namespace CodeLineCounter.Services
                 }
             });
 
+            UpdateDuplicationMap();
+        }
+
+        private void UpdateDuplicationMap()
+        {
             lock (duplicationLock)
             {
                 foreach (var entry in hashMap)

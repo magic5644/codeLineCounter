@@ -71,7 +71,7 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 
 ## Generated Files
 
-The program generates a CSV file named `CodeMetrics.csv` containing the following metrics:
+The program generates a CSV file named `<solutionnazme>-CodeMetrics.csv` containing the following metrics:
 
 - `Project`: Project name.
 - `ProjectPath`: Relative path of the project.
@@ -112,6 +112,19 @@ The program generates a CSV file named `CodeMetrics.csv` containing the followin
     CodeLineCounter.Tests,Total,,,,370,,
     Total,,,,,938,
     ```
+The ptogram generates a CSV file named `<solutionname>-CodeDuplication.csv` in the current directory containing the following metrics:
+
+- `Code Hash`: Hash of the duplicate code.
+- `FilePath`: Full path of the file.
+- `MethodName`: Name of the method.
+- `StartLine`: Start line of the duplicate code.
+
+## Example Outup of CodeDuplication.csv
+
+    ```csv
+    Code Hash,FilePath,MethodName,StartLine
+    0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91
+    ```   
 
 ## Project Structure
 
