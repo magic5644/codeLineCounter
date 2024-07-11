@@ -81,6 +81,8 @@ namespace CodeLineCounter.Utils.Tests
         [Fact]
         public void DisplaySolutions_Should_Write_Solutions_To_Console()
         {
+
+            var envNewLine = Environment.NewLine;
             // Arrange
             List<string> solutionFiles = new List<string>
             {
@@ -98,10 +100,10 @@ namespace CodeLineCounter.Utils.Tests
                 CoreUtils.DisplaySolutions(solutionFiles);
 
                 // Assert
-                string expectedOutput = "Available solutions:\r\n";
+                string expectedOutput = $"Available solutions:{envNewLine}";
                 for (int i = 0; i < solutionFiles.Count; i++)
                 {
-                    expectedOutput += $"{i + 1}. {solutionFiles[i]}\r\n";
+                    expectedOutput += $"{i + 1}. {solutionFiles[i]}{envNewLine}";
                 }
                 Assert.Equal(expectedOutput, sw.ToString());
             }
