@@ -104,7 +104,6 @@ namespace CodeLineCounter.Utils
             {
                 var normalizedPath = solutionPath != string.Empty ? Path.GetFullPath(metric.FilePath, solutionPath) : Path.GetFullPath(metric.FilePath);
                 count = duplicationCounts.ContainsKey(normalizedPath) ? duplicationCounts[normalizedPath] : 0;
-                Console.WriteLine($"filepath : {normalizedPath}, count : {count}");
             }
             
             return count;
