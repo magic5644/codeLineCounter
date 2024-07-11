@@ -93,8 +93,8 @@ namespace CodeLineCounter.Utils
         public static int GetFileDuplicationsCount(Dictionary<string, int> duplicationCounts, NamespaceMetrics metric, string? solutionPath)
         {
             int count = 0;
-            if (solutionPath == null)  {
-                solutionPath = string.Empty;
+            if (solutionPath == null || solutionPath == ".")  {
+               solutionPath=  Path.GetFullPath(".");
             }
             else
             {

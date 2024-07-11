@@ -25,35 +25,15 @@ namespace CodeLineCounter
                 return;
             }
 
-            DisplaySolutions(solutionFiles);
-            int choice = GetUserChoice(solutionFiles.Count);
+            var solutionFilenameList = CoreUtils.GetFilenamesList(solutionFiles);
+
+            CoreUtils.DisplaySolutions(solutionFilenameList);
+            int choice = CoreUtils.GetUserChoice(solutionFiles.Count);
             if (choice == -1) return;
 
-            AnalyzeAndExportSolution(solutionFiles[choice - 1], settings.Verbose);
-        }
+            var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
 
-
-        private static void DisplaySolutions(System.Collections.Generic.List<string> solutionFiles)
-        {
-            Console.WriteLine("Available solutions:");
-            for (int i = 0; i < solutionFiles.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {Path.GetFileName(solutionFiles[i])}");
-            }
-        }
-
-        private static int GetUserChoice(int solutionCount)
-        {
-            Console.Write("Choose a solution to analyze (enter the number): ");
-            if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0 && choice <= solutionCount)
-            {
-                return choice;
-            }
-            else
-            {
-                Console.WriteLine("Invalid selection. Please restart the program and choose a valid option.");
-                return -1;
-            }
+            AnalyzeAndExportSolution(solutionPath, settings.Verbose);
         }
 
         private static void AnalyzeAndExportSolution(string solutionPath, bool verbose)
