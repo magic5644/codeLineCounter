@@ -1,8 +1,8 @@
 
 # CodeLineCounter
 
-[![.NET](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml)
-[![Coverage](https://magic5644.github.io/magic5644/coverage-report/badge_combined.svg/badge_combined.svg)]([./coverage-report/index.html](https://github.com/magic5644/NBLignesCount/actions/workflows/dotnet.yml))
+[![.NET](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml)
+[![Coverage](https://magic5644.github.io/magic5644/coverage-report/badge_combined.svg/badge_combined.svg)]([./coverage-report/index.html](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml))
 
 <div align="center"><img src="./assets/logo.webp" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
@@ -32,13 +32,13 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 1. Clone the repository:
 
         ```sh
-        git clone https://github.com/magic5644/NBLignesCount.git
+        git clone https://github.com/magic5644/CodeLineCounter.git
         ```
 
 2. Navigate to the project directory:
 
         ```sh
-        cd NBLignesCount
+        cd CodeLineCounter
         ```
 
 3. Install the necessary NuGet packages:
@@ -71,7 +71,7 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 
 ## Generated Files
 
-The program generates a CSV file named `<solutionnazme>-CodeMetrics.csv` containing the following metrics:
+The program generates a CSV file named `<SolutionName>-CodeMetrics.csv` containing the following metrics:
 
 - `Project`: Project name.
 - `ProjectPath`: Relative path of the project.
@@ -112,14 +112,14 @@ The program generates a CSV file named `<solutionnazme>-CodeMetrics.csv` contain
     CodeLineCounter.Tests,Total,,,,370,,
     Total,,,,,938,
     ```
-The ptogram generates a CSV file named `<solutionname>-CodeDuplication.csv` in the current directory containing the following metrics:
+The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in the current directory containing the following metrics:
 
 - `Code Hash`: Hash of the duplicate code.
 - `FilePath`: Full path of the file.
 - `MethodName`: Name of the method.
 - `StartLine`: Start line of the duplicate code.
 
-## Example Outup of CodeDuplication.csv
+## Example Output of CodeDuplication.csv
 
     ```csv
     Code Hash,FilePath,MethodName,StartLine
