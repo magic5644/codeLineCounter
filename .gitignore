@@ -1,5 +1,6 @@
 /.sarif
 /.vs
+/.*
 /CodeLineCounter/bin
 /CodeLineCounter/obj
 /CodeLineCounter.tests/bin
