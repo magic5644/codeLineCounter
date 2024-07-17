@@ -197,6 +197,12 @@ To publish the project, use the following command:
 
 Contributions are welcome! Please open an issue or a pull request for any suggestions or improvements.
 
+## 💪 Thanks To All Contributors
+
+<a href="https://github.com/magic5644/codelinecounter/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=magic5644/codelinecounter" alt="List of Contributors"/>
+</a>
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
