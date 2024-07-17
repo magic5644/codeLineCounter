@@ -132,5 +132,45 @@ namespace CodeLineCounter.Utils.Tests
             };
             Assert.Equal(expectedFilenames, result);
         }
+
+
+        [Fact]
+        public void CheckSettings_WhenHelpIsTrue_ReturnsFalse()
+        {
+            // Arrange
+            (bool Verbose, string? DirectoryPath, bool Help) settings = (true, null, true);
+
+            // Act
+            var result = CoreUtils.CheckSettings(settings);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void CheckSettings_WhenDirectoryPathIsNull_ReturnsFalse()
+        {
+            // Arrange
+            (bool Verbose, string? DirectoryPath, bool Help) settings = (Verbose: false, DirectoryPath: null, Help: false);
+
+            // Act
+            var result = CoreUtils.CheckSettings(settings);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void CheckSettings_WhenSettingsAreValid_ReturnsTrue()
+        {
+            // Arrange
+            (bool Verbose, string DirectoryPath, bool Help) settings = (false, "some_directory", false);
+
+            // Act
+            var result = CoreUtils.CheckSettings(settings);
+
+            // Assert
+            Assert.True(result);
+        }
     }
 }

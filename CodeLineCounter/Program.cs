@@ -12,28 +12,27 @@ namespace CodeLineCounter
         static void Main(string[] args)
         {
             var settings = CoreUtils.ParseArguments(args);
-            if (settings.DirectoryPath == null)
+            if (CoreUtils.CheckSettings(settings) == true)
             {
-                Console.WriteLine("Please provide the directory path containing the solutions to analyze using the -d switch.");
-                return;
+                var solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
+                if (solutionFiles.Count == 0)
+                {
+                    Console.WriteLine("No solution (.sln) found in the specified directory.");
+                    return;
+                }
+
+                var solutionFilenameList = CoreUtils.GetFilenamesList(solutionFiles);
+
+                CoreUtils.DisplaySolutions(solutionFilenameList);
+                int choice = CoreUtils.GetUserChoice(solutionFiles.Count);
+                if (choice == -1) return;
+
+                var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
+
+                AnalyzeAndExportSolution(solutionPath, settings.Verbose);
+
             }
 
-            var solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
-            if (solutionFiles.Count == 0)
-            {
-                Console.WriteLine("No solution (.sln) found in the specified directory.");
-                return;
-            }
-
-            var solutionFilenameList = CoreUtils.GetFilenamesList(solutionFiles);
-
-            CoreUtils.DisplaySolutions(solutionFilenameList);
-            int choice = CoreUtils.GetUserChoice(solutionFiles.Count);
-            if (choice == -1) return;
-
-            var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
-
-            AnalyzeAndExportSolution(solutionPath, settings.Verbose);
         }
 
         private static void AnalyzeAndExportSolution(string solutionPath, bool verbose)
