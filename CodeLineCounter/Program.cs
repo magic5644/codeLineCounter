@@ -14,23 +14,25 @@ namespace CodeLineCounter
             var settings = CoreUtils.ParseArguments(args);
             if (CoreUtils.CheckSettings(settings) == true)
             {
-                var solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
-                if (solutionFiles.Count == 0)
+                if (settings.DirectoryPath != null)
                 {
-                    Console.WriteLine("No solution (.sln) found in the specified directory.");
-                    return;
+                    var solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
+                    if (solutionFiles.Count == 0)
+                    {
+                        Console.WriteLine("No solution (.sln) found in the specified directory.");
+                        return;
+                    }
+
+                    var solutionFilenameList = CoreUtils.GetFilenamesList(solutionFiles);
+
+                    CoreUtils.DisplaySolutions(solutionFilenameList);
+                    int choice = CoreUtils.GetUserChoice(solutionFiles.Count);
+                    if (choice == -1) return;
+
+                    var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
+                    AnalyzeAndExportSolution(solutionPath, settings.Verbose);
+
                 }
-
-                var solutionFilenameList = CoreUtils.GetFilenamesList(solutionFiles);
-
-                CoreUtils.DisplaySolutions(solutionFilenameList);
-                int choice = CoreUtils.GetUserChoice(solutionFiles.Count);
-                if (choice == -1) return;
-
-                var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
-
-                AnalyzeAndExportSolution(solutionPath, settings.Verbose);
-
             }
 
         }
