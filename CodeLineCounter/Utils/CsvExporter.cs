@@ -11,7 +11,7 @@ namespace CodeLineCounter.Utils
     {
         private static readonly object exportLock = new object();
 
-        public static void ExportToCsv(string filePath, List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals, int totalLines, Dictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap, string? solutionPath)
+        public static void ExportToCsv(string filePath, List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals, int totalLines, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>> duplicationMap, string? solutionPath)
         {
             lock (exportLock)
             {
@@ -52,18 +52,18 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static void ExportCodeDuplicationsToCsv(string filePath, Dictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap, string? solutionPath)
+        public static void ExportCodeDuplicationsToCsv(string filePath, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>> duplicationMap, string? solutionPath)
         {
             lock (exportLock)
             {
                 var csvBuilder = new StringBuilder();
-                csvBuilder.AppendLine("Code Hash,FilePath,MethodName,StartLine");
+                csvBuilder.AppendLine("Code Hash,FilePath,MethodName,StartLine, nbLines");
 
                 foreach (var entry in duplicationMap)
                 {
                     foreach (var detail in entry.Value)
                     {
-                        csvBuilder.AppendLine($"{entry.Key},{detail.filePath},{detail.methodName},{detail.startLine}");
+                        csvBuilder.AppendLine($"{entry.Key},{detail.filePath},{detail.methodName},{detail.startLine}, {detail.nbLines}");
                     }
                 }
 
@@ -73,7 +73,7 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static Dictionary<string, int> GetDuplicationCounts(Dictionary<string, List<(string filePath, string methodName, int startLine)>> duplicationMap)
+        public static Dictionary<string, int> GetDuplicationCounts(Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>> duplicationMap)
         {
             var duplicationCounts = new Dictionary<string, int>();
 

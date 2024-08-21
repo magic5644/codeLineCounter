@@ -15,14 +15,14 @@ namespace CodeLineCounter.Services
 {
     public class CodeDuplicationChecker
     {
-        private readonly ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>> duplicationMap;
-        private readonly ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>> hashMap;
+        private readonly ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine, int nbLines)>> duplicationMap;
+        private readonly ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine, int nbLines)>> hashMap;
         private readonly object duplicationLock = new object();
 
         public CodeDuplicationChecker()
         {
-            duplicationMap = new ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>>();
-            hashMap = new ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine)>>();
+            duplicationMap = new ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine, int nbLines)>>();
+            hashMap = new ConcurrentDictionary<string, HashSet<(string filePath, string methodName, int startLine, int nbLines)>>();
         }
 
         public void DetectCodeDuplicationInFiles(List<string> files)
@@ -51,16 +51,17 @@ namespace CodeLineCounter.Services
                     var code = NormalizeCode(block.ToFullString());
                     var hash = HashUtils.ComputeHash(code);
                     var location = block.GetLocation().GetLineSpan().StartLinePosition.Line;
+                    var nbLines = block.GetLocation().GetLineSpan().EndLinePosition.Line - location + 1;
 
-                    hashMap.AddOrUpdate(hash, new HashSet<(string filePath, string methodName, int startLine)>
+                    hashMap.AddOrUpdate(hash, new HashSet<(string filePath, string methodName, int startLine, int nbLines)>
                     {
-                        (normalizedPath, method.Identifier.Text, location)
+                        (normalizedPath, method.Identifier.Text, location, nbLines)
                     },
                     (key, set) =>
                     {
                         lock (set)
                         {
-                            set.Add((normalizedPath, method.Identifier.Text, location));
+                            set.Add((normalizedPath, method.Identifier.Text, location, nbLines));
                         }
                         return set;
                     });
@@ -85,7 +86,7 @@ namespace CodeLineCounter.Services
             }
         }
 
-        public Dictionary<string, List<(string filePath, string methodName, int startLine)>> GetCodeDuplicationMap()
+        public Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>> GetCodeDuplicationMap()
         {
             return duplicationMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToList());
         }

@@ -50,6 +50,10 @@ namespace CodeLineCounter
             timer.Stop();
             TimeSpan timeTaken = timer.Elapsed;
             string processingTime = $"Time taken: {timeTaken:m\\:ss\\.fff}";
+            var nbLinesDuplicated = duplicationMap.Sum(x => x.Value.Count);
+            var percentageDuplication = (nbLinesDuplicated / (double)totalLines) * 100;
+
+            
 
             if (verbose)
             {
@@ -65,6 +69,8 @@ namespace CodeLineCounter
             }
             Console.WriteLine($"Processing completed, number of source files processed: {totalFiles}");
             Console.WriteLine($"Total lines of code: {totalLines}");
+            Console.WriteLine($"Solution {solutionFilename} has {nbLinesDuplicated} duplicated lines of code.");
+            Console.WriteLine($"Percentage of duplicated code: {percentageDuplication:F2} %");
 
             CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap, solutionPath);
             CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap, solutionPath);

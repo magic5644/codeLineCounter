@@ -9,7 +9,7 @@ namespace CodeLineCounter.Services
 {
     public class CodeAnalyzer
     {
-        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int, Dictionary<string, List<(string filePath, string methodName, int startLine)>>) AnalyzeSolution(string solutionFilePath)
+        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>>) AnalyzeSolution(string solutionFilePath)
         {
             string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
