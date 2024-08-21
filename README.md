@@ -190,7 +190,7 @@ Or generate-covertura.cmd for Windows
 To publish the project, use the following command:
 
     ```sh
-    dotnet publish -c Release -o publish -a x64 --sc true
+    dotnet publish -c Release -o publish -a x64 --sc true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p UseAppHost=true
     ```
 
 ## Contributing
