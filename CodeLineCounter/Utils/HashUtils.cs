@@ -5,7 +5,7 @@ namespace CodeLineCounter.Utils
 {
     public static class HashUtils
     {
-        public static string ComputeHash(string input)
+        public static string ComputeHash(string? input)
         {
             if (string.IsNullOrEmpty(input))
             {
