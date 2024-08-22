@@ -44,7 +44,7 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        private static void AppendProjectLineToCsv(Dictionary<string, int> projectTotals, StringBuilder csvBuilder, string? currentProject)
+        public static void AppendProjectLineToCsv(Dictionary<string, int> projectTotals, StringBuilder csvBuilder, string? currentProject)
         {
             if (currentProject != null)
             {
