@@ -24,7 +24,7 @@ namespace CodeLineCounter.Utils.Tests
         public void ComputeHash_NullString_ReturnsEmptyString()
         {
             // Arrange
-            string input = null;
+            string? input = null;
 
             // Act
             string result = HashUtils.ComputeHash(input);
