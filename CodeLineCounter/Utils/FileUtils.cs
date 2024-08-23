@@ -35,5 +35,11 @@ namespace CodeLineCounter.Utils
 
             return projectFiles;
         }
+
+        public static string GetBasePath()
+        {
+            // Arrange
+            return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+        }
     }
 }

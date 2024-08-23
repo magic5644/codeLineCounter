@@ -16,7 +16,7 @@ namespace CodeLineCounter.Tests
             var file1 = "file1.cs";
             var file2 = "file2.cs";
             var file3 = "file3.cs";
-            var solutionPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            var solutionPath = FileUtils.GetBasePath();
 
             File.WriteAllText(file1, "");
             File.WriteAllText(file2, "");

@@ -1,4 +1,5 @@
 using CodeLineCounter.Services;
+using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Tests
 {
@@ -7,8 +8,7 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void TestAnalyzeSolution()
         {
-            // Arrange
-            var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            string basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
             var analyzer = new CodeAnalyzer();
 
@@ -28,7 +28,7 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
-            var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            var basePath = FileUtils.GetBasePath();
             var file = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..",  "CodeAnalyzerTests.cs"));
             var lines = new string[]
             {
@@ -50,7 +50,7 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
-            var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            var basePath = FileUtils.GetBasePath();
             var file = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..",  "CodeAnalyzerTests.cs"));
             var lines = new string[]
             {
@@ -72,7 +72,7 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
-            var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            var basePath = FileUtils.GetBasePath();
             var file = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..",  "CodeAnalyzerTests.cs"));
             var lines = new string[]
             {

@@ -8,7 +8,7 @@ namespace CodeLineCounter.Utils.Tests
         public void GetSolutionFiles_Should_Return_List_Of_Solution_Files()
         {
             // Arrange
-            var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             var rootPath = solutionPath;
 
@@ -19,6 +19,17 @@ namespace CodeLineCounter.Utils.Tests
             Assert.NotNull(result);
             Assert.NotEmpty(result);
             Assert.All(result, file => Assert.EndsWith(".sln", file));
+        }
+
+        [Fact]
+        public void GetBasePath_Should_Return_NonEmptyString()
+        {
+            // Act
+            string basePath = FileUtils.GetBasePath();
+
+            // Assert
+            Assert.False(string.IsNullOrEmpty(basePath), "Base path should not be null or empty.");
+            Assert.True(Directory.Exists(basePath), "Base path should be a valid directory.");
         }
     }
 }
