@@ -31,41 +31,41 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 
 1. Clone the repository:
 
-        ```sh
-        git clone https://github.com/magic5644/CodeLineCounter.git
-        ```
+```sh
+git clone https://github.com/magic5644/CodeLineCounter.git
+```
 
 2. Navigate to the project directory:
 
-        ```sh
-        cd CodeLineCounter
-        ```
+```sh
+cd CodeLineCounter
+```
 
 3. Install the necessary NuGet packages:
 
-        ```sh
-        dotnet restore
-        ```
+```sh
+dotnet restore
+```
 
 ## Usage
 
 1. Build the project:
 
-        ```sh
-        dotnet build
-        ```
+```sh
+dotnet build
+```
 
 2. Run the program by providing the directory path containing the solutions to analyze:
 
-        ```sh
-        dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions"
-        ```
+```sh
+dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions"
+```
 
     or if you want verbose mode on :
 
-        ```sh
-        dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to/directory/with/solutions"
-        ```
+```sh
+dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to/directory/with/solutions"
+```
 
 3. Select the solution to analyze by entering the corresponding number.
 
@@ -84,34 +84,34 @@ The program generates a CSV file named `<SolutionName>-CodeMetrics.csv` containi
 
 ## Example Output
 
-    ```csv
-    Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity,CodeDuplications
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Program.cs,CodeLineCounter\Program.cs,64,7,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,NamespaceMetrics.cs,CodeLineCounter\Models\NamespaceMetrics.cs,13,1,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,CodeAnalyzer.cs,CodeLineCounter\Services\CodeAnalyzer.cs,109,9,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,CodeDuplicationChecker.cs,CodeLineCounter\Services\CodeDuplicationChecker.cs,103,8,6
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,CyclomaticComplexityCalculator.cs,CodeLineCounter\Services\CyclomaticComplexityCalculator.cs,65,12,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,CoreUtils.cs,CodeLineCounter\Utils\CoreUtils.cs,60,7,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,CsvExporter.cs,CodeLineCounter\Utils\CsvExporter.cs,96,12,2
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,FileUtils.cs,CodeLineCounter\Utils\FileUtils.cs,33,3,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,HashUtils.cs,CodeLineCounter\Utils\HashUtils.cs,25,3,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,64,0,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,13,0,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,65,0,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,109,0,0
-    CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,25,0,0
-    CodeLineCounter,Total,,,,568,,
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CodeAnalyzerTests.cs,CodeLineCounter.Tests\CodeAnalyzerTests.cs,68,1,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CodeDuplicationCheckerTests.cs,CodeLineCounter.Tests\CodeDuplicationCheckerTests.cs,109,1,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Utils.Tests,CoreUtilsTest.cs,CodeLineCounter.Tests\CoreUtilsTest.cs,86,1,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CsvExporterTest.cs,CodeLineCounter.Tests\CsvExporterTest.cs,35,1,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CyclomaticComplexityCalculatorTests.cs,CodeLineCounter.Tests\CyclomaticComplexityCalculatorTests.cs,54,1,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Utils.Tests,FileUtilsTest.cs,CodeLineCounter.Tests\FileUtilsTest.cs,18,1,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter.Tests,54,0,0
-    CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Utils.Tests,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter.Tests,18,0,0
-    CodeLineCounter.Tests,Total,,,,370,,
-    Total,,,,,938,
-    ```
+```csv
+Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity,CodeDuplications
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Program.cs,CodeLineCounter\Program.cs,64,7,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,NamespaceMetrics.cs,CodeLineCounter\Models\NamespaceMetrics.cs,13,1,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,CodeAnalyzer.cs,CodeLineCounter\Services\CodeAnalyzer.cs,109,9,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,CodeDuplicationChecker.cs,CodeLineCounter\Services\CodeDuplicationChecker.cs,103,8,6
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,CyclomaticComplexityCalculator.cs,CodeLineCounter\Services\CyclomaticComplexityCalculator.cs,65,12,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,CoreUtils.cs,CodeLineCounter\Utils\CoreUtils.cs,60,7,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,CsvExporter.cs,CodeLineCounter\Utils\CsvExporter.cs,96,12,2
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,FileUtils.cs,CodeLineCounter\Utils\FileUtils.cs,33,3,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,HashUtils.cs,CodeLineCounter\Utils\HashUtils.cs,25,3,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,64,0,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Models,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,13,0,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Services,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,65,0,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,NamespaceMetrics,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,109,0,0
+CodeLineCounter,CodeLineCounter\CodeLineCounter.csproj,CodeLineCounter.Utils,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter,25,0,0
+CodeLineCounter,Total,,,,568,,
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CodeAnalyzerTests.cs,CodeLineCounter.Tests\CodeAnalyzerTests.cs,68,1,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CodeDuplicationCheckerTests.cs,CodeLineCounter.Tests\CodeDuplicationCheckerTests.cs,109,1,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Utils.Tests,CoreUtilsTest.cs,CodeLineCounter.Tests\CoreUtilsTest.cs,86,1,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CsvExporterTest.cs,CodeLineCounter.Tests\CsvExporterTest.cs,35,1,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,CyclomaticComplexityCalculatorTests.cs,CodeLineCounter.Tests\CyclomaticComplexityCalculatorTests.cs,54,1,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Utils.Tests,FileUtilsTest.cs,CodeLineCounter.Tests\FileUtilsTest.cs,18,1,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Tests,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter.Tests,54,0,0
+CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLineCounter.Utils.Tests,Total,E:\_GITHUB\NBLignesCount\CodeLineCounter.Tests,18,0,0
+CodeLineCounter.Tests,Total,,,,370,,
+Total,,,,,938,
+```
 The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in the current directory containing the following metrics:
 
 - `Code Hash`: Hash of the duplicate code.
@@ -163,35 +163,35 @@ NBLignesCount/
 
 To run the unit tests, use the following command:
 
-    ```sh
-    dotnet test
-    ```
+```sh
+dotnet test
+```
 
 To generate code coverage, use the following command:
 
-    ```sh
-    dotnet test --collect:"XPlat Code Coverage;Format=json,lcov,cobertura"  --results-directory CodeLineCounter.Tests\TestResults
-    ```
+```sh
+dotnet test --collect:"XPlat Code Coverage;Format=json,lcov,cobertura"  --results-directory CodeLineCounter.Tests\TestResults
+```
 
 Or use generate-covertura.sh to generate code coverage.
 
-    ```sh
-    generate-covertura.sh
-    ```
+```sh
+generate-covertura.sh
+```
 
 Or generate-covertura.cmd for Windows
 
-    ```cmd
-    generate-covertura.cmd
-    ```
+```cmd
+generate-covertura.cmd
+```
 
 ## Publishing
 
 To publish the project, use the following command:
 
-    ```sh
-    dotnet publish -c Release -o publish -a x64 --sc true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p UseAppHost=true
-    ```
+```sh
+dotnet publish -c Release -o publish -a x64 --sc true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p UseAppHost=true
+```
 
 ## Contributing
 
