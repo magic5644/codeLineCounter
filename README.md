@@ -128,7 +128,7 @@ The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in t
 
 ## Project Structure
 
-    ```sh
+    ```bash
     NBLignesCount/
     │
     ├── CodeLineCounter/
