@@ -10,6 +10,10 @@
 
 The `CodeLineCounter` project is a tool that counts the number of lines of code per file, namespace, and project in a .NET solution. It also calculates the cyclomatic complexity of each file.
 
+Since version `1.0.2` it also check duplications in the code.
+
+All the results are exported to CSV files.
+
 ## Features
 
 - Counts the number of lines of code per file, namespace, and project.
