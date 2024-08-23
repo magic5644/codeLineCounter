@@ -121,43 +121,43 @@ The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in t
 
 ## Example Output of CodeDuplication.csv
 
-    ```csv
-    Code Hash,FilePath,MethodName,StartLine
-    0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91
-    ```   
+```csv
+Code Hash,FilePath,MethodName,StartLine
+0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91
+```   
 
 ## Project Structure
 
-    ```bash
-    NBLignesCount/
-    │
-    ├── CodeLineCounter/
-    │   ├── Models/
-    │   │   └── NamespaceMetrics.cs
-    │   ├── Services/
-    │   │   ├── CodeAnalyzer.cs
-    │   │   ├── CodeDuplicationChecker.cs
-    │   │   └── CyclomaticComplexityCalculator.cs
-    │   ├── Utils/
-    │   │   ├── CoreUtils.cs
-    │   │   │── CsvExporter.cs
-    │   │   │── FileUtils.cs
-    │   │   └── HashUtils.cs
-    │   ├── Program.cs
-    │   └── CodeLineCounter.csproj
-    ├── CodeLineCounter.Tests/
-    │   ├── CodeAnalyzerTests.cs
-    │   ├── CodeDuplicationCheckerTests.cs
-    │   ├── CyclomaticComplexityCalculatorTests.cs
-    │   ├── CoreUtilsTest.cs
-    │   ├── CsvExporterTest.cs
-    │   ├── FileUtilsTest.cs
-    │   └── CodeLineCounter.Tests.csproj
-    ├── .gitignore
-    ├── README.md
-    ├── LICENSE
-    └── CodeLineCounter.sln
-    ```
+```bash
+NBLignesCount/
+│
+├── CodeLineCounter/
+│   ├── Models/
+│   │   └── NamespaceMetrics.cs
+│   ├── Services/
+│   │   ├── CodeAnalyzer.cs
+│   │   ├── CodeDuplicationChecker.cs
+│   │   └── CyclomaticComplexityCalculator.cs
+│   ├── Utils/
+│   │   ├── CoreUtils.cs
+│   │   │── CsvExporter.cs
+│   │   │── FileUtils.cs
+│   │   └── HashUtils.cs
+│   ├── Program.cs
+│   └── CodeLineCounter.csproj
+├── CodeLineCounter.Tests/
+│   ├── CodeAnalyzerTests.cs
+│   ├── CodeDuplicationCheckerTests.cs
+│   ├── CyclomaticComplexityCalculatorTests.cs
+│   ├── CoreUtilsTest.cs
+│   ├── CsvExporterTest.cs
+│   ├── FileUtilsTest.cs
+│   └── CodeLineCounter.Tests.csproj
+├── .gitignore
+├── README.md
+├── LICENSE
+└── CodeLineCounter.sln
+```
 
 ## Unit Tests
 
