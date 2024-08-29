@@ -10,7 +10,6 @@ namespace CodeLineCounter.Tests
         {
             string basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
-            var analyzer = new CodeAnalyzer();
 
             // Act
             var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = CodeAnalyzer.AnalyzeSolution(solutionPath);
