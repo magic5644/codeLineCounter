@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace CodeLineCounter.Services
 {
-    public class CodeAnalyzer
+    public static class CodeAnalyzer
     {
-        public (List<NamespaceMetrics>, Dictionary<string, int>, int, int, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>>) AnalyzeSolution(string solutionFilePath)
+        public static (List<NamespaceMetrics>, Dictionary<string, int>, int, int, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>>) AnalyzeSolution(string solutionFilePath)
         {
             string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
@@ -33,7 +33,7 @@ namespace CodeLineCounter.Services
             return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationMap);
         }
 
-        private void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals)
+        private static void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals)
         {
             string? projectDirectory = Path.GetDirectoryName(projectFile);
             string projectName = Path.GetFileNameWithoutExtension(projectFile);

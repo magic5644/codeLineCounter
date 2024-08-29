@@ -96,7 +96,7 @@ namespace CodeLineCounter.Services
             return method.DescendantNodes().OfType<BlockSyntax>();
         }
 
-        private string NormalizeCode(string code)
+        private static string NormalizeCode(string code)
         {
             var stringBuilder = new StringBuilder();
             foreach (char c in code)

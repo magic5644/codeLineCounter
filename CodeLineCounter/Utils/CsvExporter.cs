@@ -72,12 +72,12 @@ namespace CodeLineCounter.Utils
 
             foreach (var entry in duplicationMap)
             {
-                foreach (var detail in entry.Value)
+                foreach (var (filePath, methodName, startLine, nbLines) in entry.Value)
                 {
-                    var normalizedPath = Path.GetFullPath(detail.filePath);
-                    if (duplicationCounts.ContainsKey(normalizedPath))
+                    var normalizedPath = Path.GetFullPath(filePath);
+                    if (duplicationCounts.TryGetValue(normalizedPath, out int count))
                     {
-                        duplicationCounts[normalizedPath]++;
+                        duplicationCounts[normalizedPath] = count +1;
                     }
                     else
                     {
@@ -102,7 +102,14 @@ namespace CodeLineCounter.Utils
             if (metric.FilePath !=null && solutionPath != null) 
             {
                 var normalizedPath = solutionPath != string.Empty ? Path.GetFullPath(metric.FilePath, solutionPath) : Path.GetFullPath(metric.FilePath);
-                count = duplicationCounts.ContainsKey(normalizedPath) ? duplicationCounts[normalizedPath] : 0;
+                if (duplicationCounts.TryGetValue(normalizedPath, out int countValue))
+                {
+                    count = countValue;
+                }
+                else
+                {
+                    count = 0;
+                }
             }
             
             return count;
