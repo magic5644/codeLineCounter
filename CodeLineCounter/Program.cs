@@ -53,8 +53,6 @@ namespace CodeLineCounter
             var nbLinesDuplicated = duplicationMap.Sum(x => x.Value.Count);
             var percentageDuplication = (nbLinesDuplicated / (double)totalLines) * 100;
 
-            
-
             if (verbose)
             {
                 foreach (var metric in metrics)
@@ -72,8 +70,11 @@ namespace CodeLineCounter
             Console.WriteLine($"Solution {solutionFilename} has {nbLinesDuplicated} duplicated lines of code.");
             Console.WriteLine($"Percentage of duplicated code: {percentageDuplication:F2} %");
 
-            CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap, solutionPath);
-            CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap, solutionPath);
+            Parallel.Invoke(
+                () => CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap, solutionPath),
+                () => CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap, solutionPath)
+            );
+
             Console.WriteLine($"The data has been exported to {csvFilePath}");
             Console.WriteLine($"The code duplications have been exported to {duplicationCsvFilePath}");
             Console.WriteLine(processingTime);

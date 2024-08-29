@@ -9,39 +9,35 @@ namespace CodeLineCounter.Utils
 {
     public static class CsvExporter
     {
-        private static readonly object exportLock = new object();
 
         public static void ExportToCsv(string filePath, List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals, int totalLines, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>> duplicationMap, string? solutionPath)
         {
-            lock (exportLock)
+            var csvBuilder = new StringBuilder();
+            csvBuilder.AppendLine("Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity,CodeDuplications");
+
+            string? currentProject = null;
+            var duplicationCounts = GetDuplicationCounts(duplicationMap);
+
+
+            foreach (var metric in metrics)
             {
-                var csvBuilder = new StringBuilder();
-                csvBuilder.AppendLine("Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity,CodeDuplications");
-
-                string? currentProject = null;
-                var duplicationCounts = GetDuplicationCounts(duplicationMap);
-
-
-                foreach (var metric in metrics)
+                if (currentProject != metric.ProjectName)
                 {
-                    if (currentProject != metric.ProjectName)
-                    {
-                        AppendProjectLineToCsv(projectTotals, csvBuilder, currentProject);
-                        currentProject = metric.ProjectName;
-                    }
-                    int fileDuplicationCount = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
-
-                    csvBuilder.AppendLine($"{metric.ProjectName},{metric.ProjectPath},{metric.NamespaceName},{metric.FileName},{metric.FilePath},{metric.LineCount},{metric.CyclomaticComplexity},{fileDuplicationCount}");
+                    AppendProjectLineToCsv(projectTotals, csvBuilder, currentProject);
+                    currentProject = metric.ProjectName;
                 }
+                int fileDuplicationCount = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
 
-                AppendProjectLineToCsv(projectTotals, csvBuilder, currentProject);
-
-                csvBuilder.AppendLine($"Total,,,,,{totalLines},");
-
-                File.WriteAllText(filePath, csvBuilder.ToString());
-
-                csvBuilder.Clear();
+                csvBuilder.AppendLine($"{metric.ProjectName},{metric.ProjectPath},{metric.NamespaceName},{metric.FileName},{metric.FilePath},{metric.LineCount},{metric.CyclomaticComplexity},{fileDuplicationCount}");
             }
+
+            AppendProjectLineToCsv(projectTotals, csvBuilder, currentProject);
+
+            csvBuilder.AppendLine($"Total,,,,,{totalLines},");
+
+            File.WriteAllText(filePath, csvBuilder.ToString());
+
+            csvBuilder.Clear();
         }
 
         public static void AppendProjectLineToCsv(Dictionary<string, int> projectTotals, StringBuilder csvBuilder, string? currentProject)
@@ -54,23 +50,20 @@ namespace CodeLineCounter.Utils
 
         public static void ExportCodeDuplicationsToCsv(string filePath, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>> duplicationMap, string? solutionPath)
         {
-            lock (exportLock)
+            var csvBuilder = new StringBuilder();
+            csvBuilder.AppendLine("Code Hash,FilePath,MethodName,StartLine, nbLines");
+
+            foreach (var entry in duplicationMap)
             {
-                var csvBuilder = new StringBuilder();
-                csvBuilder.AppendLine("Code Hash,FilePath,MethodName,StartLine, nbLines");
-
-                foreach (var entry in duplicationMap)
+                foreach (var detail in entry.Value)
                 {
-                    foreach (var detail in entry.Value)
-                    {
-                        csvBuilder.AppendLine($"{entry.Key},{detail.filePath},{detail.methodName},{detail.startLine}, {detail.nbLines}");
-                    }
+                    csvBuilder.AppendLine($"{entry.Key},{detail.filePath},{detail.methodName},{detail.startLine}, {detail.nbLines}");
                 }
-
-                File.WriteAllText(filePath, csvBuilder.ToString());
-
-                csvBuilder.Clear();
             }
+
+            File.WriteAllText(filePath, csvBuilder.ToString());
+
+            csvBuilder.Clear();
         }
 
         public static Dictionary<string, int> GetDuplicationCounts(Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>> duplicationMap)
