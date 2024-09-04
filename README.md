@@ -126,8 +126,8 @@ The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in t
 ## Example Output of CodeDuplication.csv
 
 ```csv
-Code Hash,FilePath,MethodName,StartLine
-0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91
+Code Hash,FilePath,MethodName,StartLine,NbLines
+0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91,3
 ```   
 
 ## Project Structure
@@ -138,6 +138,7 @@ NBLignesCount/
 ├── CodeLineCounter/
 │   ├── Models/
 │   │   └── NamespaceMetrics.cs
+│   │   └── DuplicationCode.cs
 │   ├── Services/
 │   │   ├── CodeAnalyzer.cs
 │   │   ├── CodeDuplicationChecker.cs

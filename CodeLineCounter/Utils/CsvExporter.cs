@@ -49,7 +49,7 @@ namespace CodeLineCounter.Utils
         public static void ExportCodeDuplicationsToCsv(string filePath, List<DuplicationCode> duplications, string? solutionPath)
         {
             var csvBuilder = new StringBuilder();
-            csvBuilder.AppendLine("Code Hash,FilePath,MethodName,StartLine, nbLines");
+            csvBuilder.AppendLine("Code Hash,FilePath,MethodName,StartLine,NbLines");
 
             foreach (var detail in duplications)
             {
