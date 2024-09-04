@@ -1,9 +1,11 @@
 ﻿using CodeLineCounter.Services;
 using CodeLineCounter.Utils;
+using CodeLineCounter.Models;
 using System.Diagnostics;
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace CodeLineCounter
 {
@@ -31,10 +33,8 @@ namespace CodeLineCounter
 
                     var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
                     AnalyzeAndExportSolution(solutionPath, settings.Verbose);
-
                 }
             }
-
         }
 
         private static void AnalyzeAndExportSolution(string solutionPath, bool verbose)
@@ -49,7 +49,7 @@ namespace CodeLineCounter
             timer.Stop();
             TimeSpan timeTaken = timer.Elapsed;
             string processingTime = $"Time taken: {timeTaken:m\\:ss\\.fff}";
-            var nbLinesDuplicated = duplicationMap.Sum(x => x.Value.Count);
+            var nbLinesDuplicated = duplicationMap.Sum(x => x.NbLines);
             var percentageDuplication = (nbLinesDuplicated / (double)totalLines) * 100;
 
             if (verbose)
@@ -78,6 +78,5 @@ namespace CodeLineCounter
             Console.WriteLine($"The code duplications have been exported to {duplicationCsvFilePath}");
             Console.WriteLine(processingTime);
         }
-
     }
 }

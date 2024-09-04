@@ -9,7 +9,7 @@ namespace CodeLineCounter.Services
 {
     public static class CodeAnalyzer
     {
-        public static (List<NamespaceMetrics>, Dictionary<string, int>, int, int, Dictionary<string, List<(string filePath, string methodName, int startLine, int nbLines)>>) AnalyzeSolution(string solutionFilePath)
+        public static (List<NamespaceMetrics>, Dictionary<string, int>, int, int, List<DuplicationCode>) AnalyzeSolution(string solutionFilePath)
         {
             string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
@@ -23,14 +23,14 @@ namespace CodeLineCounter.Services
             foreach (var projectFile in projectFiles)
             {
                 AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals);
-                
             }
 
             codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
 
             var duplicationMap = codeDuplicationChecker.GetCodeDuplicationMap();
+            var duplicationList = duplicationMap.Values.SelectMany(v => v).ToList();
 
-            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationMap);
+            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationList);
         }
 
         private static void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals)
