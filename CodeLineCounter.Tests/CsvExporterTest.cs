@@ -1,8 +1,6 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
-using System.Collections.Generic;
 using System.Text;
-using Xunit;
 
 namespace CodeLineCounter.Tests
 {

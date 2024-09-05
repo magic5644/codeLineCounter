@@ -1,7 +1,3 @@
-using Xunit;
-using System.Security.Cryptography;
-using System.Text;
-using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Utils.Tests
 {

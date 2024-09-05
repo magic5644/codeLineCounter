@@ -1,4 +1,3 @@
-using Xunit;
 
 namespace CodeLineCounter.Utils.Tests
 {
