@@ -19,6 +19,19 @@ namespace CodeLineCounter.Utils.Tests
         }
 
         [Fact]
+        public void ParseArguments_help_Should_Return_Correct_Values()
+        {
+            // Arrange
+            string[] args = new string[] { "-help" };
+
+            // Act
+            var result = CoreUtils.ParseArguments(args);
+
+            // Assert
+            Assert.True(result.Help);
+        }
+
+        [Fact]
         public void ParseArguments_Should_Return_Default_Values_When_No_Arguments_Passed()
         {
             // Arrange
