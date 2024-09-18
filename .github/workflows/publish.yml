@@ -31,7 +31,7 @@ jobs:
           if: matrix.kind == 'linux'
           run: |
               tag=$(git describe --tags --abbrev=0)
-              release_name="App-$tag-${{ matrix.target }}"
+              release_name="CodeLineCounter-$tag-${{ matrix.target }}"
 
               dotnet publish --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
 
@@ -45,7 +45,7 @@ jobs:
           run: |
               echo Setting tag and release_name
               for /f "tokens=*" %%i in ('git describe --tags --abbrev=0') do set tag=%%i
-              set release_name=App-%tag%-${{ matrix.target }}
+              call set release_name=CodeLineCounter-%tag%-${{ matrix.target }}
 
               echo Building project
               dotnet publish --framework net8.0 --runtime ${{ matrix.target }} -c Release -o %release_name% /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
@@ -59,6 +59,6 @@ jobs:
         - name: Publish
           uses: softprops/action-gh-release@v1
           with:
-            files: "App*"
+            files: "CodeLineCounter*"
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
