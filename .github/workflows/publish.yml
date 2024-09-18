@@ -27,25 +27,39 @@ jobs:
           with:
             dotnet-version: 8.0.x
         
-        - name: Build
-          shell: bash
+        - name: Build on Linux
+          if: matrix.kind == 'linux'
           run: |
               # Define some variables for things we need
               tag=$(git describe --tags --abbrev=0)
               release_name="App-$tag-${{ matrix.target }}"
-    
+
               # Build everything
               dotnet publish --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
-    
+
               # Pack files
-              if [ "${{ matrix.target }}" == "win-x64" ]; then
-                7z a -tzip "${release_name}.zip" "./${release_name}/*"
-              else
-                tar czvf "${release_name}.tar.gz" "$release_name"
-              fi
-    
+              tar czvf "${release_name}.tar.gz" "$release_name"
+
               # Delete output directory
               rm -r "$release_name"
+
+        - name: Build on Windows
+          if: matrix.kind == 'windows'
+          shell: cmd
+          run: |
+              # Define some variables for things we need
+              set tag=$(git describe --tags --abbrev=0)
+              set release_name=App-%tag%-${{ matrix.target }}
+
+              # Build everything
+              dotnet publish --framework net8.0 --runtime %{{ matrix.target }}% -c Release -o %release_name% /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
+
+              # Pack files
+              7z a -tzip "%release_name%.zip" ".\%release_name%\*"
+
+              # Delete output directory
+              rmdir /s /q "%release_name%"
+
         - name: Publish
           uses: softprops/action-gh-release@v1
           with:
