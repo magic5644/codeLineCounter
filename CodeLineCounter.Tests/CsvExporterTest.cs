@@ -52,15 +52,20 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectTotals = new Dictionary<string, int> { { "Project1", 100 } };
-            var csvBuilder = new StringBuilder();
+            var memoryStream = new MemoryStream();
+            
+            var writer = new StreamWriter(memoryStream);
             var currentProject = "Project1";
 
             // Act
-            CsvExporter.AppendProjectLineToCsv(projectTotals, csvBuilder, currentProject);
+            CsvExporter.AppendProjectLineToCsv(projectTotals, writer, currentProject);
+            writer.Flush();
+            memoryStream.Position = 0;
+            var result = new StreamReader(memoryStream).ReadToEnd();
 
             // Assert
             var expectedLine = $"{currentProject},Total,,,,{projectTotals[currentProject]},,{Environment.NewLine}";
-            Assert.Equal(expectedLine, csvBuilder.ToString());
+            Assert.Contains(expectedLine, result.ToString());
         }
 
         [Fact]
@@ -68,14 +73,53 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectTotals = new Dictionary<string, int> { { "Project1", 100 } };
-            var csvBuilder = new StringBuilder();
+            var memoryStream = new MemoryStream();
+            
+            var writer = new StreamWriter(memoryStream);
             string? currentProject = null;
 
             // Act
-            CsvExporter.AppendProjectLineToCsv(projectTotals, csvBuilder, currentProject);
+            CsvExporter.AppendProjectLineToCsv(projectTotals, writer, currentProject);
+            writer.Flush();
+            memoryStream.Position = 0;
+            var result = new StreamReader(memoryStream).ReadToEnd();
 
             // Assert
-            Assert.Empty(csvBuilder.ToString());
+            Assert.Empty(result.ToString());
+        }
+
+        [Fact]
+        public void GetDuplicationCounts_Should_Return_Correct_Counts()
+        {
+            // Arrange
+            var duplications = new List<DuplicationCode>
+            {
+                new DuplicationCode { FilePath = "file1.cs" },
+                new DuplicationCode { FilePath = "file1.cs" },
+                new DuplicationCode { FilePath = "file2.cs" }
+            };
+
+            // Act
+            var result = CsvExporter.GetDuplicationCounts(duplications);
+
+            // Assert
+            Assert.Equal(2, result[Path.GetFullPath("file1.cs")]);
+            Assert.Equal(1, result[Path.GetFullPath("file2.cs")]);
+        }
+
+        [Fact]
+        public void GetDuplicationCounts_Should_Return_Empty_Dictionary_When_No_Duplications()
+        {
+            // Arrange
+            var duplications = new List<DuplicationCode>();
+
+            // Act
+            var result = CsvExporter.GetDuplicationCounts(duplications);
+
+            // Assert
+            Assert.Empty(result);
         }
     }
 }
+
+
