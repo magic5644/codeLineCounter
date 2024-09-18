@@ -2,7 +2,7 @@ using System.Text.RegularExpressions; // Add this line
 
 namespace CodeLineCounter.Utils
 {
-    public static class FileUtils
+    public static partial class FileUtils
     {
         public static List<string> GetAllCsFiles(string rootPath)
         {
@@ -24,7 +24,7 @@ namespace CodeLineCounter.Utils
             foreach (var line in lines)
             {
                 // Search for lines containing projects (Project("...") = "...", "...", "...")
-                var match = Regex.Match(line, @"Project\(""{.*}""\) = "".*"", ""(.*\.csproj)""");
+                var match = MyRegex().Match(line);
                 if (match.Success)
                 {
                     var relativePath = match.Groups[1].Value;
@@ -41,5 +41,8 @@ namespace CodeLineCounter.Utils
             // Arrange
             return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
         }
+
+        [GeneratedRegex(@"Project\(""{.*}""\) = "".*"", ""(.*\.csproj)""")]
+        private static partial Regex MyRegex();
     }
 }

@@ -6,7 +6,7 @@ namespace CodeLineCounter.Services
 {
     public class CyclomaticComplexityCalculator
     {
-        public int Calculate(SyntaxNode node, SemanticModel model)
+        public static int Calculate(SyntaxNode node, SemanticModel model)
         {
             var walker = new ComplexityWalker(model);
             walker.Visit(node);
@@ -42,7 +42,7 @@ namespace CodeLineCounter.Services
                 base.VisitPropertyDeclaration(node);
             }
 
-            private int CalculateComplexity(SyntaxNode node)
+            private static int CalculateComplexity(SyntaxNode node)
             {
                 var complexity = 0;
                 var methodBody = node.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault();

@@ -102,8 +102,7 @@ namespace CodeLineCounter.Services
             var compilation = CSharpCompilation.Create("CodeAnalysis", new[] { tree });
             var model = compilation.GetSemanticModel(tree);
 
-            var complexityCalculator = new CyclomaticComplexityCalculator();
-            fileCyclomaticComplexity = complexityCalculator.Calculate(tree.GetRoot(), model);
+            fileCyclomaticComplexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot(), model);
 
             foreach (var line in lines)
             {

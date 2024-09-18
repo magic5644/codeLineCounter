@@ -23,10 +23,9 @@ namespace CodeLineCounter.Tests
             var tree = CSharpSyntaxTree.ParseText(code);
             var compilation = CSharpCompilation.Create("Test", new[] { tree });
             var model = compilation.GetSemanticModel(tree);
-            var calculator = new CyclomaticComplexityCalculator();
 
             // Act
-            var complexity = calculator.Calculate(tree.GetRoot(), model);
+            var complexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot(), model);
 
             // Assert
             Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
@@ -36,7 +35,6 @@ namespace CodeLineCounter.Tests
         public void Calculate_Should_Return_Correct_Complexity()
         {
             // Arrange
-            var calculator = new CyclomaticComplexityCalculator();
             var syntaxTree = CSharpSyntaxTree.ParseText(@"
                 public class MyClass
                 {
@@ -59,7 +57,7 @@ namespace CodeLineCounter.Tests
             var semanticModel = compilation.GetSemanticModel(syntaxTree);
 
             // Act
-            var complexity = calculator.Calculate(methodDeclaration, semanticModel);
+            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration, semanticModel);
 
             // Assert
             Assert.Equal(2, complexity);
