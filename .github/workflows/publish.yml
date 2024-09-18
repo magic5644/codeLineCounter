@@ -45,7 +45,7 @@ jobs:
           run: |
               echo Setting tag and release_name
               git tag
-              for /f "tokens=*" %%i in ('git describe --tags --abbrev=0') do (set tag=%%i)
+              for /f "tokens=*" %%i in ('git describe --tags --abbrev^=0') do (set tag=%%i)
               echo Tag is %tag%
               call set release_name=CodeLineCounter-%tag%-${{ matrix.target }}
               echo Release name is %release_name%
