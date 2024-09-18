@@ -39,7 +39,7 @@ namespace CodeLineCounter.Utils
         public static string GetBasePath()
         {
             // Arrange
-            return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            return Path.GetDirectoryName(AppContext.BaseDirectory) ?? string.Empty;
         }
 
         [GeneratedRegex(@"Project\(""{.*}""\) = "".*"", ""(.*\.csproj)""")]
