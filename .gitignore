@@ -1,6 +1,8 @@
 /.sarif
 /.vs
-/.*
+/.config
+/.VSCodeCounter
+/.vscode
 /CodeLineCounter/bin
 /CodeLineCounter/obj
 /CodeLineCounter.tests/bin
