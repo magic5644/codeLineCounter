@@ -15,3 +15,5 @@
 /*.xlsx
 /output.txt
 /test.cmd
+/.github/codeql
+/codeql*
