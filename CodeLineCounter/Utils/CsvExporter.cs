@@ -49,14 +49,6 @@ namespace CodeLineCounter.Utils
             CsvHandler.Serialize(namespaceMetrics, filePath);
         }
 
-        public static void AppendProjectLineToCsv(Dictionary<string, int> projectTotals, StreamWriter writer, string? currentProject)
-        {
-            if (currentProject != null)
-            {
-                writer.WriteLine($"{currentProject},Total,,,,{projectTotals[currentProject]},,");
-            }
-        }
-
 
         public static void ExportCodeDuplicationsToCsv(string filePath, List<DuplicationCode> duplications, string? solutionPath)
         {

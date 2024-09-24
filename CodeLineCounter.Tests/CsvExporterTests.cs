@@ -1,125 +1,99 @@
+using Xunit;
+using System.IO;
+using System.Collections.Generic;
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
-using System.Text;
 
 namespace CodeLineCounter.Tests
 {
     public class CsvExporterTests
     {
         [Fact]
-        public void GetFileDuplicationsCount_Should_Return_Correct_Count()
+        public void ExportToCsv_ValidData_WritesToFile()
         {
-
             // Arrange
-            var file1 = "file1.cs";
-            var file2 = "file2.cs";
-            var file3 = "file3.cs";
-            var solutionPath = FileUtils.GetBasePath();
+            string filePath = "test1.csv";
+            var namespaceMetrics = GetSampleNamespaceMetrics();
+            var projectTotals = GetSampleProjectTotals();
+            int totalLines = 500;
+            var duplicationCodes = GetSampleDuplicationCodes();
+            string? additionalInfo = "Some additional info";
 
-            File.WriteAllText(file1, "");
-            File.WriteAllText(file2, "");
-            File.WriteAllText(file3, "");
+            // Act
+            CsvExporter.ExportToCsv(filePath, namespaceMetrics, projectTotals, totalLines, duplicationCodes, additionalInfo);
 
+            // Assert
+            Assert.True(File.Exists(filePath));
+            var lines = File.ReadAllLines(filePath);
+            Assert.Equal(3, lines.Length); // Header + 2 records
 
+            // Cleanup
+            File.Delete(filePath);
+        }
 
+        [Fact]
+        public void ExportToCsv_EmptyData_WritesEmptyFile()
+        {
             // Arrange
-            var duplicationCounts = new Dictionary<string, int>
+            string filePath = "test2.csv";
+            var namespaceMetrics = new List<NamespaceMetrics>();
+            var projectTotals = new Dictionary<string, int>();
+            int totalLines = 0;
+            var duplicationCodes = new List<DuplicationCode>();
+            string? additionalInfo = null;
+
+            // Act
+            CsvExporter.ExportToCsv(filePath, namespaceMetrics, projectTotals, totalLines, duplicationCodes, additionalInfo);
+
+            // Assert
+            Assert.True(File.Exists(filePath));
+            var lines = File.ReadAllLines(filePath);
+            Assert.Single(lines); // Only header
+
+            // Cleanup
+            File.Delete(filePath);
+        }
+
+        [Fact]
+        public void ExportToCsv_NullData_ThrowsNullReferenceException()
+        {
+            // Arrange
+            string filePath = "test3.csv";
+            List<NamespaceMetrics> namespaceMetrics = null;//new List<NamespaceMetrics>();
+            Dictionary<string, int> projectTotals = null;
+            int totalLines = 0;
+            List<DuplicationCode> duplicationCodes = null;
+            string? additionalInfo = null;
+
+            // Act & Assert
+            Assert.Throws<NullReferenceException>(() => CsvExporter.ExportToCsv(filePath, namespaceMetrics, projectTotals, totalLines, duplicationCodes, additionalInfo));
+        }
+
+        private List<NamespaceMetrics> GetSampleNamespaceMetrics()
+        {
+            return new List<NamespaceMetrics>
             {
-                { Path.GetFullPath(file1), 2 },
-                { Path.GetFullPath(file2), 3 },
-                { Path.GetFullPath(file3), 1 }
+                new NamespaceMetrics { NamespaceName = "Namespace1", LineCount = 100 },
+                new NamespaceMetrics { NamespaceName = "Namespace2", LineCount = 200 }
             };
+        }
 
-            var metric = new NamespaceMetrics
+        private Dictionary<string, int> GetSampleProjectTotals()
+        {
+            return new Dictionary<string, int>
             {
-                FilePath = Path.GetFullPath("file2.cs")
+                {"Project1", 100},
+                {"Project2", 200}
             };
-
-            // Act
-            int result = CsvExporter.GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
-
-            // Assert
-            Assert.Equal(3, result);
-
-            // Clean up
-            File.Delete(file1);
-            File.Delete(file2);
-            File.Delete(file3);
         }
 
-        [Fact]
-        public void AppendProjectLineToCsv_AppendsCorrectLine_WhenProjectNameIsNotNull()
+        private List<DuplicationCode> GetSampleDuplicationCodes()
         {
-            // Arrange
-            var projectTotals = new Dictionary<string, int> { { "Project1", 100 } };
-            var memoryStream = new MemoryStream();
-            
-            var writer = new StreamWriter(memoryStream);
-            var currentProject = "Project1";
-
-            // Act
-            CsvExporter.AppendProjectLineToCsv(projectTotals, writer, currentProject);
-            writer.Flush();
-            memoryStream.Position = 0;
-            var result = new StreamReader(memoryStream).ReadToEnd();
-
-            // Assert
-            var expectedLine = $"{currentProject},Total,,,,{projectTotals[currentProject]},,{Environment.NewLine}";
-            Assert.Contains(expectedLine, result.ToString());
-        }
-
-        [Fact]
-        public void AppendProjectLineToCsv_DoesNotAppendLine_WhenProjectNameIsNull()
-        {
-            // Arrange
-            var projectTotals = new Dictionary<string, int> { { "Project1", 100 } };
-            var memoryStream = new MemoryStream();
-            
-            var writer = new StreamWriter(memoryStream);
-            string? currentProject = null;
-
-            // Act
-            CsvExporter.AppendProjectLineToCsv(projectTotals, writer, currentProject);
-            writer.Flush();
-            memoryStream.Position = 0;
-            var result = new StreamReader(memoryStream).ReadToEnd();
-
-            // Assert
-            Assert.Empty(result.ToString());
-        }
-
-        [Fact]
-        public void GetDuplicationCounts_Should_Return_Correct_Counts()
-        {
-            // Arrange
-            var duplications = new List<DuplicationCode>
+            return new List<DuplicationCode>
             {
-                new DuplicationCode { FilePath = "file1.cs" },
-                new DuplicationCode { FilePath = "file1.cs" },
-                new DuplicationCode { FilePath = "file2.cs" }
+                new DuplicationCode { CodeHash = "Code1", FilePath = ".", MethodName = "Method1", StartLine = 10 , NbLines = 20 },
+                new DuplicationCode { CodeHash = "Code2", FilePath = ".", MethodName = "Method2", StartLine = 15 , NbLines = 25  }
             };
-
-            // Act
-            var result = CsvExporter.GetDuplicationCounts(duplications);
-
-            // Assert
-            Assert.Equal(2, result[Path.GetFullPath("file1.cs")]);
-            Assert.Equal(1, result[Path.GetFullPath("file2.cs")]);
-        }
-
-        [Fact]
-        public void GetDuplicationCounts_Should_Return_Empty_Dictionary_When_No_Duplications()
-        {
-            // Arrange
-            var duplications = new List<DuplicationCode>();
-
-            // Act
-            var result = CsvExporter.GetDuplicationCounts(duplications);
-
-            // Assert
-            Assert.Empty(result);
         }
     }
 }
-
-

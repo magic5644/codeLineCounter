@@ -24,7 +24,7 @@ namespace CodeLineCounter.Utils.Tests
                 new TestRecord { Id = 1, Name = "Alice" },
                 new TestRecord { Id = 2, Name = "Bob" }
             };
-            string filePath = "test.csv";
+            string filePath = "test_1.csv";
 
             // Act
             CsvHandler.Serialize(data, filePath);
@@ -43,7 +43,7 @@ namespace CodeLineCounter.Utils.Tests
         public void Deserialize_ValidFile_ReturnsData()
         {
             // Arrange
-            string filePath = "test.csv";
+            string filePath = "test_2.csv";
             var data = new List<string>
             {
                 "Id,Name",
@@ -69,7 +69,7 @@ namespace CodeLineCounter.Utils.Tests
         {
             // Arrange
             var data = new List<TestRecord>();
-            string filePath = "test.csv";
+            string filePath = "test_3.csv";
 
             // Act
             CsvHandler.Serialize(data, filePath);
@@ -86,7 +86,7 @@ namespace CodeLineCounter.Utils.Tests
         public void Deserialize_EmptyFile_ReturnsEmptyList()
         {
             // Arrange
-            string filePath = "test.csv";
+            string filePath = "test_4.csv";
             File.WriteAllText(filePath, "Id,Name");
 
             // Act
