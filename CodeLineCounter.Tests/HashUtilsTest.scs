@@ -1,7 +1,7 @@
 
 namespace CodeLineCounter.Utils.Tests
 {
-    public class HashUtilsTest
+    public class HashUtilsTests
     {
         [Fact]
         public void ComputeHash_EmptyString_ReturnsEmptyString()
