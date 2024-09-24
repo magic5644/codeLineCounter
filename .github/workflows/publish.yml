@@ -8,7 +8,7 @@ jobs:
     name: Release
     strategy:
       matrix:
-        kind: ['linux', 'windows']
+        kind: ["linux", "windows"]
         include:
           - kind: linux
             os: ubuntu-latest
@@ -19,48 +19,48 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-        - name: Checkout
-          uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v1
 
-        - name: Setup dotnet
-          uses: actions/setup-dotnet@v4
-          with:
-            dotnet-version: 8.0.x
-        
-        - name: Build on Linux
-          if: matrix.kind == 'linux'
-          run: |
-              tag=$(git describe --tags --abbrev=0)
-              release_name="CodeLineCounter-$tag-${{ matrix.target }}"
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-              dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
+      - name: Build on Linux
+        if: matrix.kind == 'linux'
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="CodeLineCounter-$tag-${{ matrix.target }}"
 
-              tar czvf "${release_name}.tar.gz" "$release_name"
+          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
 
-              rm -r "$release_name"
+          tar czvf "${release_name}.tar.gz" "$release_name"
 
-        - name: Build on Windows
-          if: matrix.kind == 'windows'
-          shell: cmd
-          run: |
-              echo Setting tag and release_name
-              for /f "tokens=*" %%i in ('git describe --tags --abbrev^=0') do (set tag=%%i)
-              echo Tag is %tag%
-              set release_name=CodeLineCounter-%tag%-${{ matrix.target }}
-              echo Release name is %release_name%
+          rm -r "$release_name"
 
-              echo Building project
-              dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net8.0 --runtime ${{ matrix.target }} -c Release -o %release_name% /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
+      - name: Build on Windows
+        if: matrix.kind == 'windows'
+        shell: cmd
+        run: |
+          echo Setting tag and release_name
+          for /f "tokens=*" %%i in ('git describe --tags --abbrev^=0') do (set tag=%%i)
+          echo Tag is %tag%
+          set release_name=CodeLineCounter-%tag%-${{ matrix.target }}
+          echo Release name is %release_name%
 
-              echo Packing files
-              7z a -tzip "%release_name%.zip" ".\%release_name%\*"
+          echo Building project
+          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net8.0 --runtime ${{ matrix.target }} -c Release -o %release_name% /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
 
-              echo Deleting output directory
-              rmdir /s /q "%release_name%"
+          echo Packing files
+          7z a -tzip "%release_name%.zip" ".\%release_name%\*"
 
-        - name: Publish
-          uses: softprops/action-gh-release@v1
-          with:
-            files: "CodeLineCounter-*"
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo Deleting output directory
+          rmdir /s /q "%release_name%"
+
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "CodeLineCounter-*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

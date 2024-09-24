@@ -1,5 +1,6 @@
 using System.IO;
 using System.Collections.Generic;
+using CodeLineCounter.Utils;
 using CodeLineCounter.Models;
 
 namespace CodeLineCounter.Utils
@@ -8,29 +9,45 @@ namespace CodeLineCounter.Utils
     {
         public static void ExportToCsv(string filePath, List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals, int totalLines, List<DuplicationCode> duplications, string? solutionPath)
         {
-            using (var writer = new StreamWriter(filePath))
+            string? currentProject = null;
+            List<NamespaceMetrics> namespaceMetrics = new List<NamespaceMetrics>();
+            var duplicationCounts = GetDuplicationCounts(duplications);
+
+            foreach (var metric in metrics)
             {
-                writer.WriteLine("Project,ProjectPath,Namespace,FileName,FilePath,LineCount,CyclomaticComplexity,CodeDuplications");
-
-                string? currentProject = null;
-                var duplicationCounts = GetDuplicationCounts(duplications);
-
-                foreach (var metric in metrics)
+                if (currentProject != metric.ProjectName)
                 {
-                    if (currentProject != metric.ProjectName)
+                    //AppendProjectLineToCsv(projectTotals, writer, currentProject);
+                    if (currentProject != null)
                     {
-                        AppendProjectLineToCsv(projectTotals, writer, currentProject);
-                        currentProject = metric.ProjectName;
+                        var total = new NamespaceMetrics();
+                        total.ProjectName = currentProject;
+                        total.ProjectPath = "Total";
+                        total.LineCount = projectTotals[currentProject];
+                        namespaceMetrics.Add(total);
                     }
-                    int fileDuplicationCount = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
-
-                    writer.WriteLine($"{metric.ProjectName},{metric.ProjectPath},{metric.NamespaceName},{metric.FileName},{metric.FilePath},{metric.LineCount},{metric.CyclomaticComplexity},{fileDuplicationCount}");
+                    currentProject = metric.ProjectName;
                 }
+                int fileDuplicationCount = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
+                metric.CodeDuplications = fileDuplicationCount;
+                namespaceMetrics.Add(metric);
 
-                AppendProjectLineToCsv(projectTotals, writer, currentProject);
-
-                writer.WriteLine($"Total,,,,,{totalLines},");
             }
+            if (currentProject != null)
+            {
+                var total = new NamespaceMetrics();
+                total.ProjectName = currentProject;
+                total.ProjectPath = "Total";
+                total.LineCount = projectTotals[currentProject];
+                namespaceMetrics.Add(total);
+                var totalGeneral = new NamespaceMetrics();
+                totalGeneral.ProjectName = "Total";
+                totalGeneral.ProjectPath = "";
+                totalGeneral.LineCount = totalLines;
+                namespaceMetrics.Add(totalGeneral);
+
+            }
+            CsvHandler.Serialize(namespaceMetrics, filePath);
         }
 
         public static void AppendProjectLineToCsv(Dictionary<string, int> projectTotals, StreamWriter writer, string? currentProject)
@@ -41,9 +58,11 @@ namespace CodeLineCounter.Utils
             }
         }
 
+
         public static void ExportCodeDuplicationsToCsv(string filePath, List<DuplicationCode> duplications, string? solutionPath)
         {
-            using (var writer = new StreamWriter(filePath))
+            CsvHandler.Serialize(duplications, filePath);
+            /*using (var writer = new StreamWriter(filePath))
             {
                 writer.WriteLine("Code Hash,FilePath,MethodName,StartLine,NbLines");
 
@@ -51,7 +70,7 @@ namespace CodeLineCounter.Utils
                 {
                     writer.WriteLine($"{detail.CodeHash},{detail.FilePath},{detail.MethodName},{detail.StartLine},{detail.NbLines}");
                 }
-            }
+            }*/
         }
 
         public static Dictionary<string, int> GetDuplicationCounts(List<DuplicationCode> duplications)

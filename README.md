@@ -146,6 +146,7 @@ NBLignesCount/
 │   ├── Utils/
 │   │   ├── CoreUtils.cs
 │   │   │── CsvExporter.cs
+│   │   │── CsvHandler.cs
 │   │   │── FileUtils.cs
 │   │   └── HashUtils.cs
 │   ├── Program.cs
