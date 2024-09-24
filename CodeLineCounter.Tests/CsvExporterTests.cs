@@ -25,7 +25,7 @@ namespace CodeLineCounter.Tests
             // Assert
             Assert.True(File.Exists(filePath));
             var lines = File.ReadAllLines(filePath);
-            Assert.Equal(3, lines.Length); // Header + 2 records
+            Assert.Equal(6, lines.Length); // Header + 2 records + 2 sub-totals + 1 total
 
             // Cleanup
             File.Delete(filePath);
@@ -73,8 +73,8 @@ namespace CodeLineCounter.Tests
         {
             return new List<NamespaceMetrics>
             {
-                new NamespaceMetrics { NamespaceName = "Namespace1", LineCount = 100 },
-                new NamespaceMetrics { NamespaceName = "Namespace2", LineCount = 200 }
+                new NamespaceMetrics { ProjectName="Project1", ProjectPath = ".", NamespaceName = "Namespace1", FileName = "File1", FilePath = ".", LineCount = 100, CyclomaticComplexity = 0, CodeDuplications = 0 },
+                new NamespaceMetrics { ProjectName="Project2", ProjectPath = ".", NamespaceName = "Namespace2", FileName = "File2", FilePath = ".", LineCount = 200, CyclomaticComplexity = 5, CodeDuplications = 2 }
             };
         }
 
