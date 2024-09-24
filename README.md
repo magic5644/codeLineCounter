@@ -157,6 +157,7 @@ NBLignesCount/
 │   ├── CyclomaticComplexityCalculatorTests.cs
 │   ├── CoreUtilsTest.cs
 │   ├── CsvExporterTest.cs
+│   ├── CsvHandlerTests.cs
 │   ├── FileUtilsTest.cs
 │   └── CodeLineCounter.Tests.csproj
 ├── .gitignore
