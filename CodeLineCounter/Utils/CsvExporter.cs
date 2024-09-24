@@ -17,7 +17,6 @@ namespace CodeLineCounter.Utils
             {
                 if (currentProject != metric.ProjectName)
                 {
-                    //AppendProjectLineToCsv(projectTotals, writer, currentProject);
                     if (currentProject != null)
                     {
                         var total = new NamespaceMetrics();
@@ -62,15 +61,6 @@ namespace CodeLineCounter.Utils
         public static void ExportCodeDuplicationsToCsv(string filePath, List<DuplicationCode> duplications, string? solutionPath)
         {
             CsvHandler.Serialize(duplications, filePath);
-            /*using (var writer = new StreamWriter(filePath))
-            {
-                writer.WriteLine("Code Hash,FilePath,MethodName,StartLine,NbLines");
-
-                foreach (var detail in duplications)
-                {
-                    writer.WriteLine($"{detail.CodeHash},{detail.FilePath},{detail.MethodName},{detail.StartLine},{detail.NbLines}");
-                }
-            }*/
         }
 
         public static Dictionary<string, int> GetDuplicationCounts(List<DuplicationCode> duplications)
