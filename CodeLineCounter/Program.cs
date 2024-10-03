@@ -68,7 +68,7 @@ namespace CodeLineCounter
 
             Parallel.Invoke(
                 () => CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap, solutionPath),
-                () => CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap, solutionPath)
+                () => CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap)
             );
 
             Console.WriteLine($"The data has been exported to {csvFilePath}");

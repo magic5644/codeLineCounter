@@ -50,7 +50,7 @@ namespace CodeLineCounter.Utils
         }
 
 
-        public static void ExportCodeDuplicationsToCsv(string filePath, List<DuplicationCode> duplications, string? solutionPath)
+        public static void ExportCodeDuplicationsToCsv(string filePath, List<DuplicationCode> duplications)
         {
             CsvHandler.Serialize(duplications, filePath);
         }

@@ -69,6 +69,31 @@ namespace CodeLineCounter.Tests
             Assert.Throws<NullReferenceException>(() => CsvExporter.ExportToCsv(filePath, namespaceMetrics, projectTotals, totalLines, duplicationCodes, additionalInfo));
         }
 
+        [Fact]
+        public void ExportCodeDuplicationsToCsv_ShouldCallSerializeWithCorrectParameters()
+        {
+            // Arrange
+            var filePath = "test4.csv";
+            var duplications = new List<DuplicationCode>
+            {
+                new DuplicationCode { CodeHash = "hash1", FilePath = "file1.cs", MethodName = "method1", StartLine = 10, NbLines = 20 },
+                new DuplicationCode { CodeHash = "hash2", FilePath = "file2.cs", MethodName = "method2", StartLine = 8, NbLines = 10 }
+            };
+
+
+            // Act
+            CsvExporter.ExportCodeDuplicationsToCsv(filePath, duplications);
+
+            // Assert
+            Assert.True(File.Exists(filePath));
+            var lines = File.ReadAllLines(filePath);
+            Assert.Equal(3, lines.Length); 
+
+            // Cleanup
+            File.Delete(filePath);
+
+        }
+
         private List<NamespaceMetrics> GetSampleNamespaceMetrics()
         {
             return new List<NamespaceMetrics>
