@@ -33,19 +33,19 @@ All the results are exported to CSV files.
 
 ## Installation
 
-1. Clone the repository:
+- Clone the repository:
 
 ```sh
 git clone https://github.com/magic5644/CodeLineCounter.git
 ```
 
-2. Navigate to the project directory:
+- Navigate to the project directory:
 
 ```sh
 cd CodeLineCounter
 ```
 
-3. Install the necessary NuGet packages:
+- Install the necessary NuGet packages:
 
 ```sh
 dotnet restore
@@ -53,25 +53,25 @@ dotnet restore
 
 ## Usage
 
-1. Build the project:
+- Build the project:
 
 ```sh
 dotnet build
 ```
 
-2. Run the program by providing the directory path containing the solutions to analyze:
+- Run the program by providing the directory path containing the solutions to analyze:
 
 ```sh
 dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions"
 ```
 
-    or if you want verbose mode on :
+Or if you want verbose mode on :
 
 ```sh
 dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to/directory/with/solutions"
 ```
 
-3. Select the solution to analyze by entering the corresponding number.
+- Select the solution to analyze by entering the corresponding number.
 
 ## Generated Files
 
@@ -116,6 +116,7 @@ CodeLineCounter.Tests,CodeLineCounter.Tests\CodeLineCounter.Tests.csproj,CodeLin
 CodeLineCounter.Tests,Total,,,,370,,
 Total,,,,,938,
 ```
+
 The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in the current directory containing the following metrics:
 
 - `Code Hash`: Hash of the duplicate code.
@@ -128,7 +129,7 @@ The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in t
 ```csv
 Code Hash,FilePath,MethodName,StartLine,NbLines
 0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91,3
-```   
+```
 
 ## Project Structure
 
@@ -137,8 +138,8 @@ NBLignesCount/
 │
 ├── CodeLineCounter/
 │   ├── Models/
-│   │   └── NamespaceMetrics.cs
 │   │   └── DuplicationCode.cs
+│   │   └── NamespaceMetrics.cs
 │   ├── Services/
 │   │   ├── CodeAnalyzer.cs
 │   │   ├── CodeDuplicationChecker.cs
@@ -168,25 +169,25 @@ NBLignesCount/
 
 ## Unit Tests
 
-To run the unit tests, use the following command:
+- To run the unit tests, use the following command:
 
 ```sh
 dotnet test
 ```
 
-To generate code coverage, use the following command:
+- To generate code coverage, use the following command:
 
 ```sh
 dotnet test --collect:"XPlat Code Coverage;Format=json,lcov,cobertura"  --results-directory CodeLineCounter.Tests\TestResults
 ```
 
-Or use generate-covertura.sh to generate code coverage.
+- Or use generate-covertura.sh to generate code coverage.
 
 ```sh
 generate-covertura.sh
 ```
 
-Or generate-covertura.cmd for Windows
+- Or generate-covertura.cmd for Windows
 
 ```cmd
 generate-covertura.cmd

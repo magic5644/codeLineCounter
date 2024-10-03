@@ -9,19 +9,32 @@ namespace CodeLineCounter.Utils
             bool verbose = false;
             bool help = false;
             string? directoryPath = null;
-            for (int i = 0; i < args.Length; i++)
+            int argIndex = 0;
+            while (argIndex < args.Length)
             {
-                switch (args[i])
+                switch (args[argIndex])
                 {
                     case "-help":
-                        help =true;
+                        help = true;
+                        argIndex++;
                         break;
                     case "-verbose":
                         verbose = true;
+                        argIndex++;
                         break;
-                    case "-d" when i + 1 < args.Length:
-                        directoryPath = args[i + 1];
-                        i++;
+                    case "-d":
+                        if (argIndex + 1 < args.Length)
+                        {
+                            directoryPath = args[argIndex + 1];
+                            argIndex += 2; // Increment by 2 to skip the next argument
+                        }
+                        else
+                        {
+                            argIndex++; // Increment by 1 if there's no next argument
+                        }
+                        break;
+                    default:
+                        argIndex++;
                         break;
                 }
             }
@@ -47,12 +60,14 @@ namespace CodeLineCounter.Utils
             List<string> listOfFilenames = new List<string>();
             for (int i = 0; i < solutionFiles.Count; i++)
             {
-                if (File.Exists(solutionFiles[i])) {
+                if (File.Exists(solutionFiles[i]))
+                {
                     listOfFilenames.Add(Path.GetFileName(solutionFiles[i]));
-                } else 
+                }
+                else
                 {
                     listOfFilenames.Add(solutionFiles[i]);
-                }        
+                }
             }
 
             return listOfFilenames;
