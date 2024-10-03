@@ -9,31 +9,28 @@ using System.Collections.Generic;
 
 namespace CodeLineCounter
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
             var settings = CoreUtils.ParseArguments(args);
-            if (CoreUtils.CheckSettings(settings) == true)
+            if (CoreUtils.CheckSettings(settings) && settings.DirectoryPath != null)
             {
-                if (settings.DirectoryPath != null)
+                var solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
+                if (solutionFiles.Count == 0)
                 {
-                    var solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
-                    if (solutionFiles.Count == 0)
-                    {
-                        Console.WriteLine("No solution (.sln) found in the specified directory.");
-                        return;
-                    }
-
-                    var solutionFilenameList = CoreUtils.GetFilenamesList(solutionFiles);
-
-                    CoreUtils.DisplaySolutions(solutionFilenameList);
-                    int choice = CoreUtils.GetUserChoice(solutionFiles.Count);
-                    if (choice == -1) return;
-
-                    var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
-                    AnalyzeAndExportSolution(solutionPath, settings.Verbose);
+                    Console.WriteLine("No solution (.sln) found in the specified directory.");
+                    return;
                 }
+
+                var solutionFilenameList = CoreUtils.GetFilenamesList(solutionFiles);
+
+                CoreUtils.DisplaySolutions(solutionFilenameList);
+                int choice = CoreUtils.GetUserChoice(solutionFiles.Count);
+                if (choice == -1) return;
+
+                var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
+                AnalyzeAndExportSolution(solutionPath, settings.Verbose);
             }
         }
 
