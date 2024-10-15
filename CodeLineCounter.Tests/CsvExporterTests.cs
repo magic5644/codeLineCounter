@@ -59,14 +59,11 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string filePath = "test3.csv";
-            List<NamespaceMetrics> namespaceMetrics = null;//new List<NamespaceMetrics>();
-            Dictionary<string, int> projectTotals = null;
             int totalLines = 0;
-            List<DuplicationCode> duplicationCodes = null;
-            string? additionalInfo = null;
 
             // Act & Assert
-            Assert.Throws<NullReferenceException>(() => CsvExporter.ExportToCsv(filePath, namespaceMetrics, projectTotals, totalLines, duplicationCodes, additionalInfo));
+            #pragma warning disable CS8625 
+            Assert.Throws<NullReferenceException>(() => CsvExporter.ExportToCsv(filePath, null, null, totalLines, null, null));
         }
 
         [Fact]

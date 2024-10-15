@@ -96,9 +96,11 @@ namespace CodeLineCounter.Services
         {
             currentNamespace = null;
             fileLineCount = 0;
-            fileCyclomaticComplexity = 0;
 
-            var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(file));
+            // lines variable should contain all source code lines
+            string sourceCode = string.Join(Environment.NewLine, lines);
+            var tree = CSharpSyntaxTree.ParseText(sourceCode);
+
             var compilation = CSharpCompilation.Create("CodeAnalysis", new[] { tree });
             var model = compilation.GetSemanticModel(tree);
 
