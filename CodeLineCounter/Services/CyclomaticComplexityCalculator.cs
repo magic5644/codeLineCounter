@@ -53,11 +53,15 @@ namespace CodeLineCounter.Services
                         switch (descendant.Kind())
                         {
                             case SyntaxKind.IfStatement:
+                            case SyntaxKind.ElseClause:
+                            case SyntaxKind.SwitchStatement:
+                            case SyntaxKind.CaseSwitchLabel:
+                            case SyntaxKind.DefaultSwitchLabel:
                             case SyntaxKind.ForStatement:
                             case SyntaxKind.ForEachStatement:
                             case SyntaxKind.WhileStatement:
                             case SyntaxKind.DoStatement:
-                            case SyntaxKind.CaseSwitchLabel:
+                            case SyntaxKind.TryStatement:
                             case SyntaxKind.CatchClause:
                                 complexity++;
                                 break;
