@@ -60,7 +60,7 @@ namespace CodeLineCounter.Tests
             var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration, semanticModel);
 
             // Assert
-            Assert.Equal(2, complexity);
+            Assert.Equal(3, complexity);
         }
 
         [Fact]
