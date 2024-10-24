@@ -6,16 +6,15 @@ namespace CodeLineCounter.Services
 {
     public class CyclomaticComplexityCalculator
     {
-        public static int Calculate(SyntaxNode node, SemanticModel model)
+        public static int Calculate(SyntaxNode node)
         {
-            var walker = new ComplexityWalker(model);
+            var walker = new ComplexityWalker();
             walker.Visit(node);
             return walker.Complexity;
         }
 
-        private class ComplexityWalker(SemanticModel semanticModel) : CSharpSyntaxWalker
+        private sealed class ComplexityWalker : CSharpSyntaxWalker
         {
-            private readonly SemanticModel _semanticModel = semanticModel;
             public int Complexity { get; private set; } = 1;
 
             public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
