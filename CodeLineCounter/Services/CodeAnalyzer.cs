@@ -101,10 +101,8 @@ namespace CodeLineCounter.Services
             string sourceCode = string.Join(Environment.NewLine, lines);
             var tree = CSharpSyntaxTree.ParseText(sourceCode);
 
-            var compilation = CSharpCompilation.Create("CodeAnalysis", new[] { tree });
-            var model = compilation.GetSemanticModel(tree);
 
-            fileCyclomaticComplexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot(), model);
+            fileCyclomaticComplexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot());
 
             foreach (var line in lines)
             {

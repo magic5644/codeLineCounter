@@ -21,11 +21,9 @@ namespace CodeLineCounter.Tests
                     }
             ";
             var tree = CSharpSyntaxTree.ParseText(code);
-            var compilation = CSharpCompilation.Create("Test", new[] { tree });
-            var model = compilation.GetSemanticModel(tree);
 
             // Act
-            var complexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot(), model);
+            var complexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot());
 
             // Assert
             Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
@@ -53,11 +51,9 @@ namespace CodeLineCounter.Tests
             ");
             var root = syntaxTree.GetRoot();
             var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
-            var compilation = CSharpCompilation.Create("TestCompilation", new[] { syntaxTree });
-            var semanticModel = compilation.GetSemanticModel(syntaxTree);
 
             // Act
-            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration, semanticModel);
+            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
 
             // Assert
             Assert.Equal(3, complexity);
@@ -94,11 +90,9 @@ namespace CodeLineCounter.Tests
             ");
             var root = syntaxTree.GetRoot();
             var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
-            var compilation = CSharpCompilation.Create("TestCompilation", new[] { syntaxTree });
-            var semanticModel = compilation.GetSemanticModel(syntaxTree);
 
             // Act
-            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration, semanticModel);
+            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
 
             // Assert
             Assert.Equal(6, complexity);
