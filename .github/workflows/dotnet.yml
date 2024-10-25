@@ -39,7 +39,7 @@ jobs:
       - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
 
       - name: ReportGenerator
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.7
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.11
         with:
           reports: "test-result.cobertura.xml"
           targetdir: "coverage-report"
@@ -91,7 +91,7 @@ jobs:
           path: coverage-report/badge_combined.svg
 
       - name: Deploy Badges
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update badges [skip ci]"
           branch: gh-pages
