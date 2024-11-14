@@ -18,7 +18,7 @@ namespace CodeLineCounter.Services
     {
         private readonly ConcurrentDictionary<string, HashSet<DuplicationCode>> duplicationMap;
         private readonly ConcurrentDictionary<string, HashSet<DuplicationCode>> hashMap;
-        private readonly object duplicationLock = new object();
+        private readonly object duplicationLock = new();
 
         public CodeDuplicationChecker()
         {
@@ -63,7 +63,7 @@ namespace CodeLineCounter.Services
                         NbLines = nbLines
                     };
 
-                    hashMap.AddOrUpdate(hash, new HashSet<DuplicationCode> { duplicationCode },
+                    hashMap.AddOrUpdate(hash, [duplicationCode],
                         (key, set) =>
                         {
                             lock (set)

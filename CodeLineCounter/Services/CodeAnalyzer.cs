@@ -39,7 +39,7 @@ namespace CodeLineCounter.Services
             string projectName = Path.GetFileNameWithoutExtension(projectFile);
             string relativeProjectPath = solutionDirectory != null ? Path.GetRelativePath(solutionDirectory, projectFile) : projectFile;
 
-            var files = projectDirectory != null ? FileUtils.GetAllCsFiles(projectDirectory) : new List<string>();
+            var files = projectDirectory != null ? FileUtils.GetAllCsFiles(projectDirectory) : [];
 
             int projectLineCount = 0;
             var projectNamespaceMetrics = new Dictionary<string, int>();

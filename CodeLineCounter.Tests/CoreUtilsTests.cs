@@ -1,5 +1,6 @@
+using CodeLineCounter.Utils;
 
-namespace CodeLineCounter.Utils.Tests
+namespace CodeLineCounter.Tests
 {
     public class CoreUtilsTests
     {
@@ -7,55 +8,55 @@ namespace CodeLineCounter.Utils.Tests
         public void ParseArguments_Should_Return_Correct_Values()
         {
             // Arrange
-            string[] args = new string[] { "-verbose", "-d", "testDirectory" };
+            string[] args = ["-verbose", "-d", "testDirectory"];
 
             // Act
-            var result = CoreUtils.ParseArguments(args);
+            var (Verbose, DirectoryPath, _) = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.True(result.Verbose);
-            Assert.Equal("testDirectory", result.DirectoryPath);
+            Assert.True(Verbose);
+            Assert.Equal("testDirectory", DirectoryPath);
         }
 
         [Fact]
         public void ParseArguments_help_Should_Return_Correct_Values()
         {
             // Arrange
-            string[] args = new string[] { "-help" };
+            string[] args = ["-help"];
 
             // Act
-            var result = CoreUtils.ParseArguments(args);
+            var (_, _, Help) = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.True(result.Help);
+            Assert.True(Help);
         }
 
         [Fact]
         public void ParseArguments_Should_Return_Default_Values_When_No_Arguments_Passed()
         {
             // Arrange
-            string[] args = new string[0];
+            string[] args = [];
 
             // Act
-            var result = CoreUtils.ParseArguments(args);
+            var (Verbose, DirectoryPath, _) = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.False(result.Verbose);
-            Assert.Null(result.DirectoryPath);
+            Assert.False(Verbose);
+            Assert.Null(DirectoryPath);
         }
 
         [Fact]
         public void ParseArguments_Should_Ignore_Invalid_Arguments()
         {
             // Arrange
-            string[] args = new string[] { "-invalid", "-d", "testDirectory" };
+            string[] args = ["-invalid", "-d", "testDirectory"];
 
             // Act
-            var result = CoreUtils.ParseArguments(args);
+            var (Verbose, DirectoryPath, _) = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.False(result.Verbose);
-            Assert.Equal("testDirectory", result.DirectoryPath);
+            Assert.False(Verbose);
+            Assert.Equal("testDirectory", DirectoryPath);
         }
 
         [Fact]
@@ -96,52 +97,50 @@ namespace CodeLineCounter.Utils.Tests
 
             var envNewLine = Environment.NewLine;
             // Arrange
-            List<string> solutionFiles = new List<string>
-            {
+            List<string> solutionFiles =
+            [
                 "Solution1.sln",
                 "Solution2.sln",
                 "Solution3.sln"
-            };
+            ];
 
             // Redirect console output to a StringWriter
-            using (StringWriter sw = new StringWriter())
+            using StringWriter sw = new();
+            Console.SetOut(sw);
+
+            // Act
+            CoreUtils.DisplaySolutions(solutionFiles);
+
+            // Assert
+            string expectedOutput = $"Available solutions:{envNewLine}";
+            for (int i = 0; i < solutionFiles.Count; i++)
             {
-                Console.SetOut(sw);
-
-                // Act
-                CoreUtils.DisplaySolutions(solutionFiles);
-
-                // Assert
-                string expectedOutput = $"Available solutions:{envNewLine}";
-                for (int i = 0; i < solutionFiles.Count; i++)
-                {
-                    expectedOutput += $"{i + 1}. {solutionFiles[i]}{envNewLine}";
-                }
-                Assert.Equal(expectedOutput, sw.ToString());
+                expectedOutput += $"{i + 1}. {solutionFiles[i]}{envNewLine}";
             }
+            Assert.Equal(expectedOutput, sw.ToString());
         }
 
         [Fact]
         public void GetFilenamesList_Should_Return_List_Of_Filenames()
         {
             // Arrange
-            List<string> solutionFiles = new List<string>
-            {
+            List<string> solutionFiles =
+            [
                 "Solution1.sln",
                 "Solution2.sln",
                 "Solution3.sln"
-            };
+            ];
 
             // Act
             List<string> result = CoreUtils.GetFilenamesList(solutionFiles);
 
             // Assert
-            List<string> expectedFilenames = new List<string>
-            {
+            List<string> expectedFilenames =
+            [
                 "Solution1.sln",
                 "Solution2.sln",
                 "Solution3.sln"
-            };
+            ];
             Assert.Equal(expectedFilenames, result);
         }
 
@@ -151,12 +150,15 @@ namespace CodeLineCounter.Utils.Tests
         {
             // Arrange
             (bool Verbose, string? DirectoryPath, bool Help) settings = (true, null, true);
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
 
             // Act
             var result = CoreUtils.CheckSettings(settings);
 
             // Assert
             Assert.False(result);
+            Assert.Contains("Usage:", sw.ToString());
         }
 
         [Fact]
@@ -164,12 +166,15 @@ namespace CodeLineCounter.Utils.Tests
         {
             // Arrange
             (bool Verbose, string? DirectoryPath, bool Help) settings = (Verbose: false, DirectoryPath: null, Help: false);
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
 
             // Act
             var result = CoreUtils.CheckSettings(settings);
 
             // Assert
             Assert.False(result);
+            Assert.Contains("Please provide the directory path", sw.ToString());
         }
 
         [Fact]

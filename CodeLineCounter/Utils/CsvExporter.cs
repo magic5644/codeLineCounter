@@ -10,19 +10,21 @@ namespace CodeLineCounter.Utils
         public static void ExportToCsv(string filePath, List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals, int totalLines, List<DuplicationCode> duplications, string? solutionPath)
         {
             string? currentProject = null;
-            List<NamespaceMetrics> namespaceMetrics = new List<NamespaceMetrics>();
+            List<NamespaceMetrics> namespaceMetrics = [];
             var duplicationCounts = GetDuplicationCounts(duplications);
 
             foreach (var metric in metrics)
             {
-                if (currentProject != metric.ProjectName)
+                if (!string.Equals(currentProject, metric.ProjectName, System.StringComparison.OrdinalIgnoreCase))
                 {
                     if (currentProject != null)
                     {
-                        var total = new NamespaceMetrics();
-                        total.ProjectName = currentProject;
-                        total.ProjectPath = "Total";
-                        total.LineCount = projectTotals[currentProject];
+                        var total = new NamespaceMetrics
+                        {
+                            ProjectName = currentProject,
+                            ProjectPath = "Total",
+                            LineCount = projectTotals[currentProject]
+                        };
                         namespaceMetrics.Add(total);
                     }
                     currentProject = metric.ProjectName;
@@ -34,15 +36,19 @@ namespace CodeLineCounter.Utils
             }
             if (currentProject != null)
             {
-                var total = new NamespaceMetrics();
-                total.ProjectName = currentProject;
-                total.ProjectPath = "Total";
-                total.LineCount = projectTotals[currentProject];
+                var total = new NamespaceMetrics
+                {
+                    ProjectName = currentProject,
+                    ProjectPath = "Total",
+                    LineCount = projectTotals[currentProject]
+                };
                 namespaceMetrics.Add(total);
-                var totalGeneral = new NamespaceMetrics();
-                totalGeneral.ProjectName = "Total";
-                totalGeneral.ProjectPath = "";
-                totalGeneral.LineCount = totalLines;
+                var totalGeneral = new NamespaceMetrics
+                {
+                    ProjectName = "Total",
+                    ProjectPath = "",
+                    LineCount = totalLines
+                };
                 namespaceMetrics.Add(totalGeneral);
 
             }
@@ -88,7 +94,7 @@ namespace CodeLineCounter.Utils
             }
             if (metric.FilePath != null && solutionPath != null)
             {
-                var normalizedPath = solutionPath != string.Empty ? Path.GetFullPath(metric.FilePath, solutionPath) : Path.GetFullPath(metric.FilePath);
+                var normalizedPath = !string.Equals(solutionPath, string.Empty, System.StringComparison.OrdinalIgnoreCase) ? Path.GetFullPath(metric.FilePath, solutionPath) : Path.GetFullPath(metric.FilePath);
                 if (duplicationCounts.TryGetValue(normalizedPath, out int countValue))
                 {
                     count = countValue;

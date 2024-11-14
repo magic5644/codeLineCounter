@@ -20,6 +20,7 @@ namespace CodeLineCounter.Tests
             Assert.NotEmpty(projectTotals);
             Assert.NotEqual(0, totalLines);
             Assert.NotEqual(0, totalFiles);
+            Assert.NotNull(duplicationMap);
         }
 
         [Fact]
@@ -38,7 +39,7 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, file, lines, out string? currentNamespace, out int fileLineCount, out int fileCyclomaticComplexity);
+            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, file, lines, out string? currentNamespace, out _, out _);
 
             // Assert
             Assert.Equal("MyNamespace", currentNamespace);
@@ -60,7 +61,7 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, file, lines, out string? currentNamespace, out int fileLineCount, out int fileCyclomaticComplexity);
+            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, file, lines, out _, out int fileLineCount, out _);
 
             // Assert - 3 lines only because comment lines are ignored
             Assert.Equal(3, fileLineCount);
@@ -82,7 +83,7 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, file, lines, out string? currentNamespace, out int fileLineCount, out int fileCyclomaticComplexity);
+            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, file, lines, out _, out _, out int fileCyclomaticComplexity);
 
             // Assert
             Assert.Equal(1, fileCyclomaticComplexity);

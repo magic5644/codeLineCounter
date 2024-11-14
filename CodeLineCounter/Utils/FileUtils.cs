@@ -13,7 +13,7 @@ namespace CodeLineCounter.Utils
 
         public static List<string> GetSolutionFiles(string rootPath)
         {
-            return Directory.GetFiles(rootPath, "*.sln", SearchOption.TopDirectoryOnly).ToList();
+            return [.. Directory.GetFiles(rootPath, "*.sln", SearchOption.TopDirectoryOnly)];
         }
 
         public static List<string> GetProjectFiles(string solutionFilePath)

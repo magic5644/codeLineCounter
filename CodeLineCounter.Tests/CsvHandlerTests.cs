@@ -4,8 +4,9 @@ using System.IO;
 using CsvHelper;
 using System.Linq;
 using Xunit;
+using CodeLineCounter.Utils;
 
-namespace CodeLineCounter.Utils.Tests
+namespace CodeLineCounter.Tests
 {
     public class CsvHandlerTests
     {
@@ -21,8 +22,8 @@ namespace CodeLineCounter.Utils.Tests
             // Arrange
             var data = new List<TestRecord>
             {
-                new TestRecord { Id = 1, Name = "Alice" },
-                new TestRecord { Id = 2, Name = "Bob" }
+                new() { Id = 1, Name = "Alice" },
+                new() { Id = 2, Name = "Bob" }
             };
             string filePath = "test_1.csv";
 
