@@ -73,8 +73,8 @@ namespace CodeLineCounter.Tests
             var filePath = "test4.csv";
             var duplications = new List<DuplicationCode>
             {
-                new DuplicationCode { CodeHash = "hash1", FilePath = "file1.cs", MethodName = "method1", StartLine = 10, NbLines = 20 },
-                new DuplicationCode { CodeHash = "hash2", FilePath = "file2.cs", MethodName = "method2", StartLine = 8, NbLines = 10 }
+                new() { CodeHash = "hash1", FilePath = "file1.cs", MethodName = "method1", StartLine = 10, NbLines = 20 },
+                new() { CodeHash = "hash2", FilePath = "file2.cs", MethodName = "method2", StartLine = 8, NbLines = 10 }
             };
 
 
@@ -91,16 +91,16 @@ namespace CodeLineCounter.Tests
 
         }
 
-        private List<NamespaceMetrics> GetSampleNamespaceMetrics()
+        private static List<NamespaceMetrics> GetSampleNamespaceMetrics()
         {
-            return new List<NamespaceMetrics>
-            {
+            return
+            [
                 new NamespaceMetrics { ProjectName="Project1", ProjectPath = ".", NamespaceName = "Namespace1", FileName = "File1", FilePath = ".", LineCount = 100, CyclomaticComplexity = 0, CodeDuplications = 0 },
                 new NamespaceMetrics { ProjectName="Project2", ProjectPath = ".", NamespaceName = "Namespace2", FileName = "File2", FilePath = ".", LineCount = 200, CyclomaticComplexity = 5, CodeDuplications = 2 }
-            };
+            ];
         }
 
-        private Dictionary<string, int> GetSampleProjectTotals()
+        private static Dictionary<string, int> GetSampleProjectTotals()
         {
             return new Dictionary<string, int>
             {
@@ -109,13 +109,13 @@ namespace CodeLineCounter.Tests
             };
         }
 
-        private List<DuplicationCode> GetSampleDuplicationCodes()
+        private static List<DuplicationCode> GetSampleDuplicationCodes()
         {
-            return new List<DuplicationCode>
-            {
+            return
+            [
                 new DuplicationCode { CodeHash = "Code1", FilePath = ".", MethodName = "Method1", StartLine = 10 , NbLines = 20 },
                 new DuplicationCode { CodeHash = "Code2", FilePath = ".", MethodName = "Method2", StartLine = 15 , NbLines = 25  }
-            };
+            ];
         }
     }
 }

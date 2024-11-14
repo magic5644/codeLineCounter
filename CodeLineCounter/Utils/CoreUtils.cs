@@ -57,7 +57,7 @@ namespace CodeLineCounter.Utils
 
         public static List<string> GetFilenamesList(List<string> solutionFiles)
         {
-            List<string> listOfFilenames = new List<string>();
+            List<string> listOfFilenames = [];
             for (int i = 0; i < solutionFiles.Count; i++)
             {
                 if (File.Exists(solutionFiles[i]))

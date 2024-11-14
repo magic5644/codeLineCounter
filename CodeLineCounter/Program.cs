@@ -67,7 +67,7 @@ namespace CodeLineCounter
             Console.WriteLine($"Percentage of duplicated code: {percentageDuplication:F2} %");
 
             Parallel.Invoke(
-                () => CsvExporter.ExportToCsv(csvFilePath, metrics.ToList(), projectTotals, totalLines, duplicationMap, solutionPath),
+                () => CsvExporter.ExportToCsv(csvFilePath, metrics, projectTotals, totalLines, duplicationMap, solutionPath),
                 () => CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap)
             );
 

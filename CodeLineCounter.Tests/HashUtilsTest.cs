@@ -1,5 +1,6 @@
+using CodeLineCounter.Utils;
 
-namespace CodeLineCounter.Utils.Tests
+namespace CodeLineCounter.Tests
 {
     public class HashUtilsTests
     {
