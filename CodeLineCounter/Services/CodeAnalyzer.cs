@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace CodeLineCounter.Services
 {
@@ -20,17 +21,23 @@ namespace CodeLineCounter.Services
             int totalLines = 0;
             int totalFilesAnalyzed = 0;
 
-            foreach (var projectFile in projectFiles)
-            {
-                AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals);
-            }
-
-            codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory));
+            Parallel.Invoke(
+                    () => AnalyzeAllProjects(solutionDirectory, projectFiles, namespaceMetrics, projectTotals, ref totalLines, ref totalFilesAnalyzed),
+                    () => codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory))
+            );
 
             var duplicationMap = codeDuplicationChecker.GetCodeDuplicationMap();
             var duplicationList = duplicationMap.Values.SelectMany(v => v).ToList();
 
             return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationList);
+        }
+
+        private static void AnalyzeAllProjects(string solutionDirectory, List<string> projectFiles, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals, ref int totalLines, ref int totalFilesAnalyzed)
+        {
+            foreach (var projectFile in projectFiles)
+            {
+                AnalyzeProject(solutionDirectory, projectFile, ref totalFilesAnalyzed, ref totalLines, namespaceMetrics, projectTotals);
+            }
         }
 
         private static void AnalyzeProject(string solutionDirectory, string projectFile, ref int totalFilesAnalyzed, ref int totalLines, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals)
@@ -56,16 +63,21 @@ namespace CodeLineCounter.Services
 
         private static void AddProjectMetrics(string projectName, string relativeProjectPath, string? projectDirectory, Dictionary<string, int> projectNamespaceMetrics, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals, int projectLineCount)
         {
-            foreach (var kvp in projectNamespaceMetrics)
+            var keys = projectNamespaceMetrics.Select(kvp => kvp.Key);
+
+            foreach (var key in keys)
             {
+                int totalNamespaceLines = namespaceMetrics
+                .Where(nm => nm != null && !string.IsNullOrEmpty(nm.NamespaceName) && nm.NamespaceName.Equals(key))
+                .Sum(nm => nm != null ? nm.LineCount : 0);
                 namespaceMetrics.Add(new NamespaceMetrics
                 {
                     ProjectName = projectName,
                     ProjectPath = relativeProjectPath,
-                    NamespaceName = kvp.Key,
+                    NamespaceName = key,
                     FileName = "Total",
                     FilePath = projectDirectory,
-                    LineCount = kvp.Value,
+                    LineCount = totalNamespaceLines,
                     CyclomaticComplexity = 0
                 });
             }
@@ -106,17 +118,12 @@ namespace CodeLineCounter.Services
 
             foreach (var line in lines)
             {
-                if (line.Trim().StartsWith("namespace"))
+                if (currentNamespace == null)
                 {
-                    var parts = line.Trim().Split(' ');
-                    if (parts.Length >= 2)
-                    {
-                        currentNamespace = parts[1];
-                        projectNamespaceMetrics.TryAdd(currentNamespace, 0);
-                    }
+                    currentNamespace = ExtractNameSpace(projectNamespaceMetrics, currentNamespace, line);
                 }
 
-                if (!string.IsNullOrWhiteSpace(line) && !line.Trim().StartsWith("//"))
+                if (IsCodeLineUsingRoslyn(line))
                 {
                     fileLineCount++;
                     if (currentNamespace != null)
@@ -125,6 +132,36 @@ namespace CodeLineCounter.Services
                     }
                 }
             }
+        }
+
+        private static bool IsNotAnEmptyLine(string line)
+        {
+            return !string.IsNullOrWhiteSpace(line.Trim());
+        }
+
+        private static bool IsCodeLineUsingRoslyn(string line)
+        {
+            var tree = CSharpSyntaxTree.ParseText(line);
+            var root = tree.GetRoot();
+            return !root.DescendantTrivia()
+                .Any(t => t.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
+                          t.IsKind(SyntaxKind.MultiLineCommentTrivia) ||
+                          t.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)) && IsNotAnEmptyLine(line);
+        }
+
+        private static string? ExtractNameSpace(Dictionary<string, int> projectNamespaceMetrics, string? currentNamespace, string line)
+        {
+            if (line.Trim().StartsWith("namespace"))
+            {
+                var parts = line.Trim().Split(' ');
+                if (parts.Length >= 2)
+                {
+                    currentNamespace = parts[1];
+                    projectNamespaceMetrics.TryAdd(currentNamespace, 0);
+                }
+            }
+
+            return currentNamespace;
         }
     }
 }
