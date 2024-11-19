@@ -24,59 +24,52 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
       - run: dotnet test --results-directory "test-results" --collect:"Code Coverage"
       - run: dotnet tool update --global dotnet-coverage
       - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
       - run: dotnet tool install --global dotnet-reportgenerator-globaltool
       - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
       - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
-
+  
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.3.11
         with:
-          reports: "test-result.cobertura.xml"
-          targetdir: "coverage-report"
-          reporttypes: "Html;JsonSummary;MarkdownSummaryGithub;Badges"
-
+            reports: "test-result.cobertura.xml"
+            targetdir: "coverage-report"
+            reporttypes: "Html;JsonSummary;MarkdownSummaryGithub;Badges"
+  
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
-          path: coverage-report
-
+            name: coverage-report
+            path: coverage-report
+  
       - name: Upload coverage badge artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-badge.svg
-          path: coverage-report/badge_combined.svg
-
+            name: coverage-badge.svg
+            path: coverage-report/badge_combined.svg
+  
       - name: Add comment to PR
         if: github.event_name == 'pull_request'
         run: gh pr comment $PR_NUMBER --body-file coverage-report/SummaryGithub.md
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PR_NUMBER: ${{ github.event.pull_request.number }}
+  
       - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
         run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
         shell: bash
-
+  
       - name: Generate Coverage Badge
         run: |
-          echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
-          cat coverage-badge.md >> README.md
+            echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
+            cat coverage-badge.md >> README.md
 
   publish_badge:
     runs-on: ubuntu-latest
-    needs: test
+    needs: build
     steps:
       - name: Checkout gh-pages
         uses: actions/checkout@v4
