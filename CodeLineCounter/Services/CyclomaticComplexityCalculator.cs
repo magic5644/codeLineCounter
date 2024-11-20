@@ -62,6 +62,10 @@ namespace CodeLineCounter.Services
                             case SyntaxKind.DoStatement:
                             case SyntaxKind.TryStatement:
                             case SyntaxKind.CatchClause:
+                            case SyntaxKind.LockStatement:
+                            case SyntaxKind.UsingStatement:
+                            case SyntaxKind.UsingDirective:
+                        
                                 complexity++;
                                 break;
                         }
