@@ -28,8 +28,6 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
-            var basePath = FileUtils.GetBasePath();
-            var file = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..",  "CodeAnalyzerTests.cs"));
             var lines = new string[]
             {
                 "namespace MyNamespace",
@@ -50,8 +48,6 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
-            var basePath = FileUtils.GetBasePath();
-            var file = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..",  "CodeAnalyzerTests.cs"));
             var lines = new string[]
             {
                 "namespace MyNamespace",
@@ -72,8 +68,6 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
-            var basePath = FileUtils.GetBasePath();
-            var file = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..",  "CodeAnalyzerTests.cs"));
             var lines = new string[]
             {
                 "namespace MyNamespace",
