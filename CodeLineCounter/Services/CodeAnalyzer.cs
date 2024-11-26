@@ -88,7 +88,7 @@ namespace CodeLineCounter.Services
         public static int AnalyzeSourceFile(string? solutionDirectory, List<NamespaceMetrics> namespaceMetrics, string projectName, string relativeProjectPath, int projectLineCount, Dictionary<string, int> projectNamespaceMetrics, string file)
         {
             var lines = File.ReadAllLines(file);
-            AnalyzeSourceCode(projectNamespaceMetrics, file, lines, out string? currentNamespace, out int fileLineCount, out int fileCyclomaticComplexity);
+            AnalyzeSourceCode(projectNamespaceMetrics,  lines, out string? currentNamespace, out int fileLineCount, out int fileCyclomaticComplexity);
 
             namespaceMetrics.Add(new NamespaceMetrics
             {
@@ -104,7 +104,7 @@ namespace CodeLineCounter.Services
             return projectLineCount + fileLineCount;
         }
 
-        public static void AnalyzeSourceCode(Dictionary<string, int> projectNamespaceMetrics, string file, string[] lines, out string? currentNamespace, out int fileLineCount, out int fileCyclomaticComplexity)
+        public static void AnalyzeSourceCode(Dictionary<string, int> projectNamespaceMetrics, string[] lines, out string? currentNamespace, out int fileLineCount, out int fileCyclomaticComplexity)
         {
             currentNamespace = null;
             fileLineCount = 0;
@@ -118,10 +118,7 @@ namespace CodeLineCounter.Services
 
             foreach (var line in lines)
             {
-                if (currentNamespace == null)
-                {
-                    currentNamespace = ExtractNameSpace(projectNamespaceMetrics, currentNamespace, line);
-                }
+                currentNamespace ??= ExtractNameSpace(projectNamespaceMetrics, currentNamespace, line);
 
                 if (IsCodeLineUsingRoslyn(line))
                 {
