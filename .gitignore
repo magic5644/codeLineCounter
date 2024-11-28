@@ -12,6 +12,7 @@
 /publish
 /*.zip
 /*.csv
+/*.json
 /*.xlsx
 /output.txt
 /test.cmd

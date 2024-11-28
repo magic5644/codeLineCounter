@@ -4,10 +4,16 @@ namespace CodeLineCounter.Utils
 {
     public static class CoreUtils
     {
-        public static (bool Verbose, string? DirectoryPath, bool Help) ParseArguments(string[] args)
+        public enum ExportFormat
+        {
+            CSV,
+            JSON
+        }
+        public static (bool Verbose, string? DirectoryPath, bool Help, ExportFormat format) ParseArguments(string[] args)
         {
             bool verbose = false;
             bool help = false;
+            ExportFormat format = ExportFormat.CSV;
             string? directoryPath = null;
             int argIndex = 0;
             while (argIndex < args.Length)
@@ -33,12 +39,27 @@ namespace CodeLineCounter.Utils
                             argIndex++; // Increment by 1 if there's no next argument
                         }
                         break;
+                    case "-format":
+                        if (argIndex + 1 < args.Length)
+                        {
+                            string formatString = args[argIndex + 1];
+                            argIndex += 2; // Increment by 2 to skip the next argument
+                            if (Enum.TryParse<ExportFormat>(formatString, true, out ExportFormat result))
+                            {
+                                format = result;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames(typeof(ExportFormat)))}. Using default format {format}");
+                            }
+                        }
+                        break;
                     default:
                         argIndex++;
                         break;
                 }
             }
-            return (verbose, directoryPath, help);
+            return (verbose, directoryPath, help, format);
         }
 
         public static int GetUserChoice(int solutionCount)
@@ -83,11 +104,11 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static bool CheckSettings((bool Verbose, string? DirectoryPath, bool Help) settings)
+        public static bool CheckSettings((bool Verbose, string? DirectoryPath, bool Help, ExportFormat format) settings)
         {
             if (settings.Help)
             {
-                Console.WriteLine("Usage: CodeLineCounter.exe [-verbose] [-d <directory_path>] [-help, -h]");
+                Console.WriteLine("Usage: CodeLineCounter.exe [-verbose] [-d <directory_path>] [-help, -h] (-format <csv, json>)");
                 return false;
             }
 
@@ -98,6 +119,21 @@ namespace CodeLineCounter.Utils
             }
 
             return true;
+        }
+
+        public static string GetExportFileNameWithExtension(string filePath, CoreUtils.ExportFormat format)
+        {
+            switch (format)
+            {
+                case CoreUtils.ExportFormat.CSV:
+                    filePath = Path.ChangeExtension(filePath, ".csv");
+                    break;
+                case CoreUtils.ExportFormat.JSON:
+                    filePath = Path.ChangeExtension(filePath, ".json");
+                    break;
+            }
+
+            return filePath;
         }
     }
 
