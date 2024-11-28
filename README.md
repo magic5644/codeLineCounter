@@ -4,7 +4,7 @@
 [![.NET](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml)
 [![Coverage](https://magic5644.github.io/magic5644/coverage-report/badge_combined.svg/badge_combined.svg)]([./coverage-report/index.html](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml))
 
-<div align="center"><img src="./assets/logo-new.webp" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
+<div align="center"><img src="./assets/codelinecounter-logo.svg" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
 ## Description
 
@@ -146,25 +146,32 @@ NBLignesCount/
 │   │   └── CyclomaticComplexityCalculator.cs
 │   ├── Utils/
 │   │   ├── CoreUtils.cs
-│   │   │── CsvExporter.cs
 │   │   │── CsvHandler.cs
+│   │   │── DataExporter.cs
 │   │   │── FileUtils.cs
 │   │   └── HashUtils.cs
+│   │   └── JSONHandler.cs
 │   ├── Program.cs
 │   └── CodeLineCounter.csproj
 ├── CodeLineCounter.Tests/
 │   ├── CodeAnalyzerTests.cs
 │   ├── CodeDuplicationCheckerTests.cs
+│   ├── CodeLineCounter.Tests.csproj
 │   ├── CyclomaticComplexityCalculatorTests.cs
-│   ├── CoreUtilsTest.cs
-│   ├── CsvExporterTest.cs
+│   ├── CoreUtilsTests.cs
+│   ├── DataExporterTests.cs
 │   ├── CsvHandlerTests.cs
 │   ├── FileUtilsTest.cs
-│   └── CodeLineCounter.Tests.csproj
+│   └── HashUtilsTest.cs
 ├── .gitignore
 ├── README.md
+├── SECURITY.md
 ├── LICENSE
-└── CodeLineCounter.sln
+├── CodeLineCounter.sln
+├── generate-corvertura.cmd
+├── generate-corvertura.sh
+├── publish.cmd
+└── publish.sh
 ```
 
 ## Unit Tests
