@@ -194,7 +194,7 @@ namespace CodeLineCounter.Tests
         public void CheckSettings_WhenSettingsAreInvalid_ReturnsFalse()
         {
             // Arrange
-            (bool Verbose, string DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (false, null, false, CoreUtils.ExportFormat.CSV);
+            (bool Verbose, string? DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (false, null, false, CoreUtils.ExportFormat.CSV);
             using var sw = new StringWriter();
             Console.SetOut(sw);
 
