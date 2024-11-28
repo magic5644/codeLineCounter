@@ -12,13 +12,13 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 
 Since version `1.0.2` it also check duplications in the code.
 
-All the results are exported to CSV files.
+All the results are exported to CSV or JSON files.
 
 ## Features
 
 - Counts the number of lines of code per file, namespace, and project.
 - Calculates the cyclomatic complexity of each file.
-- Exports the results to a CSV file.
+- Exports the results to a CSV or JSON file.
 
 ## Prerequisites
 
@@ -62,13 +62,13 @@ dotnet build
 - Run the program by providing the directory path containing the solutions to analyze:
 
 ```sh
-dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions"
+dotnet run --project CodeLineCounter/CodeLineCounter.csproj -d "path/to/directory/with/solutions -format json"
 ```
 
 Or if you want verbose mode on :
 
 ```sh
-dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to/directory/with/solutions"
+dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to/directory/with/solutions -format json"
 ```
 
 - Select the solution to analyze by entering the corresponding number.
@@ -129,6 +129,27 @@ The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in t
 ```csv
 Code Hash,FilePath,MethodName,StartLine,NbLines
 0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91,3
+```
+
+## Example Output of CodeDuplication.json
+
+```json
+[
+  {
+    "CodeHash": "0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c",
+    "FilePath": "C:\\temp\\NamespaceMetrics.cs",
+    "MethodName": "EtablirCommunication",
+    "StartLine": 91,
+    "NbLines": 3
+  },
+  {
+    "CodeHash": "0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c78a",
+    "FilePath": "C:\\temp\\NamespaceMetrics.cs",
+    "MethodName": "CloseCommunication",
+    "StartLine": 158,
+    "NbLines": 30
+  }
+]
 ```
 
 ## Project Structure
