@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace CodeLineCounter
 {
@@ -30,17 +31,19 @@ namespace CodeLineCounter
                 if (choice == -1) return;
 
                 var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
-                AnalyzeAndExportSolution(solutionPath, settings.Verbose);
+                AnalyzeAndExportSolution(solutionPath, settings.Verbose, settings.format);
             }
         }
 
-        private static void AnalyzeAndExportSolution(string solutionPath, bool verbose)
+        private static void AnalyzeAndExportSolution(string solutionPath, bool verbose, CoreUtils.ExportFormat format )
         {
             var timer = new Stopwatch();
             timer.Start();
             string solutionFilename = Path.GetFileName(solutionPath);
             string csvFilePath = $"{solutionFilename}-CodeMetrics.csv";
+            csvFilePath = CoreUtils.GetExportFileNameWithExtension(csvFilePath, format);
             string duplicationCsvFilePath = $"{solutionFilename}-CodeDuplications.csv";
+            duplicationCsvFilePath = CoreUtils.GetExportFileNameWithExtension(duplicationCsvFilePath, format);
 
             var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = CodeAnalyzer.AnalyzeSolution(solutionPath);
             timer.Stop();
@@ -67,8 +70,10 @@ namespace CodeLineCounter
             Console.WriteLine($"Percentage of duplicated code: {percentageDuplication:F2} %");
 
             Parallel.Invoke(
-                () => CsvExporter.ExportToCsv(csvFilePath, metrics, projectTotals, totalLines, duplicationMap, solutionPath),
-                () => CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap)
+                //() => CsvExporter.ExportToCsv(csvFilePath, metrics, projectTotals, totalLines, duplicationMap, solutionPath),
+                //() => CsvExporter.ExportCodeDuplicationsToCsv(duplicationCsvFilePath, duplicationMap),
+                () => DataExporter.ExportMetrics(csvFilePath, metrics, projectTotals, totalLines, duplicationMap, solutionPath, format),
+                () => DataExporter.ExportDuplications(duplicationCsvFilePath, duplicationMap, format)
             );
 
             Console.WriteLine($"The data has been exported to {csvFilePath}");

@@ -11,7 +11,7 @@ namespace CodeLineCounter.Tests
             string[] args = ["-verbose", "-d", "testDirectory"];
 
             // Act
-            var (Verbose, DirectoryPath, _) = CoreUtils.ParseArguments(args);
+            var (Verbose, DirectoryPath, _, _) = CoreUtils.ParseArguments(args);
 
             // Assert
             Assert.True(Verbose);
@@ -25,7 +25,7 @@ namespace CodeLineCounter.Tests
             string[] args = ["-help"];
 
             // Act
-            var (_, _, Help) = CoreUtils.ParseArguments(args);
+            var (_, _, Help, _) = CoreUtils.ParseArguments(args);
 
             // Assert
             Assert.True(Help);
@@ -38,7 +38,7 @@ namespace CodeLineCounter.Tests
             string[] args = [];
 
             // Act
-            var (Verbose, DirectoryPath, _) = CoreUtils.ParseArguments(args);
+            var (Verbose, DirectoryPath, _, _) = CoreUtils.ParseArguments(args);
 
             // Assert
             Assert.False(Verbose);
@@ -49,10 +49,10 @@ namespace CodeLineCounter.Tests
         public void ParseArguments_Should_Ignore_Invalid_Arguments()
         {
             // Arrange
-            string[] args = ["-invalid", "-d", "testDirectory"];
+            string[] args = ["-invalid", "-d", "testDirectory", "-f", "json"];
 
             // Act
-            var (Verbose, DirectoryPath, _) = CoreUtils.ParseArguments(args);
+            var (Verbose, DirectoryPath, _, _) = CoreUtils.ParseArguments(args);
 
             // Assert
             Assert.False(Verbose);
@@ -149,7 +149,7 @@ namespace CodeLineCounter.Tests
         public void CheckSettings_WhenHelpIsTrue_ReturnsFalse()
         {
             // Arrange
-            (bool Verbose, string? DirectoryPath, bool Help) settings = (true, null, true);
+            (bool Verbose, string? DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (true, null, true, CoreUtils.ExportFormat.JSON);
             using var sw = new StringWriter();
             Console.SetOut(sw);
 
@@ -165,7 +165,7 @@ namespace CodeLineCounter.Tests
         public void CheckSettings_WhenDirectoryPathIsNull_ReturnsFalse()
         {
             // Arrange
-            (bool Verbose, string? DirectoryPath, bool Help) settings = (Verbose: false, DirectoryPath: null, Help: false);
+            (bool Verbose, string? DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (Verbose: false, DirectoryPath: null, Help: false, format: CoreUtils.ExportFormat.CSV);
             using var sw = new StringWriter();
             Console.SetOut(sw);
 
@@ -181,13 +181,28 @@ namespace CodeLineCounter.Tests
         public void CheckSettings_WhenSettingsAreValid_ReturnsTrue()
         {
             // Arrange
-            (bool Verbose, string DirectoryPath, bool Help) settings = (false, "some_directory", false);
+            (bool Verbose, string DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (false, "some_directory", false, CoreUtils.ExportFormat.CSV);
 
             // Act
             var result = CoreUtils.CheckSettings(settings);
 
             // Assert
             Assert.True(result);
+        }
+
+        [Fact]
+        public void CheckSettings_WhenSettingsAreInvalid_ReturnsFalse()
+        {
+            // Arrange
+            (bool Verbose, string DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (false, null, false, CoreUtils.ExportFormat.CSV);
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
+
+            // Act
+            var result = CoreUtils.CheckSettings(settings);
+
+            // Assert
+            Assert.False(result);
         }
     }
 }
