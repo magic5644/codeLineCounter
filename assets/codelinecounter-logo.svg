@@ -21,7 +21,7 @@
   </text>
 
   <!-- Stylized Code Page -->
-  <g transform="translate(30, 60)">
+  <g transform="translate(30, 50)">
     <!-- Page Background -->
     <rect width="140" height="100" fill="#1C2833" rx="10" ry="10"/>
 
@@ -43,23 +43,23 @@
       </g>
 
       <!-- Code Syntax Highlighting -->
-      <text x="20" y="10" fill="#3498DB">using</text>
-      <text x="40" y="10" fill="#ECF0F1">System.Linq;</text>
-      <text x="20" y="20" fill="#E74C3C">public</text>
-      <text x="40" y="20" fill="#3498DB">class</text>
-      <text x="55" y="20" fill="#ECF0F1">CodeLineCounter</text>
-      <text x="110" y="20" fill="#F39C12">{</text>
-      <text x="35" y="30" fill="#3498DB">public</text>
-      <text x="55" y="30" fill="#3498DB">int</text>
-      <text x="65" y="30" fill="#ECF0F1">AnalyzeLines</text>
-      <text x="105" y="30" fill="#F39C12">(</text>
-      <text x="110" y="30" fill="#3498DB">string</text>
-      <text x="135" y="30" fill="#ECF0F1">path)</text>
-      <text x="150" y="30" fill="#F39C12">{</text>
-      <text x="50" y="40" fill="#E74C3C">return</text>
-      <text x="75" y="40" fill="#ECF0F1">File.ReadLines(path).Count();</text>
-      <text x="35" y="50" fill="#F39C12">}</text>
-      <text x="20" y="60" fill="#F39C12">}</text>
+      <text x="10" y="10" fill="#3498DB">using</text>
+      <text x="30" y="10" fill="#ECF0F1">System.Linq;</text>
+      <text x="10" y="20" fill="#E74C3C">public</text>
+      <text x="30" y="20" fill="#3498DB">class</text>
+      <text x="50" y="20" fill="#ECF0F1">CodeLineCounter</text>
+      <text x="100" y="20" fill="#F39C12">{</text>
+      <text x="20" y="30" fill="#3498DB">public</text>
+      <text x="40" y="30" fill="#3498DB">int</text>
+      <text x="54" y="30" fill="#ECF0F1">AnalyzeLines</text>
+      <text x="90" y="30" fill="#F39C12">(</text>
+      <text x="95" y="30" fill="#3498DB">string</text>
+      <text x="115" y="30" fill="#ECF0F1">path)</text>
+      <text x="140" y="30" fill="#F39C12">{</text>
+      <text x="30" y="40" fill="#E74C3C">return</text>
+      <text x="50" y="40" fill="#ECF0F1">File.ReadLines(path).Count();</text>
+      <text x="20" y="50" fill="#F39C12">}</text>
+      <text x="10" y="60" fill="#F39C12">}</text>
     </g>
   </g>
 
