@@ -1,48 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-   <!-- Gradient Background -->
+   <!-- Advanced Gradients -->
    <defs>
+     <!-- Background Gradient with Subtle Texture -->
      <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
        <stop offset="0%" style="stop-color:#2C3E50;stop-opacity:1" />
        <stop offset="100%" style="stop-color:#34495E;stop-opacity:1" />
      </linearGradient>
+     
+     <!-- Texture Pattern -->
+     <pattern id="subtleTexture" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+       <rect x="0" y="0" width="5" height="5" fill="rgba(255,255,255,0.02)"/>
+       <rect x="5" y="5" width="5" height="5" fill="rgba(255,255,255,0.02)"/>
+     </pattern>
+     
      <!-- Metrics Gradient -->
      <linearGradient id="metricsGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-       <stop offset="0%" style="stop-color:#3498DB;stop-opacity:0.5" />
-       <stop offset="100%" style="stop-color:#3498DB;stop-opacity:0.1" />
+       <stop offset="0%" style="stop-color:#3498DB;stop-opacity:0.7" />
+       <stop offset="100%" style="stop-color:#3498DB;stop-opacity:0.3" />
      </linearGradient>
      
      <!-- Power Gradient -->
      <linearGradient id="powerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-       <stop offset="0%" style="stop-color:#27AE60;stop-opacity:0.8" />
-       <stop offset="100%" style="stop-color:#2ECC71;stop-opacity:0.5" />
+       <stop offset="0%" style="stop-color:#27AE60;stop-opacity:0.9" />
+       <stop offset="100%" style="stop-color:#2ECC71;stop-opacity:0.6" />
+     </linearGradient>
+     
+     <!-- Code Highlight Gradient -->
+     <linearGradient id="codeHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+       <stop offset="0%" style="stop-color:rgba(52,152,219,0.1)"/>
+       <stop offset="100%" style="stop-color:rgba(52,152,219,0.05)"/>
      </linearGradient>
    </defs>
     
-   <!-- Background with Gradient -->
-   <rect width="200" height="200" fill="url(#bgGradient)" rx="25" ry="25"/>
+   <!-- Background with Gradient and Texture -->
+   <rect width="200" height="200" fill="url(#bgGradient)" rx="15" ry="15"/>
+   <rect width="200" height="200" fill="url(#subtleTexture)" rx="15" ry="15" opacity="0.5"/>
     
-   <!-- .NET Text at the Top -->
-   <text x="100" y="20" font-family="Arial, sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#ECF0F1">
+   <!-- Refined Branding -->
+   <text x="100" y="30" font-family="Consolas, 'Courier New', monospace" font-size="16" font-weight="bold" text-anchor="middle" fill="#ECF0F1" letter-spacing="-1">
      CodeLineCounter
    </text>
-   <text x="100" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#ECF0F1">
-     .NET
+   <text x="100" y="50" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#3498DB">
+     .NET CODE ANALYSIS
    </text>
     
-   <!-- Stylized Code Page -->
-   <g transform="translate(30, 55)">
-     <!-- Page Background -->
-     <rect width="140" height="100" fill="#1C2833" rx="0" ry="100"/>
+   <!-- Stylized Code Page with Depth -->
+   <g transform="translate(30, 65)" filter="url(#shadowFilter)">
+     <!-- Page Background with Subtle Depth -->
+     <rect width="140" height="100" fill="#1C2833" rx="5" ry="5" stroke="#2C3E50" stroke-width="0.5"/>
+     <rect width="140" height="100" fill="url(#codeHighlight)" rx="5" ry="5" opacity="0.5"/>
       
-     <!-- Clipping Mask to Ensure Text Stays Inside -->
+     <!-- Clipping Mask -->
      <clipPath id="code-area">
-       <rect width="140" height="100" rx="0" ry="0"/>
+       <rect width="140" height="100" rx="5" ry="5"/>
      </clipPath>
       
-     <!-- Code Lines with Line Numbers -->
-     <g clip-path="url(#code-area)" fill="#ECF0F1" font-family="monospace" font-size="5">
-       <!-- Line Numbers -->
-       <g fill="#7F8C8D">
+     <!-- Code Lines with Enhanced Representation -->
+     <g clip-path="url(#code-area)" fill="#ECF0F1" font-family="Consolas, monospace" font-size="6">
+       <!-- Line Numbers with Enhanced Styling -->
+       <g fill="#7F8C8D" opacity="0.7">
          <text x="5" y="10">1</text>
          <text x="5" y="20">2</text>
          <text x="5" y="30">3</text>
@@ -51,53 +67,63 @@
          <text x="5" y="60">6</text>
        </g>
         
-       <!-- Code Syntax Highlighting -->
+       <!-- Enhanced Syntax Highlighting -->
        <text x="10" y="10" fill="#3498DB">using</text>
        <text x="30" y="10" fill="#ECF0F1">System.Linq;</text>
        <text x="10" y="20" fill="#E74C3C">public</text>
        <text x="30" y="20" fill="#3498DB">class</text>
        <text x="50" y="20" fill="#ECF0F1">CodeLineCounter</text>
        <text x="100" y="20" fill="#F39C12">{</text>
-       <text x="20" y="30" fill="#3498DB">public</text>
+       <text x="15" y="30" fill="#3498DB">public</text>
        <text x="40" y="30" fill="#3498DB">int</text>
        <text x="54" y="30" fill="#ECF0F1">AnalyzeLines</text>
-       <text x="90" y="30" fill="#F39C12">(</text>
-       <text x="95" y="30" fill="#3498DB">string</text>
-       <text x="115" y="30" fill="#ECF0F1">path)</text>
+       <text x="95" y="30" fill="#F39C12">(</text>
+       <text x="97" y="30" fill="#3498DB">string</text>
+       <text x="120" y="30" fill="#ECF0F1">path)</text>
        <text x="140" y="30" fill="#F39C12">{</text>
-       <text x="30" y="40" fill="#E74C3C">return</text>
-       <text x="50" y="40" fill="#ECF0F1">File.ReadLines(path).Count();</text>
-       <text x="20" y="50" fill="#F39C12">}</text>
+       <text x="20" y="40" fill="#E74C3C">return</text>
+       <text x="45" y="40" fill="#ECF0F1">File.ReadLines(path).Count();</text>
+       <text x="15" y="50" fill="#F39C12">}</text>
        <text x="10" y="60" fill="#F39C12">}</text>
      </g>
    </g>
     
-   <!-- Metrics Visualization -->
+   <!-- Refined Metrics Visualization -->
    <g transform="translate(30, 170)">
-     <rect x="0" y="0" width="140" height="10" fill="url(#metricsGradient)"/>
-     <!-- Metrics Icons/Text -->
-     <g fill="#ECF0F1" font-family="Arial, sans-serif" font-size="8">
-       <text x="5" y="8">Lines: 100</text>
-       <text x="55" y="8">Dupl: 5%</text>
-       <text x="105" y="8">Compl: 3</text>
+     <rect x="0" y="0" width="140" height="10" fill="url(#metricsGradient)" rx="3" ry="3"/>
+     <!-- Metrics with Icons -->
+     <g fill="#ECF0F1" font-family="Arial, sans-serif" font-size="7">
+       <text x="5" y="8">📊 Lines: 100</text>
+       <text x="50" y="8">🔍 Dupl: 5%</text>
+       <text x="95" y="8">⚙️ Compl: 3</text>
      </g>
    </g>
    
-   <!-- Power Indicator -->
-   <g transform="translate(135, 22)">
-     <!-- Lightning Bolt Symbol -->
-     <path d="M10 0 L0 15 L7 15 L5 25 L15 10 L8 10 Z" 
+   <!-- Enhanced Power Indicator -->
+   <g transform="translate(150, 25)">
+     <!-- Refined Lightning Bolt -->
+     <path d="M8 0 L0 12 L5 12 L3 20 L12 8 L6 8 Z" 
            fill="url(#powerGradient)" 
            stroke="#2ECC71" 
-           stroke-width="1"/>
+           stroke-width="1" 
+           filter="url(#glowFilter)"/>
    </g>
    
-   <!-- Power Stats -->
-   <g transform="translate(30, 160)">
-     <rect x="0" y="0" width="140" height="10" fill="url(#powerGradient)" rx="0" ry="0"/>
-     <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="8">
-       <text x="5" y="8" fill="#ECF0F1">Code quality</text>
-       <text x="115" y="8" fill="#ECF0F1">+80%</text>
+   <!-- Improved Power Stats -->
+   <g transform="translate(30, 185)">
+     <rect x="0" y="0" width="140" height="10" fill="url(#powerGradient)" rx="3" ry="3"/>
+     <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="7">
+       <text x="35" y="8" fill="#ECF0F1">🚀 Code Quality Ok</text>
      </g>
    </g>
+   
+   <!-- Filters for Depth and Glow -->
+   <filter id="shadowFilter">
+     <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000000" flood-opacity="0.2"/>
+   </filter>
+   <filter id="glowFilter">
+     <feGaussianBlur class="blur" stdDeviation="2"/>
+     <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0"/>
+     <feComposite in2="SourceGraphic" operator="over"/>
+   </filter>
 </svg>
