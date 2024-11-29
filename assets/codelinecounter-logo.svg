@@ -22,18 +22,21 @@
    <rect width="200" height="200" fill="url(#bgGradient)" rx="25" ry="25"/>
     
    <!-- .NET Text at the Top -->
-   <text x="100" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#ECF0F1">
+   <text x="100" y="20" font-family="Arial, sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#ECF0F1">
+     CodeLineCounter
+   </text>
+   <text x="100" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#ECF0F1">
      .NET
    </text>
     
    <!-- Stylized Code Page -->
-   <g transform="translate(30, 50)">
+   <g transform="translate(30, 55)">
      <!-- Page Background -->
-     <rect width="140" height="100" fill="#1C2833" rx="10" ry="10"/>
+     <rect width="140" height="100" fill="#1C2833" rx="0" ry="100"/>
       
      <!-- Clipping Mask to Ensure Text Stays Inside -->
      <clipPath id="code-area">
-       <rect width="140" height="100" rx="10" ry="10"/>
+       <rect width="140" height="100" rx="0" ry="0"/>
      </clipPath>
       
      <!-- Code Lines with Line Numbers -->
@@ -74,14 +77,14 @@
      <rect x="0" y="0" width="140" height="10" fill="url(#metricsGradient)"/>
      <!-- Metrics Icons/Text -->
      <g fill="#ECF0F1" font-family="Arial, sans-serif" font-size="8">
-       <text x="0" y="20">Lines: 100</text>
-       <text x="50" y="20">Dupl: 5%</text>
-       <text x="100" y="20">Compl: 3</text>
+       <text x="5" y="8">Lines: 100</text>
+       <text x="55" y="8">Dupl: 5%</text>
+       <text x="105" y="8">Compl: 3</text>
      </g>
    </g>
    
    <!-- Power Indicator -->
-   <g transform="translate(150, 10)">
+   <g transform="translate(135, 22)">
      <!-- Lightning Bolt Symbol -->
      <path d="M10 0 L0 15 L7 15 L5 25 L15 10 L8 10 Z" 
            fill="url(#powerGradient)" 
@@ -92,9 +95,9 @@
    <!-- Power Stats -->
    <g transform="translate(30, 160)">
      <rect x="0" y="0" width="140" height="10" fill="url(#powerGradient)" rx="0" ry="0"/>
-     <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="6">
-       <text x="5" y="8" fill="#1C2833">Code quality</text>
-       <text x="120" y="8" fill="#1C2833">+80%</text>
+     <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="8">
+       <text x="5" y="8" fill="#ECF0F1">Code quality</text>
+       <text x="115" y="8" fill="#ECF0F1">+80%</text>
      </g>
    </g>
 </svg>
