@@ -36,7 +36,7 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="CodeLineCounter-$tag-${{ matrix.target }}"
 
-          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
+          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
 
           zip -r "$release_name.zip" "$release_name"
 
@@ -48,7 +48,7 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="CodeLineCounter-$tag-${{ matrix.target }}"
 
-          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
+          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
 
           tar czvf "${release_name}.tar.gz" "$release_name"
 
@@ -65,7 +65,7 @@ jobs:
           echo Release name is %release_name%
 
           echo Building project
-          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net8.0 --runtime ${{ matrix.target }} -c Release -o %release_name% /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
+          dotnet publish CodeLineCounter/CodeLineCounter.csproj --framework net9.0 --runtime ${{ matrix.target }} -c Release -o %release_name% /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:UseAppHost=true
 
           echo Packing files
           7z a -tzip "%release_name%.zip" ".\%release_name%\*"
