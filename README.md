@@ -22,7 +22,7 @@ All the results are exported to CSV or JSON files.
 
 ## Prerequisites
 
-- .NET 8.0 SDK installed.
+- .NET 9.0 SDK installed.
 - The following NuGet packages:
   - `Microsoft.CodeAnalysis.CSharp`
   - `coverlet.collector`
