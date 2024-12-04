@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions; // Add this line
+using System.Text.RegularExpressions;
 
 namespace CodeLineCounter.Utils
 {

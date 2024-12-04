@@ -1,6 +1,3 @@
-using System.IO;
-using System.Collections.Generic;
-using CodeLineCounter.Utils;
 using CodeLineCounter.Models;
 
 namespace CodeLineCounter.Utils

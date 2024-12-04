@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using CodeLineCounter.Services;
-using Xunit;
 
 namespace CodeLineCounter.Tests
 {

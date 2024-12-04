@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using CsvHelper;
-using System.Linq;
 
 namespace CodeLineCounter.Utils
 {

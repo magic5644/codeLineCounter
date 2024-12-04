@@ -1,14 +1,11 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
 using Microsoft.CodeAnalysis.CSharp;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace CodeLineCounter.Services
 {
-    public static class CodeAnalyzer
+    public static class CodeMetricsAnalyzer
     {
         public static (List<NamespaceMetrics>, Dictionary<string, int>, int, int, List<DuplicationCode>) AnalyzeSolution(string solutionFilePath)
         {

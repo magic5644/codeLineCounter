@@ -162,9 +162,10 @@ NBLignesCount/
 │   │   └── DuplicationCode.cs
 │   │   └── NamespaceMetrics.cs
 │   ├── Services/
-│   │   ├── CodeAnalyzer.cs
+│   │   ├── CodeMetricsAnalyzer.cs
 │   │   ├── CodeDuplicationChecker.cs
 │   │   └── CyclomaticComplexityCalculator.cs
+│   │   └── SolutionAnalyzer.cs
 │   ├── Utils/
 │   │   ├── CoreUtils.cs
 │   │   │── CsvHandler.cs
@@ -182,8 +183,9 @@ NBLignesCount/
 │   ├── CoreUtilsTests.cs
 │   ├── DataExporterTests.cs
 │   ├── CsvHandlerTests.cs
-│   ├── FileUtilsTest.cs
-│   └── HashUtilsTest.cs
+│   ├── FileUtilsTests.cs
+│   ├── HashUtilsTests.cs
+│   └── SolutionAnalyzerTests.cs
 ├── .gitignore
 ├── README.md
 ├── SECURITY.md

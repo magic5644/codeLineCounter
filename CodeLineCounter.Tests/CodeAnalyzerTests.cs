@@ -12,7 +12,7 @@ namespace CodeLineCounter.Tests
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
 
             // Act
-            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = CodeAnalyzer.AnalyzeSolution(solutionPath);
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
 
             // Assert
             Assert.NotNull(metrics);
@@ -37,7 +37,7 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out string? currentNamespace, out _, out _);
+            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out string? currentNamespace, out _, out _);
 
             // Assert
             Assert.Equal("MyNamespace", currentNamespace);
@@ -57,7 +57,7 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out int fileLineCount, out _);
+            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out int fileLineCount, out _);
 
             // Assert - 3 lines only because comment lines are ignored
             Assert.Equal(3, fileLineCount);
@@ -77,7 +77,7 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            CodeAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics,  lines, out _, out _, out int fileCyclomaticComplexity);
+            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics,  lines, out _, out _, out int fileCyclomaticComplexity);
 
             // Assert
             Assert.Equal(1, fileCyclomaticComplexity);
