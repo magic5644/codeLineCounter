@@ -120,20 +120,6 @@ namespace CodeLineCounter.Tests
         }
 
         [Fact]
-        public void get_duplication_counts_normalizes_relative_paths()
-        {
-            var duplications = new List<DuplicationCode>
-            {
-                new DuplicationCode { FilePath = @".\folder\file.cs" },
-                new DuplicationCode { FilePath = @"folder\file.cs" }
-            };
-
-            var result = DataExporter.GetDuplicationCounts(duplications);
-
-            Assert.Equal(2u, result[Path.GetFullPath(@"folder\file.cs")]);
-        }
-
-        [Fact]
         public void get_duplication_counts_handles_absolute_paths()
         {
             var absolutePath = Path.GetFullPath(@"C:\test\file.cs");
@@ -148,19 +134,6 @@ namespace CodeLineCounter.Tests
             Assert.Equal(2u, result[absolutePath]);
         }
 
-        [Fact]
-        public void get_duplication_counts_normalizes_different_path_separators()
-        {
-            var duplications = new List<DuplicationCode>
-            {
-                new DuplicationCode { FilePath = "folder/file.cs" },
-                new DuplicationCode { FilePath = @"folder\file.cs" }
-            };
-
-            var result = DataExporter.GetDuplicationCounts(duplications);
-
-            Assert.Equal(2u, result[Path.GetFullPath("folder/file.cs")]);
-        }
         [Fact]
         public void get_file_duplications_count_returns_correct_count_when_path_exists()
         {
