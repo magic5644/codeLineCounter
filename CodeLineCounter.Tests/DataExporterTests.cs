@@ -1,10 +1,5 @@
-using Xunit;
-using System;
-using System.IO;
-using System.Collections.Generic;
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
-using System.Linq;
 
 namespace CodeLineCounter.Tests
 {

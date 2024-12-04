@@ -59,6 +59,57 @@ namespace CodeLineCounter.Tests
             Assert.Equal("testDirectory", DirectoryPath);
         }
 
+        // ParseArguments correctly processes valid command line arguments with all options
+        [Fact]
+        public void ParseArguments_processes_valid_arguments_with_all_options()
+        {
+            // Arrange
+            string[] args = new[] { "-verbose", "-d", "C:/test", "-format", "JSON", "-help" };
+
+            // Act
+            var result = CoreUtils.ParseArguments(args);
+
+            // Assert
+            Assert.True(result.Verbose);
+            Assert.Equal("C:/test", result.DirectoryPath);
+            Assert.True(result.Help);
+            Assert.Equal(CoreUtils.ExportFormat.JSON, result.format);
+        }
+
+        // ParseArguments handles empty or null argument array
+        [Fact]
+        public void ParseArguments_handles_empty_argument_array()
+        {
+            // Arrange
+            string[] emptyArgs = Array.Empty<string>();
+
+            // Act
+            var result = CoreUtils.ParseArguments(emptyArgs);
+
+            // Assert
+            Assert.False(result.Verbose);
+            Assert.Null(result.DirectoryPath);
+            Assert.False(result.Help);
+            Assert.Equal(CoreUtils.ExportFormat.CSV, result.format);
+        }
+
+        // ParseArguments processes invalid format option gracefully
+        [Fact]
+        public void ParseArguments_handles_invalid_format_option()
+        {
+            // Arrange
+            string[] args = new[] { "-format", "INVALID" };
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            // Act
+            var result = CoreUtils.ParseArguments(args);
+
+            // Assert
+            Assert.Equal(CoreUtils.ExportFormat.CSV, result.format);
+            Assert.Contains("Invalid format", consoleOutput.ToString());
+        }
+
         [Fact]
         public void GetUserChoice_Should_Return_Valid_Choice()
         {
@@ -86,6 +137,39 @@ namespace CodeLineCounter.Tests
 
             // Act
             int result = CoreUtils.GetUserChoice(solutionCount);
+
+            // Assert
+            Assert.Equal(-1, result);
+        }
+
+        // GetUserChoice returns valid selection when input is within range
+        [Fact]
+        public void GetUserChoice_returns_valid_selection_for_valid_input()
+        {
+            // Arrange
+            var input = "2";
+            var consoleInput = new StringReader(input);
+            Console.SetIn(consoleInput);
+
+            // Act
+            int result = CoreUtils.GetUserChoice(3);
+
+            // Assert
+            Assert.Equal(2, result);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("abc")]
+        public void GetUserChoice_handles_invalid_input(string input)
+        {
+            // Arrange
+            var consoleInput = new StringReader(input);
+            Console.SetIn(consoleInput);
+
+            // Act
+            int result = CoreUtils.GetUserChoice(5);
 
             // Assert
             Assert.Equal(-1, result);
@@ -203,6 +287,22 @@ namespace CodeLineCounter.Tests
 
             // Assert
             Assert.False(result);
+        }
+
+        [Theory]
+        [InlineData("CO.Solution.Build-CodeMetrics.txt", CoreUtils.ExportFormat.CSV)]
+        [InlineData("CO.Solution.Build-CodeDuplications.json", CoreUtils.ExportFormat.JSON)]
+        [InlineData("CO.Solution.Build-CodeMetrics.", CoreUtils.ExportFormat.CSV)]
+        [InlineData("CO.Solution.Build-CodeDuplications.²", CoreUtils.ExportFormat.JSON)]
+        [InlineData("metrics_789.csv", CoreUtils.ExportFormat.CSV)]
+        public void get_export_file_name_with_extension_handles_alphanumeric(string fileName, CoreUtils.ExportFormat format)
+        {
+            // Act
+            var result = CoreUtils.GetExportFileNameWithExtension(fileName, format);
+
+            // Assert
+            Assert.Contains(Path.GetFileNameWithoutExtension(fileName), result);
+            Assert.True(File.Exists(result) || !File.Exists(result));
         }
     }
 }

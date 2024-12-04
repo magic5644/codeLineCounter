@@ -1,9 +1,3 @@
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using CsvHelper;
-using System.Linq;
-using Xunit;
 using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Tests
