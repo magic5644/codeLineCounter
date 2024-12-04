@@ -185,6 +185,7 @@ NBLignesCount/
 │   ├── CsvHandlerTests.cs
 │   ├── FileUtilsTests.cs
 │   ├── HashUtilsTests.cs
+│   ├── JSONHandlerTests.cs
 │   └── SolutionAnalyzerTests.cs
 ├── .gitignore
 ├── README.md

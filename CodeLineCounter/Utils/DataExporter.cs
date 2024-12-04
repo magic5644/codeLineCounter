@@ -5,31 +5,45 @@ namespace CodeLineCounter.Utils
 
     public static class DataExporter
     {
+        private static readonly Dictionary<CoreUtils.ExportFormat, IExportStrategy> _exportStrategies = new()
+        {
+            { CoreUtils.ExportFormat.CSV, new CsvExportStrategy() },
+            { CoreUtils.ExportFormat.JSON, new JsonExportStrategy() }
+        };
+
         public static void Export<T>(string filePath, T data, CoreUtils.ExportFormat format) where T : class
         {
-            filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
-            switch (format)
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            try
             {
-                case CoreUtils.ExportFormat.CSV:
-                    CsvHandler.Serialize(new List<T> { data }, filePath);
-                    break;
-                case CoreUtils.ExportFormat.JSON:
-                    JsonHandler.Serialize(new List<T> { data }, filePath);
-                    break;
+                filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
+                _exportStrategies[format].Export(filePath, new List<T> { data });
+            }
+            catch (IOException ex)
+            {
+                throw new IOException($"Failed to export data to {filePath}", ex);
             }
         }
 
         public static void ExportCollection<T>(string filePath, IEnumerable<T> data, CoreUtils.ExportFormat format) where T : class
         {
-            filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
-            switch (format)
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            try
             {
-                case CoreUtils.ExportFormat.CSV:
-                    CsvHandler.Serialize(data, filePath);
-                    break;
-                case CoreUtils.ExportFormat.JSON:
-                    JsonHandler.Serialize(data, filePath);
-                    break;
+                filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
+                _exportStrategies[format].Export(filePath, data);
+            }
+            catch (IOException ex)
+            {
+                throw new IOException($"Failed to export data to {filePath}", ex);
             }
         }
 
@@ -38,87 +52,102 @@ namespace CodeLineCounter.Utils
             ExportCollection(filePath, duplications, format);
         }
 
-        public static void ExportMetrics(string filePath, List<NamespaceMetrics> metrics, 
-            Dictionary<string, int> projectTotals, int totalLines, 
+        public static void ExportMetrics(string filePath, List<NamespaceMetrics> metrics,
+            Dictionary<string, int> projectTotals, int totalLines,
             List<DuplicationCode> duplications, string? solutionPath, CoreUtils.ExportFormat format)
         {
-            string? currentProject = null;
-            filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
-            List<NamespaceMetrics> namespaceMetrics = [];
-            var duplicationCounts = GetDuplicationCounts(duplications);
-
-            foreach (var metric in metrics)
+            try
             {
-                if (!string.Equals(currentProject, metric.ProjectName, System.StringComparison.OrdinalIgnoreCase))
+                string? currentProject = null;
+                filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
+                List<NamespaceMetrics> namespaceMetrics = [];
+                var duplicationCounts = GetDuplicationCounts(duplications);
+
+                foreach (var metric in metrics)
                 {
-                    if (currentProject != null)
+                    if (!string.Equals(currentProject, metric.ProjectName, System.StringComparison.OrdinalIgnoreCase))
                     {
-                        namespaceMetrics.Add(new NamespaceMetrics
+                        if (currentProject != null)
                         {
-                            ProjectName = currentProject,
-                            ProjectPath = "Total",
-                            LineCount = projectTotals[currentProject]
-                        });
+                            namespaceMetrics.Add(new NamespaceMetrics
+                            {
+                                ProjectName = currentProject,
+                                ProjectPath = "Total",
+                                LineCount = projectTotals[currentProject]
+                            });
+                        }
+                        currentProject = metric.ProjectName;
                     }
-                    currentProject = metric.ProjectName;
+                    metric.CodeDuplications = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
+                    namespaceMetrics.Add(metric);
                 }
-                metric.CodeDuplications = GetFileDuplicationsCount(duplicationCounts, metric, solutionPath);
-                namespaceMetrics.Add(metric);
-            }
 
-            if (currentProject != null)
+                if (currentProject != null)
+                {
+                    namespaceMetrics.Add(new NamespaceMetrics
+                    {
+                        ProjectName = currentProject,
+                        ProjectPath = "Total",
+                        LineCount = projectTotals[currentProject]
+                    });
+                    namespaceMetrics.Add(new NamespaceMetrics
+                    {
+                        ProjectName = "Total",
+                        ProjectPath = "",
+                        LineCount = totalLines
+                    });
+                }
+
+                ExportCollection(filePath, namespaceMetrics, format);
+            }
+            catch (IOException ex)
             {
-                namespaceMetrics.Add(new NamespaceMetrics
-                {
-                    ProjectName = currentProject,
-                    ProjectPath = "Total",
-                    LineCount = projectTotals[currentProject]
-                });
-                namespaceMetrics.Add(new NamespaceMetrics
-                {
-                    ProjectName = "Total",
-                    ProjectPath = "",
-                    LineCount = totalLines
-                });
+                throw new IOException($"Failed to export metrics to {filePath}", ex);
             }
-
-            ExportCollection(filePath, namespaceMetrics, format);
         }
 
-        private static Dictionary<string, int> GetDuplicationCounts(List<DuplicationCode> duplications)
+        public static Dictionary<string, uint> GetDuplicationCounts(List<DuplicationCode> duplications)
         {
-            var duplicationCounts = new Dictionary<string, int>();
+            var duplicationCounts = new Dictionary<string, uint>(duplications.Count, StringComparer.OrdinalIgnoreCase);
             foreach (var duplication in duplications)
             {
-                var normalizedPath = Path.GetFullPath(duplication.FilePath);
-                if (duplicationCounts.TryGetValue(normalizedPath, out int count))
-                {
-                    duplicationCounts[normalizedPath] = count + 1;
-                }
-                else
-                {
-                    duplicationCounts[normalizedPath] = 1;
-                }
+                var normalizedPath = Path.GetFullPath(duplication.FilePath, Path.GetFullPath("."));
+                duplicationCounts[normalizedPath] = duplicationCounts.GetValueOrDefault(normalizedPath) + 1;
             }
             return duplicationCounts;
         }
 
-        private static int GetFileDuplicationsCount(Dictionary<string, int> duplicationCounts, 
+        public static int GetFileDuplicationsCount(Dictionary<string, uint> duplicationCounts,
             NamespaceMetrics metric, string? solutionPath)
         {
             if (metric.FilePath == null) return 0;
-            
-            solutionPath = solutionPath == null ? 
-                Path.GetFullPath(".") : 
-                Path.GetDirectoryName(solutionPath);
 
-            if (solutionPath == null) return 0;
+            var normalizedPath = Path.Combine(
+                string.IsNullOrEmpty(solutionPath) ? Path.GetFullPath(".") : solutionPath,
+                metric.FilePath ?? string.Empty);
 
-            var normalizedPath = !string.IsNullOrEmpty(solutionPath) ? 
-                Path.GetFullPath(metric.FilePath, solutionPath) : 
-                Path.GetFullPath(metric.FilePath);
+            return (int)duplicationCounts.GetValueOrDefault(normalizedPath);
+        }
+    }
 
-            return duplicationCounts.TryGetValue(normalizedPath, out int count) ? count : 0;
+    public interface IExportStrategy
+    {
+        void Export<T>(string filePath, IEnumerable<T> data) where T : class;
+    }
+
+    public class CsvExportStrategy : IExportStrategy
+    {
+        public void Export<T>(string filePath, IEnumerable<T> data) where T : class
+        {
+            CsvHandler.Serialize(data, filePath);
+        }
+    }
+
+    public class JsonExportStrategy : IExportStrategy
+    {
+        public void Export<T>(string filePath, IEnumerable<T> data) where T : class
+        {
+            JsonHandler.Serialize(data, filePath);
         }
     }
 }

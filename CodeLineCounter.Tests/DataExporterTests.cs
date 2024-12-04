@@ -92,6 +92,151 @@ namespace CodeLineCounter.Tests
             Assert.True(File.Exists(filePath + ".csv"));
         }
 
+        [Fact]
+        public void get_duplication_counts_returns_correct_counts_for_duplicate_paths()
+        {
+            var duplications = new List<DuplicationCode>
+            {
+                new DuplicationCode { FilePath = "file1.cs" },
+                new DuplicationCode { FilePath = "file1.cs" },
+                new DuplicationCode { FilePath = "file2.cs" },
+                new DuplicationCode { FilePath = "file1.cs" }
+            };
+
+            var result = DataExporter.GetDuplicationCounts(duplications);
+
+            Assert.Equal(3u, result[Path.GetFullPath("file1.cs")]);
+            Assert.Equal(1u, result[Path.GetFullPath("file2.cs")]);
+        }
+
+        [Fact]
+        public void get_duplication_counts_returns_empty_dictionary_for_empty_list()
+        {
+            var duplications = new List<DuplicationCode>();
+
+            var result = DataExporter.GetDuplicationCounts(duplications);
+
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public void get_duplication_counts_normalizes_relative_paths()
+        {
+            var duplications = new List<DuplicationCode>
+            {
+                new DuplicationCode { FilePath = @".\folder\file.cs" },
+                new DuplicationCode { FilePath = @"folder\file.cs" }
+            };
+
+            var result = DataExporter.GetDuplicationCounts(duplications);
+
+            Assert.Equal(2u, result[Path.GetFullPath(@"folder\file.cs")]);
+        }
+
+        [Fact]
+        public void get_duplication_counts_handles_absolute_paths()
+        {
+            var absolutePath = Path.GetFullPath(@"C:\test\file.cs");
+            var duplications = new List<DuplicationCode>
+            {
+                new DuplicationCode { FilePath = absolutePath },
+                new DuplicationCode { FilePath = absolutePath }
+            };
+
+            var result = DataExporter.GetDuplicationCounts(duplications);
+
+            Assert.Equal(2u, result[absolutePath]);
+        }
+
+        [Fact]
+        public void get_duplication_counts_normalizes_different_path_separators()
+        {
+            var duplications = new List<DuplicationCode>
+            {
+                new DuplicationCode { FilePath = "folder/file.cs" },
+                new DuplicationCode { FilePath = @"folder\file.cs" }
+            };
+
+            var result = DataExporter.GetDuplicationCounts(duplications);
+
+            Assert.Equal(2u, result[Path.GetFullPath("folder/file.cs")]);
+        }
+        [Fact]
+        public void get_file_duplications_count_returns_correct_count_when_path_exists()
+        {
+            var duplicationCounts = new Dictionary<string, uint>
+    {
+        { Path.Combine(Path.GetFullPath("."), "test.cs"), 5 }
+    };
+
+            var metric = new NamespaceMetrics { FilePath = "test.cs" };
+
+            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+
+            Assert.Equal(5, result);
+        }
+
+        [Fact]
+        public void get_file_duplications_count_returns_zero_when_path_not_found()
+        {
+            var duplicationCounts = new Dictionary<string, uint>();
+
+            var metric = new NamespaceMetrics { FilePath = "nonexistent.cs" };
+
+            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+
+            Assert.Equal(0, result);
+        }
+
+        [Fact]
+        public void get_file_duplications_count_returns_zero_when_filepath_null()
+        {
+            var duplicationCounts = new Dictionary<string, uint>
+            {
+                { Path.Combine(Path.GetFullPath("."), "test.cs"), 5 }
+            };
+
+            var metric = new NamespaceMetrics { FilePath = null };
+
+            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+
+            Assert.Equal(0, result);
+        }
+
+        // Handles empty string solutionPath by using current directory
+        [Fact]
+        public void get_file_duplications_count_uses_current_dir_for_empty_solution_path()
+        {
+            var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
+            var duplicationCounts = new Dictionary<string, uint>
+            {
+                { expectedPath, 3 }
+            };
+
+            var metric = new NamespaceMetrics { FilePath = "test.cs" };
+
+            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, string.Empty);
+
+            Assert.Equal(3, result);
+        }
+
+        // Handles null solutionPath by using current directory
+        [Fact]
+        public void get_file_duplications_count_uses_current_dir_for_null_solution_path()
+        {
+            var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
+            var duplicationCounts = new Dictionary<string, uint>
+            {
+                { expectedPath, 4 }
+            };
+
+            var metric = new NamespaceMetrics { FilePath = "test.cs" };
+
+            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+
+            Assert.Equal(4, result);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

@@ -85,8 +85,8 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            var file1 = "TestFile1.cs";
-            var file2 = "TestFile2.cs";
+            var file1 = "TestFile3.cs";
+            var file2 = "TestFile4.cs";
 
             // Act
             checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
@@ -126,8 +126,8 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            var file1 = "TestFile1.cs";
-            var file2 = "TestFile2.cs";
+            var file1 = "TestFile5.cs";
+            var file2 = "TestFile6.cs";
 
             // Act
             checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
