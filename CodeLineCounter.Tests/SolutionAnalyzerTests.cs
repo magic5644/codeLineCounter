@@ -27,7 +27,7 @@ namespace CodeLineCounter.Tests.Services
         public void OutputAnalysisResults_ShouldPrintCorrectOutput()
         {
             // Arrange
-            var result = new SolutionAnalyzer.AnalysisResult
+            var result = new AnalysisResult
             {
                 Metrics = new List<NamespaceMetrics>(),
                 ProjectTotals = new Dictionary<string, int>(),

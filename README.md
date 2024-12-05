@@ -155,10 +155,11 @@ Code Hash,FilePath,MethodName,StartLine,NbLines
 ## Project Structure
 
 ```bash
-NBLignesCount/
+CodeLineCounter/
 │
 ├── CodeLineCounter/
 │   ├── Models/
+│   │   └── AnalysisResult.cs
 │   │   └── DuplicationCode.cs
 │   │   └── NamespaceMetrics.cs
 │   ├── Services/

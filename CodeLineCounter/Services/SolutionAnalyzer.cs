@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace CodeLineCounter.Services
 {
-    public static class SolutionAnalyzer
+    public static partial class SolutionAnalyzer
     {
 
         public static void AnalyzeAndExportSolution(string solutionPath, bool verbose, CoreUtils.ExportFormat format)
@@ -100,18 +100,6 @@ namespace CodeLineCounter.Services
                 Console.Error.WriteLine($"IO error during file operations: {ioe.Message}");
                 throw;
             }
-        }
-
-        public sealed class AnalysisResult
-        {
-            public required List<NamespaceMetrics> Metrics { get; set; }
-            public required Dictionary<string, int> ProjectTotals { get; set; }
-            public int TotalLines { get; set; }
-            public int TotalFiles { get; set; }
-            public required List<DuplicationCode> DuplicationMap { get; set; }
-            public TimeSpan ProcessingTime { get; set; }
-            public required string SolutionFileName { get; set; }
-            public int DuplicatedLines { get; set; }
         }
 
         public static void OutputDetailedMetrics(List<NamespaceMetrics> metrics, Dictionary<string, int> projectTotals)
