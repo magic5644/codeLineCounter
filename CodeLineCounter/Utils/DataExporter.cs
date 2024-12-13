@@ -15,20 +15,10 @@ namespace CodeLineCounter.Utils
 
         public static void Export<T>(string filePath, T data, CoreUtils.ExportFormat format) where T : class
         {
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            try
-            {
-                filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
-                _exportStrategies[format].Export(filePath, new List<T> { data });
-            }
-            catch (IOException ex)
-            {
-                throw new IOException($"Failed to export data to {filePath}", ex);
-            }
+            ExportCollection(filePath, new List<T> { data }, format);
         }
 
         public static void ExportCollection<T>(string filePath, IEnumerable<T> data, CoreUtils.ExportFormat format) where T : class
