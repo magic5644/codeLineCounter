@@ -28,6 +28,7 @@ namespace CodeLineCounter.Services
             var duplicationMap = codeDuplicationChecker.GetCodeDuplicationMap();
             var duplicationList = duplicationMap.Values.SelectMany(v => v).ToList();
             var dependencyList = DependencyAnalyzer.GetDependencies();
+            DependencyAnalyzer.Clear();
 
             return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationList, dependencyList);
         }

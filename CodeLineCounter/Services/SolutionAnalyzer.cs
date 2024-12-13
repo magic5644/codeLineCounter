@@ -15,6 +15,7 @@ namespace CodeLineCounter.Services
                 var analysisResult = PerformAnalysis(solutionPath);
                 OutputAnalysisResults(analysisResult, verbose);
                 ExportResults(analysisResult, solutionPath, format);
+                
             }
             catch (Exception ex)
             {

@@ -216,9 +216,9 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var dependencies = new List<DependencyRelation>
-        {
-            new DependencyRelation { SourceClass = "ClassA", TargetClass = "ClassB", FilePath = "file1.cs", StartLine = 10 },
-        };
+            {
+                new DependencyRelation { SourceClass = "ClassA", TargetClass = "ClassB", FilePath = "file1.cs", StartLine = 10 },
+            };
 
             var testFilePath = "test_export";
             var format = CoreUtils.ExportFormat.JSON;
@@ -233,8 +233,26 @@ namespace CodeLineCounter.Tests
             Assert.True(File.Exists(expectedJsonPath));
             Assert.True(File.Exists(expectedDotPath));
 
-            File.Delete(expectedJsonPath);
-            File.Delete(expectedDotPath);
+            try
+            {
+                if (File.Exists(expectedJsonPath))
+                {
+                    File.Delete(expectedJsonPath);
+                }
+
+                if (File.Exists(expectedDotPath)) 
+                {
+                    File.Delete(expectedDotPath);
+                }
+            }
+            catch (IOException ex)
+            {
+                throw new IOException($"Error deleting files: {ex.Message}", ex);
+            }
+            catch (UnauthorizedAccessException ex) 
+            {
+                throw new UnauthorizedAccessException($"Access denied while deleting files: {ex.Message}", ex);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
