@@ -14,6 +14,8 @@ namespace CodeLineCounter.Tests.Services
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
+            var sw = new StringWriter();
+            Console.SetOut(sw);
             Console.WriteLine($"Constructed solution path: {solutionPath}");
             Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
             Console.WriteLine($"Constructed solution path: {solutionPath}");
