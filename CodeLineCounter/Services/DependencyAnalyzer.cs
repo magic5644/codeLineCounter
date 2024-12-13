@@ -145,127 +145,122 @@ namespace CodeLineCounter.Services
         private static IEnumerable<string> ExtractDependencies(ClassDeclarationSyntax classDeclaration)
         {
             var dependencies = new HashSet<string>();
-            var root = classDeclaration.SyntaxTree.GetRoot();
-            // Récupérer les usings une seule fois au début
-            var usings = (root as CompilationUnitSyntax)?.Usings.Select(u => u.Name.ToString()).ToList()
-                         ?? new List<string>();
+            var usings = GetUsingsWithCurrentNamespace(classDeclaration);
 
-            // Ajouter le namespace courant aux usings si présent
+            AnalyzeInheritance(classDeclaration, usings, dependencies);
+            AnalyzeClassMembers(classDeclaration, usings, dependencies);
+
+            return dependencies;
+        }
+
+        private static List<string> GetUsingsWithCurrentNamespace(ClassDeclarationSyntax classDeclaration)
+        {
+            var root = classDeclaration.SyntaxTree.GetRoot();
+            var usings = (root as CompilationUnitSyntax)?.Usings
+                .Select(u => u.Name.ToString())
+                .ToList() ?? new List<string>();
+
             var currentNamespace = classDeclaration.Ancestors()
                 .OfType<NamespaceDeclarationSyntax>()
                 .FirstOrDefault()?.Name.ToString();
+
             if (currentNamespace != null)
             {
                 usings.Add(currentNamespace);
             }
 
-            // Analyze inheritance
-            if (classDeclaration.BaseList != null)
-            {
-                foreach (var baseType in classDeclaration.BaseList.Types)
-                {
-                    var typeName = GetFullTypeNameFromSymbol(baseType.Type.ToString(), usings);
-                    if (_solutionClasses.Contains(typeName))
-                    {
-                        dependencies.Add(typeName);
-                    }
-                }
-            }
+            return usings;
+        }
 
-            // Analyze all nodes in the class
+        private static void AnalyzeInheritance(ClassDeclarationSyntax classDeclaration,
+            List<string> usings, HashSet<string> dependencies)
+        {
+            if (classDeclaration.BaseList == null) return;
+
+            foreach (var baseType in classDeclaration.BaseList.Types)
+            {
+                AddDependencyIfExists(baseType.Type.ToString(), usings, dependencies);
+            }
+        }
+
+        private static void AnalyzeClassMembers(ClassDeclarationSyntax classDeclaration,
+            List<string> usings, HashSet<string> dependencies)
+        {
             var allNodes = classDeclaration.DescendantNodes();
 
             foreach (var node in allNodes)
             {
-                switch (node)
-                {
-                    case FieldDeclarationSyntax field:
-                        var fieldType = GetFullTypeNameFromSymbol(field.Declaration.Type.ToString(), usings);
-                        if (_solutionClasses.Contains(fieldType))
-                        {
-                            dependencies.Add(fieldType);
-                        }
-                        break;
-
-                    case PropertyDeclarationSyntax property:
-                        var propertyType = GetFullTypeNameFromSymbol(property.Type.ToString(), usings);
-                        if (_solutionClasses.Contains(propertyType))
-                        {
-                            dependencies.Add(propertyType);
-                        }
-                        break;
-
-                    case VariableDeclarationSyntax variable:
-                        var varType = GetFullTypeNameFromSymbol(variable.Type.ToString(), usings);
-                        if (_solutionClasses.Contains(varType))
-                        {
-                            dependencies.Add(varType);
-                        }
-                        break;
-
-                    case ObjectCreationExpressionSyntax creation:
-                        var creationType = GetFullTypeNameFromSymbol(creation.Type.ToString(), usings);
-                        if (_solutionClasses.Contains(creationType))
-                        {
-                            dependencies.Add(creationType);
-                        }
-                        break;
-
-                    case InvocationExpressionSyntax invocation:
-                        if (invocation.Expression is MemberAccessExpressionSyntax memberAccess)
-                        {
-                            var expressionType = GetFullTypeNameFromSymbol(memberAccess.Expression.ToString(), usings);
-                            if (_solutionClasses.Contains(expressionType))
-                            {
-                                dependencies.Add(expressionType);
-                            }
-                        }
-                        break;
-
-                    case ParameterSyntax parameter:
-                        var paramType = GetFullTypeNameFromSymbol(parameter.Type?.ToString() ?? "", usings);
-                        if (_solutionClasses.Contains(paramType))
-                        {
-                            dependencies.Add(paramType);
-                        }
-                        break;
-
-                    case GenericNameSyntax generic:
-                        foreach (var typeArg in generic.TypeArgumentList.Arguments)
-                        {
-                            var genericType = GetFullTypeNameFromSymbol(typeArg.ToString(), usings);
-                            if (_solutionClasses.Contains(genericType))
-                            {
-                                dependencies.Add(genericType);
-                            }
-                        }
-                        break;
-                    case IdentifierNameSyntax identifier:
-                        var identifierType = GetFullTypeNameFromSymbol(identifier.Identifier.Text, usings);
-                        if (_solutionClasses.Contains(identifierType))
-                        {
-                            dependencies.Add(identifierType);
-                        }
-                        break;
-
-                    case MemberAccessExpressionSyntax innerMemberAccess when !(innerMemberAccess.Parent is InvocationExpressionSyntax):
-                        var memberType = GetFullTypeNameFromSymbol(innerMemberAccess.Expression.ToString(), usings);
-                        if (_solutionClasses.Contains(memberType))
-                        {
-                            dependencies.Add(memberType);
-                        }
-                        break;
-                }
+                AnalyzeNode(node, usings, dependencies);
             }
-
-            return dependencies;
         }
 
-        private static IEnumerable<string> GetUsings(SyntaxNode node)
+        private static void AnalyzeNode(SyntaxNode node, List<string> usings, HashSet<string> dependencies)
         {
-            var root = node.SyntaxTree.GetRoot();
-            var compilation = root as CompilationUnitSyntax;
-            return compilation?.Usings.Select(u => u.Name.ToString()) ?? Enumerable.Empty<string>();
+            switch (node)
+            {
+                case FieldDeclarationSyntax field:
+                    AddDependencyIfExists(field.Declaration.Type.ToString(), usings, dependencies);
+                    break;
+
+                case PropertyDeclarationSyntax property:
+                    AddDependencyIfExists(property.Type.ToString(), usings, dependencies);
+                    break;
+
+                case VariableDeclarationSyntax variable:
+                    AddDependencyIfExists(variable.Type.ToString(), usings, dependencies);
+                    break;
+
+                case ObjectCreationExpressionSyntax creation:
+                    AddDependencyIfExists(creation.Type.ToString(), usings, dependencies);
+                    break;
+
+                case InvocationExpressionSyntax invocation:
+                    AnalyzeInvocation(invocation, usings, dependencies);
+                    break;
+
+                case ParameterSyntax parameter:
+                    AddDependencyIfExists(parameter.Type?.ToString() ?? "", usings, dependencies);
+                    break;
+
+                case GenericNameSyntax generic:
+                    AnalyzeGenericType(generic, usings, dependencies);
+                    break;
+
+                case IdentifierNameSyntax identifier:
+                    AddDependencyIfExists(identifier.Identifier.Text, usings, dependencies);
+                    break;
+
+                case MemberAccessExpressionSyntax memberAccess when !(memberAccess.Parent is InvocationExpressionSyntax):
+                    AddDependencyIfExists(memberAccess.Expression.ToString(), usings, dependencies);
+                    break;
+            }
+        }
+
+        private static void AnalyzeInvocation(InvocationExpressionSyntax invocation,
+            List<string> usings, HashSet<string> dependencies)
+        {
+            if (invocation.Expression is MemberAccessExpressionSyntax memberAccess)
+            {
+                AddDependencyIfExists(memberAccess.Expression.ToString(), usings, dependencies);
+            }
+        }
+
+        private static void AnalyzeGenericType(GenericNameSyntax generic,
+            List<string> usings, HashSet<string> dependencies)
+        {
+            foreach (var typeArg in generic.TypeArgumentList.Arguments)
+            {
+                AddDependencyIfExists(typeArg.ToString(), usings, dependencies);
+            }
+        }
+
+        private static void AddDependencyIfExists(string typeName, List<string> usings, HashSet<string> dependencies)
+        {
+            var fullTypeName = GetFullTypeNameFromSymbol(typeName, usings);
+            if (_solutionClasses.Contains(fullTypeName))
+            {
+                dependencies.Add(fullTypeName);
+            }
         }
 
         private static string GetFullTypeNameFromSymbol(string typeName, IEnumerable<string> usings)
@@ -273,48 +268,22 @@ namespace CodeLineCounter.Services
             if (string.IsNullOrEmpty(typeName))
                 return typeName;
 
-            // Gérer les types génériques imbriqués
-            if (typeName.Contains("<"))
-            {
-                var depth = 0;
-                var lastIndex = 0;
-                var parts = new List<string>();
+            if (!typeName.Contains("<"))
+                return ResolveSimpleTypeName(typeName, usings);
 
-                for (var i = 0; i < typeName.Length; i++)
-                {
-                    if (typeName[i] == '<')
-                    {
-                        if (depth == 0)
-                        {
-                            parts.Add(typeName[lastIndex..i]);
-                            lastIndex = i;
-                        }
-                        depth++;
-                    }
-                    else if (typeName[i] == '>')
-                    {
-                        depth--;
-                        if (depth == 0)
-                        {
-                            parts.Add(typeName[lastIndex..(i + 1)]);
-                            lastIndex = i + 1;
-                        }
-                    }
-                }
+            return HandleGenericType(typeName, usings);
+        }
 
-                if (lastIndex < typeName.Length)
-                    parts.Add(typeName[lastIndex..]);
-
-                return string.Join("", parts.Select(p => p.Contains("<")
-                    ? p
-                    : GetFullTypeNameFromSymbol(p, usings)));
-            }
-
-            // Si le type contient déjà un namespace, on le retourne tel quel
+        private static string ResolveSimpleTypeName(string typeName, IEnumerable<string> usings)
+        {
             if (typeName.Contains("."))
                 return typeName;
 
-            // Chercher dans les using si on trouve le namespace correspondant
+            return FindTypeInUsings(typeName, usings);
+        }
+
+        private static string FindTypeInUsings(string typeName, IEnumerable<string> usings)
+        {
             foreach (var usingStatement in usings)
             {
                 var fullName = $"{usingStatement}.{typeName}";
@@ -323,9 +292,49 @@ namespace CodeLineCounter.Services
                     return fullName;
                 }
             }
-
-            // Vérifier dans le namespace courant
             return typeName;
+        }
+
+        private static string HandleGenericType(string typeName, IEnumerable<string> usings)
+        {
+            var parts = SplitGenericType(typeName);
+            return string.Join("", parts.Select(p => p.Contains("<")
+                ? p
+                : GetFullTypeNameFromSymbol(p, usings)));
+        }
+
+        private static List<string> SplitGenericType(string typeName)
+        {
+            var parts = new List<string>();
+            var depth = 0;
+            var lastIndex = 0;
+
+            for (var i = 0; i < typeName.Length; i++)
+            {
+                if (typeName[i] == '<')
+                {
+                    if (depth == 0)
+                    {
+                        parts.Add(typeName[lastIndex..i]);
+                        lastIndex = i;
+                    }
+                    depth++;
+                }
+                else if (typeName[i] == '>')
+                {
+                    depth--;
+                    if (depth == 0)
+                    {
+                        parts.Add(typeName[lastIndex..(i + 1)]);
+                        lastIndex = i + 1;
+                    }
+                }
+            }
+
+            if (lastIndex < typeName.Length)
+                parts.Add(typeName[lastIndex..]);
+
+            return parts;
         }
 
         public static List<DependencyRelation> GetDependencies()
