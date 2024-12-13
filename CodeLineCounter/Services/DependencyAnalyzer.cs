@@ -146,7 +146,18 @@ namespace CodeLineCounter.Services
         {
             var dependencies = new HashSet<string>();
             var root = classDeclaration.SyntaxTree.GetRoot();
-            var usings = (root as CompilationUnitSyntax)?.Usings.Select(u => u.Name.ToString()) ?? Enumerable.Empty<string>();
+            // Récupérer les usings une seule fois au début
+            var usings = (root as CompilationUnitSyntax)?.Usings.Select(u => u.Name.ToString()).ToList()
+                         ?? new List<string>();
+
+            // Ajouter le namespace courant aux usings si présent
+            var currentNamespace = classDeclaration.Ancestors()
+                .OfType<NamespaceDeclarationSyntax>()
+                .FirstOrDefault()?.Name.ToString();
+            if (currentNamespace != null)
+            {
+                usings.Add(currentNamespace);
+            }
 
             // Analyze inheritance
             if (classDeclaration.BaseList != null)
@@ -259,15 +270,44 @@ namespace CodeLineCounter.Services
 
         private static string GetFullTypeNameFromSymbol(string typeName, IEnumerable<string> usings)
         {
-            // Gérer les types génériques
+            if (string.IsNullOrEmpty(typeName))
+                return typeName;
+
+            // Gérer les types génériques imbriqués
             if (typeName.Contains("<"))
             {
-                var baseType = typeName.Substring(0, typeName.IndexOf("<"));
-                var genericPart = typeName.Substring(typeName.IndexOf("<"));
+                var depth = 0;
+                var lastIndex = 0;
+                var parts = new List<string>();
 
-                // Résoudre le type de base
-                var resolvedBaseType = GetFullTypeNameFromSymbol(baseType, usings);
-                return resolvedBaseType + genericPart;
+                for (var i = 0; i < typeName.Length; i++)
+                {
+                    if (typeName[i] == '<')
+                    {
+                        if (depth == 0)
+                        {
+                            parts.Add(typeName[lastIndex..i]);
+                            lastIndex = i;
+                        }
+                        depth++;
+                    }
+                    else if (typeName[i] == '>')
+                    {
+                        depth--;
+                        if (depth == 0)
+                        {
+                            parts.Add(typeName[lastIndex..(i + 1)]);
+                            lastIndex = i + 1;
+                        }
+                    }
+                }
+
+                if (lastIndex < typeName.Length)
+                    parts.Add(typeName[lastIndex..]);
+
+                return string.Join("", parts.Select(p => p.Contains("<")
+                    ? p
+                    : GetFullTypeNameFromSymbol(p, usings)));
             }
 
             // Si le type contient déjà un namespace, on le retourne tel quel
@@ -291,6 +331,12 @@ namespace CodeLineCounter.Services
         public static List<DependencyRelation> GetDependencies()
         {
             return _dependencyMap.SelectMany(kvp => kvp.Value).ToList() ?? new List<DependencyRelation>();
+        }
+
+        public static void Clear()
+        {
+            _dependencyMap.Clear();
+            _solutionClasses.Clear();
         }
     }
 }
