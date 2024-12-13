@@ -11,13 +11,17 @@ namespace CodeLineCounter.Utils
             {
                 return "";
             }
+
             byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
-            StringBuilder builder = new();
-            for (int i = 0; i < bytes.Length; i++)
+
+            return string.Create(bytes.Length * 2, bytes, static (span, byteArray) =>
             {
-                builder.Append(bytes[i].ToString("x2"));
-            }
-            return builder.ToString();
+              const string format = "x2";
+              for (int i = 0; i < byteArray.Length; i++)
+              {
+                  byteArray[i].TryFormat(span.Slice(i * 2, 2), out _, format);
+                }
+            });
         }
     }
 }
