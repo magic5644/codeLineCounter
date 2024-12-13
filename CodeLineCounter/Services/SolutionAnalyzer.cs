@@ -28,7 +28,7 @@ namespace CodeLineCounter.Services
             var timer = new Stopwatch();
             timer.Start();
 
-            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) =
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap, dependencyList) =
                 CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
 
             timer.Stop();
@@ -40,6 +40,7 @@ namespace CodeLineCounter.Services
                 TotalLines = totalLines,
                 TotalFiles = totalFiles,
                 DuplicationMap = duplicationMap,
+                DependencyList = dependencyList,
                 ProcessingTime = timer.Elapsed,
                 SolutionFileName = Path.GetFileName(solutionPath),
                 DuplicatedLines = duplicationMap.Sum(x => x.NbLines)
@@ -69,6 +70,8 @@ namespace CodeLineCounter.Services
                 $"{result.SolutionFileName}-CodeMetrics.xxx", format);
             var duplicationOutputFilePath = CoreUtils.GetExportFileNameWithExtension(
                 $"{result.SolutionFileName}-CodeDuplications.xxx", format);
+                var dependenciesOutputFilePath = CoreUtils.GetExportFileNameWithExtension(
+                $"{result.SolutionFileName}-CodeDependencies.xxx", format);
 
             try
             {
@@ -84,6 +87,10 @@ namespace CodeLineCounter.Services
                     () => DataExporter.ExportDuplications(
                         duplicationOutputFilePath,
                         result.DuplicationMap,
+                        format),
+                    () => DataExporter.ExportDependencies(
+                        dependenciesOutputFilePath,
+                        result.DependencyList,
                         format)
                 );
 

@@ -14,6 +14,10 @@ namespace CodeLineCounter.Tests.Services
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
+            Console.WriteLine($"Constructed solution path: {solutionPath}");
+            Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
+            Console.WriteLine($"Constructed solution path: {solutionPath}");
+            Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
 
             // Act
             var result = SolutionAnalyzer.PerformAnalysis(solutionPath);
@@ -34,6 +38,7 @@ namespace CodeLineCounter.Tests.Services
                 TotalLines = 1000,
                 TotalFiles = 10,
                 DuplicationMap = new List<DuplicationCode>(),
+                DependencyList = new List<DependencyRelation>(),
                 ProcessingTime = TimeSpan.FromSeconds(10),
                 SolutionFileName = "CodeLineCounter.sln",
                 DuplicatedLines = 100

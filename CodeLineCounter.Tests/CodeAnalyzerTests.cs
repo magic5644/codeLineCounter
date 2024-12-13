@@ -12,7 +12,7 @@ namespace CodeLineCounter.Tests
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
 
             // Act
-            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) = CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap, dependencies) = CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
 
             // Assert
             Assert.NotNull(metrics);
@@ -21,6 +21,7 @@ namespace CodeLineCounter.Tests
             Assert.NotEqual(0, totalLines);
             Assert.NotEqual(0, totalFiles);
             Assert.NotNull(duplicationMap);
+            Assert.NotNull(dependencies);
         }
 
         [Fact]
