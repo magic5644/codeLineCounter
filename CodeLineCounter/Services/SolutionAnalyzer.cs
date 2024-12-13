@@ -15,7 +15,7 @@ namespace CodeLineCounter.Services
                 var analysisResult = PerformAnalysis(solutionPath);
                 OutputAnalysisResults(analysisResult, verbose);
                 ExportResults(analysisResult, solutionPath, format);
-                
+
             }
             catch (Exception ex)
             {
@@ -97,6 +97,7 @@ namespace CodeLineCounter.Services
 
                 Console.WriteLine($"The data has been exported to {metricsOutputFilePath}");
                 Console.WriteLine($"The code duplications have been exported to {duplicationOutputFilePath}");
+                Console.WriteLine($"The code depencencies have been exported to {dependenciesOutputFilePath} and the graph has been generated. (dot file can be found in the same directory)");
             }
             catch (AggregateException ae)
             {

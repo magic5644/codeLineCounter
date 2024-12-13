@@ -114,5 +114,39 @@ namespace CodeLineCounter.Tests.Services
             }
         }
 
+            // Export metrics, duplications and dependencies data in parallel for valid input
+[Fact]
+public void export_results_with_valid_input_exports_all_files()
+{
+    // Arrange
+    var result = new AnalysisResult
+    {
+        SolutionFileName = "TestSolution",
+        Metrics = new List<NamespaceMetrics>(),
+        ProjectTotals = new Dictionary<string, int >(),
+        TotalLines = 1000,
+        DuplicationMap = new List<DuplicationCode>(),
+        DependencyList = new List<DependencyRelation>()
+    };
+
+    var basePath = FileUtils.GetBasePath();
+    var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
+
+    solutionPath = Path.Combine(solutionPath, "TestSolution.sln"); 
+    var format = CoreUtils.ExportFormat.CSV;
+
+    // Act
+    using (var sw = new StringWriter())
+    {
+        Console.SetOut(sw);
+        SolutionAnalyzer.ExportResults(result, solutionPath, format);
+    }
+
+    // Assert
+    Assert.True(File.Exists("TestSolution-CodeMetrics.csv"));
+    Assert.True(File.Exists("TestSolution-CodeDuplications.csv")); 
+    Assert.True(File.Exists("TestSolution-CodeDependencies.csv"));
+}
+
     }
 }
