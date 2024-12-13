@@ -163,7 +163,7 @@ CodeLineCounter/
 ├── CodeLineCounter/
 │   ├── Models/
 │   │   └── AnalysisResult.cs
-│   │   └── Dependencies  .cs
+│   │   └── Dependencies.cs
 │   │   └── DuplicationCode.cs
 │   │   └── NamespaceMetrics.cs
 │   ├── Services/
