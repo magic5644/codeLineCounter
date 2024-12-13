@@ -11,13 +11,16 @@
 The `CodeLineCounter` project is a tool that counts the number of lines of code per file, namespace, and project in a .NET solution. It also calculates the cyclomatic complexity of each file.
 
 Since version `1.0.2` it also check duplications in the code.
+Since version `1.2.` it also generate duplication report.
 
-All the results are exported to CSV or JSON files.
+All the results are exported to CSV or JSON files. A Graph of dependency is also generated. (dot file graphviz format)
 
 ## Features
 
 - Counts the number of lines of code per file, namespace, and project.
 - Calculates the cyclomatic complexity of each file.
+- Calculates the number of code duplications in the code.
+- Calculates and generate a graph of dependencies.
 - Exports the results to a CSV or JSON file.
 
 ## Prerequisites
@@ -160,12 +163,15 @@ CodeLineCounter/
 ├── CodeLineCounter/
 │   ├── Models/
 │   │   └── AnalysisResult.cs
+│   │   └── Dependencies  .cs
 │   │   └── DuplicationCode.cs
 │   │   └── NamespaceMetrics.cs
 │   ├── Services/
 │   │   ├── CodeMetricsAnalyzer.cs
 │   │   ├── CodeDuplicationChecker.cs
 │   │   └── CyclomaticComplexityCalculator.cs
+│   │   └── DependencyAnalyzer.cs
+│   │   └── DependencyGraphGenerator.cs
 │   │   └── SolutionAnalyzer.cs
 │   ├── Utils/
 │   │   ├── CoreUtils.cs
@@ -183,6 +189,7 @@ CodeLineCounter/
 │   ├── CyclomaticComplexityCalculatorTests.cs
 │   ├── CoreUtilsTests.cs
 │   ├── DataExporterTests.cs
+│   ├── DependencyGraphGeneratorTests.cs
 │   ├── CsvHandlerTests.cs
 │   ├── FileUtilsTests.cs
 │   ├── HashUtilsTests.cs
