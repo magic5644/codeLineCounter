@@ -11,25 +11,31 @@
 The `CodeLineCounter` project is a tool that counts the number of lines of code per file, namespace, and project in a .NET solution. It also calculates the cyclomatic complexity of each file.
 
 Since version `1.0.2` it also check duplications in the code.
+Since version `1.2.0` it also generate duplication report.
 
-All the results are exported to CSV or JSON files.
+All the results are exported to CSV or JSON files. A Graph of dependency is also generated. (dot file Graphviz format)
 
 ## Features
 
 - Counts the number of lines of code per file, namespace, and project.
 - Calculates the cyclomatic complexity of each file.
+- Calculates the number of code duplications in the code.
+- Calculates and generate a graph of dependencies.
 - Exports the results to a CSV or JSON file.
 
 ## Prerequisites
 
 - .NET 9.0 SDK installed.
-- The following NuGet packages:
+- The following NuGet packages (use dotnet restore):
   - `Microsoft.CodeAnalysis.CSharp`
+  - `coverlet.msbuild`
+  - `CsvHelper`
+  - `QuikGraph.Graphviz`
+  - `Graphviz.Net`
   - `coverlet.collector`
   - `Microsoft.NET.Test.Sdk`
   - `xunit`
   - `xunit.runner.visualstudio`
-  - `coverlet.collector`
 
 ## Installation
 
@@ -128,7 +134,7 @@ The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in t
 
 ```csv
 Code Hash,FilePath,MethodName,StartLine,NbLines
-0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91,3
+0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,OpenCommunication,91,3
 ```
 
 ## Example Output of CodeDuplication.json
@@ -138,7 +144,7 @@ Code Hash,FilePath,MethodName,StartLine,NbLines
   {
     "CodeHash": "0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c",
     "FilePath": "C:\\temp\\NamespaceMetrics.cs",
-    "MethodName": "EtablirCommunication",
+    "MethodName": "OpenCommunication",
     "StartLine": 91,
     "NbLines": 3
   },
@@ -160,12 +166,15 @@ CodeLineCounter/
 ├── CodeLineCounter/
 │   ├── Models/
 │   │   └── AnalysisResult.cs
+│   │   └── Dependencies.cs
 │   │   └── DuplicationCode.cs
 │   │   └── NamespaceMetrics.cs
 │   ├── Services/
 │   │   ├── CodeMetricsAnalyzer.cs
 │   │   ├── CodeDuplicationChecker.cs
 │   │   └── CyclomaticComplexityCalculator.cs
+│   │   └── DependencyAnalyzer.cs
+│   │   └── DependencyGraphGenerator.cs
 │   │   └── SolutionAnalyzer.cs
 │   ├── Utils/
 │   │   ├── CoreUtils.cs
@@ -183,6 +192,7 @@ CodeLineCounter/
 │   ├── CyclomaticComplexityCalculatorTests.cs
 │   ├── CoreUtilsTests.cs
 │   ├── DataExporterTests.cs
+│   ├── DependencyGraphGeneratorTests.cs
 │   ├── CsvHandlerTests.cs
 │   ├── FileUtilsTests.cs
 │   ├── HashUtilsTests.cs

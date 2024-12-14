@@ -7,7 +7,7 @@ namespace CodeLineCounter.Services
 {
     public static class CodeMetricsAnalyzer
     {
-        public static (List<NamespaceMetrics>, Dictionary<string, int>, int, int, List<DuplicationCode>) AnalyzeSolution(string solutionFilePath)
+        public static (List<NamespaceMetrics>, Dictionary<string, int>, int, int, List<DuplicationCode>, List<DependencyRelation>) AnalyzeSolution(string solutionFilePath)
         {
             string solutionDirectory = Path.GetDirectoryName(solutionFilePath) ?? string.Empty;
             var projectFiles = FileUtils.GetProjectFiles(solutionFilePath);
@@ -15,18 +15,22 @@ namespace CodeLineCounter.Services
             var namespaceMetrics = new List<NamespaceMetrics>();
             var projectTotals = new Dictionary<string, int>();
             var codeDuplicationChecker = new CodeDuplicationChecker();
+
             int totalLines = 0;
             int totalFilesAnalyzed = 0;
 
             Parallel.Invoke(
                     () => AnalyzeAllProjects(solutionDirectory, projectFiles, namespaceMetrics, projectTotals, ref totalLines, ref totalFilesAnalyzed),
-                    () => codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory))
+                    () => codeDuplicationChecker.DetectCodeDuplicationInFiles(FileUtils.GetAllCsFiles(solutionDirectory)),
+                    () => DependencyAnalyzer.AnalyzeSolution(solutionFilePath)
             );
 
             var duplicationMap = codeDuplicationChecker.GetCodeDuplicationMap();
             var duplicationList = duplicationMap.Values.SelectMany(v => v).ToList();
+            var dependencyList = DependencyAnalyzer.GetDependencies();
+            DependencyAnalyzer.Clear();
 
-            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationList);
+            return (namespaceMetrics, projectTotals, totalLines, totalFilesAnalyzed, duplicationList, dependencyList);
         }
 
         private static void AnalyzeAllProjects(string solutionDirectory, List<string> projectFiles, List<NamespaceMetrics> namespaceMetrics, Dictionary<string, int> projectTotals, ref int totalLines, ref int totalFilesAnalyzed)

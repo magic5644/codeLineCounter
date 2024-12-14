@@ -13,11 +13,21 @@ namespace CodeLineCounter.Utils
 
         public static List<string> GetSolutionFiles(string rootPath)
         {
-            return [.. Directory.GetFiles(rootPath, "*.sln", SearchOption.TopDirectoryOnly)];
+            if (!Directory.Exists(rootPath))
+            {
+                throw new UnauthorizedAccessException($"Access to the path '{rootPath}' is denied.");
+            }
+
+            return Directory.GetFiles(rootPath, "*.sln", SearchOption.TopDirectoryOnly).ToList();
         }
 
         public static List<string> GetProjectFiles(string solutionFilePath)
         {
+            if (!File.Exists(solutionFilePath))
+            {
+                throw new UnauthorizedAccessException($"Access to the path '{solutionFilePath}' is denied.");
+            }
+
             var projectFiles = new List<string>();
             var lines = File.ReadAllLines(solutionFilePath);
 

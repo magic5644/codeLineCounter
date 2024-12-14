@@ -9,6 +9,7 @@ namespace CodeLineCounter.Models
             public int TotalLines { get; set; }
             public int TotalFiles { get; set; }
             public required List<DuplicationCode> DuplicationMap { get; set; }
+            public required List<DependencyRelation> DependencyList { get; set; }
             public TimeSpan ProcessingTime { get; set; }
             public required string SolutionFileName { get; set; }
             public int DuplicatedLines { get; set; }

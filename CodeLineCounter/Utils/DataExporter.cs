@@ -1,4 +1,6 @@
 using CodeLineCounter.Models;
+using CodeLineCounter.Services;
+
 
 namespace CodeLineCounter.Utils
 {
@@ -13,20 +15,10 @@ namespace CodeLineCounter.Utils
 
         public static void Export<T>(string filePath, T data, CoreUtils.ExportFormat format) where T : class
         {
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            try
-            {
-                filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
-                _exportStrategies[format].Export(filePath, new List<T> { data });
-            }
-            catch (IOException ex)
-            {
-                throw new IOException($"Failed to export data to {filePath}", ex);
-            }
+            ExportCollection(filePath, new List<T> { data }, format);
         }
 
         public static void ExportCollection<T>(string filePath, IEnumerable<T> data, CoreUtils.ExportFormat format) where T : class
@@ -50,6 +42,14 @@ namespace CodeLineCounter.Utils
         public static void ExportDuplications(string filePath, List<DuplicationCode> duplications, CoreUtils.ExportFormat format)
         {
             ExportCollection(filePath, duplications, format);
+        }
+
+        public static void ExportDependencies(string filePath, List<DependencyRelation> dependencies,CoreUtils.ExportFormat format)
+        {
+            string outputFilePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
+            ExportCollection(outputFilePath, dependencies, format);
+
+            DependencyGraphGenerator.GenerateGraph(dependencies, Path.ChangeExtension(outputFilePath, ".dot"));
         }
 
         public static void ExportMetrics(string filePath, List<NamespaceMetrics> metrics,

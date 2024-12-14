@@ -15,6 +15,7 @@ namespace CodeLineCounter.Services
                 var analysisResult = PerformAnalysis(solutionPath);
                 OutputAnalysisResults(analysisResult, verbose);
                 ExportResults(analysisResult, solutionPath, format);
+
             }
             catch (Exception ex)
             {
@@ -28,7 +29,7 @@ namespace CodeLineCounter.Services
             var timer = new Stopwatch();
             timer.Start();
 
-            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap) =
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap, dependencyList) =
                 CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
 
             timer.Stop();
@@ -40,6 +41,7 @@ namespace CodeLineCounter.Services
                 TotalLines = totalLines,
                 TotalFiles = totalFiles,
                 DuplicationMap = duplicationMap,
+                DependencyList = dependencyList,
                 ProcessingTime = timer.Elapsed,
                 SolutionFileName = Path.GetFileName(solutionPath),
                 DuplicatedLines = duplicationMap.Sum(x => x.NbLines)
@@ -69,6 +71,8 @@ namespace CodeLineCounter.Services
                 $"{result.SolutionFileName}-CodeMetrics.xxx", format);
             var duplicationOutputFilePath = CoreUtils.GetExportFileNameWithExtension(
                 $"{result.SolutionFileName}-CodeDuplications.xxx", format);
+                var dependenciesOutputFilePath = CoreUtils.GetExportFileNameWithExtension(
+                $"{result.SolutionFileName}-CodeDependencies.xxx", format);
 
             try
             {
@@ -84,11 +88,16 @@ namespace CodeLineCounter.Services
                     () => DataExporter.ExportDuplications(
                         duplicationOutputFilePath,
                         result.DuplicationMap,
+                        format),
+                    () => DataExporter.ExportDependencies(
+                        dependenciesOutputFilePath,
+                        result.DependencyList,
                         format)
                 );
 
                 Console.WriteLine($"The data has been exported to {metricsOutputFilePath}");
                 Console.WriteLine($"The code duplications have been exported to {duplicationOutputFilePath}");
+                Console.WriteLine($"The code dependencies have been exported to {dependenciesOutputFilePath} and the graph has been generated. (dot file can be found in the same directory)");
             }
             catch (AggregateException ae)
             {

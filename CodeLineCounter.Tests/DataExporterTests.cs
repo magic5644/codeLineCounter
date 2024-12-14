@@ -210,6 +210,51 @@ namespace CodeLineCounter.Tests
             Assert.Equal(4, result);
         }
 
+        // Successfully exports dependencies to specified format (CSV/JSON) and creates DOT file
+        [Fact]
+        public void export_dependencies_creates_files_in_correct_formats()
+        {
+            // Arrange
+            var dependencies = new List<DependencyRelation>
+            {
+                new DependencyRelation { SourceClass = "ClassA", TargetClass = "ClassB", FilePath = "file1.cs", StartLine = 10 },
+            };
+
+            var testFilePath = "test_export";
+            var format = CoreUtils.ExportFormat.JSON;
+
+            // Act
+            DataExporter.ExportDependencies(testFilePath, dependencies, format);
+
+            // Assert
+            string expectedJsonPath = CoreUtils.GetExportFileNameWithExtension(testFilePath, format);
+            string expectedDotPath = Path.ChangeExtension(expectedJsonPath, ".dot");
+
+            Assert.True(File.Exists(expectedJsonPath));
+            Assert.True(File.Exists(expectedDotPath));
+
+            try
+            {
+                if (File.Exists(expectedJsonPath))
+                {
+                    File.Delete(expectedJsonPath);
+                }
+
+                if (File.Exists(expectedDotPath)) 
+                {
+                    File.Delete(expectedDotPath);
+                }
+            }
+            catch (IOException ex)
+            {
+                throw new IOException($"Error deleting files: {ex.Message}", ex);
+            }
+            catch (UnauthorizedAccessException ex) 
+            {
+                throw new UnauthorizedAccessException($"Access denied while deleting files: {ex.Message}", ex);
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
