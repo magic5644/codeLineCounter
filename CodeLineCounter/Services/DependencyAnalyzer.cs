@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CodeLineCounter.Services
 {
-    public class DependencyAnalyzer
+    public static class DependencyAnalyzer
     {
         private static readonly ConcurrentDictionary<string, HashSet<DependencyRelation>> _dependencyMap = new();
         private static readonly HashSet<string> _solutionClasses = new();
@@ -57,7 +57,7 @@ namespace CodeLineCounter.Services
 
         private static string GetFullTypeName(ClassDeclarationSyntax classDeclaration)
         {
-            // Vérifier d'abord le namespace filescoped
+            // First check the file-scoped namespace
             var fileScopedNamespace = classDeclaration.SyntaxTree.GetRoot()
                 .DescendantNodes()
                 .OfType<FileScopedNamespaceDeclarationSyntax>()
@@ -67,7 +67,7 @@ namespace CodeLineCounter.Services
                 return $"{fileScopedNamespace.Name}.{classDeclaration.Identifier.Text}";
             }
 
-            // Vérifier ensuite le namespace classique
+            // Then check the regular namespace
             var namespaceDeclaration = classDeclaration.Ancestors()
                 .OfType<NamespaceDeclarationSyntax>()
                 .FirstOrDefault();
@@ -103,8 +103,7 @@ namespace CodeLineCounter.Services
         {
             var tree = CSharpSyntaxTree.ParseText(sourceCode);
             var root = tree.GetRoot();
-            var compilation = root as CompilationUnitSyntax;
-            var usings = compilation?.Usings.Select(u => u.Name.ToString()) ?? Enumerable.Empty<string>();
+
 
             var classes = root.DescendantNodes().OfType<ClassDeclarationSyntax>();
 
@@ -129,7 +128,7 @@ namespace CodeLineCounter.Services
                         {
                             lock (_dependencyLock)
                             {
-                                // Vérifier si la relation existe déjà
+                                // Check if the relation already exists
                                 if (!set.Any(r => r.Equals(relation)))
                                 {
                                     set.Add(relation);
@@ -146,6 +145,7 @@ namespace CodeLineCounter.Services
         {
             var dependencies = new HashSet<string>();
             var usings = GetUsingsWithCurrentNamespace(classDeclaration);
+            
 
             AnalyzeInheritance(classDeclaration, usings, dependencies);
             AnalyzeClassMembers(classDeclaration, usings, dependencies);
@@ -153,12 +153,13 @@ namespace CodeLineCounter.Services
             return dependencies;
         }
 
-        private static List<string> GetUsingsWithCurrentNamespace(ClassDeclarationSyntax classDeclaration)
+        private static List<string?> GetUsingsWithCurrentNamespace(ClassDeclarationSyntax classDeclaration)
         {
             var root = classDeclaration.SyntaxTree.GetRoot();
             var usings = (root as CompilationUnitSyntax)?.Usings
-                .Select(u => u.Name.ToString())
-                .ToList() ?? new List<string>();
+                .Select(u => u.Name?.ToString())
+                .Where(u => u != null)
+                .ToList() ?? new List<string?>();
 
             var currentNamespace = classDeclaration.Ancestors()
                 .OfType<NamespaceDeclarationSyntax>()
@@ -173,7 +174,7 @@ namespace CodeLineCounter.Services
         }
 
         private static void AnalyzeInheritance(ClassDeclarationSyntax classDeclaration,
-            List<string> usings, HashSet<string> dependencies)
+            List<string?> usings, HashSet<string> dependencies)
         {
             if (classDeclaration.BaseList == null) return;
 
@@ -184,7 +185,7 @@ namespace CodeLineCounter.Services
         }
 
         private static void AnalyzeClassMembers(ClassDeclarationSyntax classDeclaration,
-            List<string> usings, HashSet<string> dependencies)
+            List<string?> usings, HashSet<string> dependencies)
         {
             var allNodes = classDeclaration.DescendantNodes();
 
@@ -194,7 +195,7 @@ namespace CodeLineCounter.Services
             }
         }
 
-        private static void AnalyzeNode(SyntaxNode node, List<string> usings, HashSet<string> dependencies)
+        private static void AnalyzeNode(SyntaxNode node, List<string?> usings, HashSet<string> dependencies)
         {
             switch (node)
             {
@@ -237,7 +238,7 @@ namespace CodeLineCounter.Services
         }
 
         private static void AnalyzeInvocation(InvocationExpressionSyntax invocation,
-            List<string> usings, HashSet<string> dependencies)
+            List<string?> usings, HashSet<string> dependencies)
         {
             if (invocation.Expression is MemberAccessExpressionSyntax memberAccess)
             {
@@ -246,7 +247,7 @@ namespace CodeLineCounter.Services
         }
 
         private static void AnalyzeGenericType(GenericNameSyntax generic,
-            List<string> usings, HashSet<string> dependencies)
+            List<string?> usings, HashSet<string> dependencies)
         {
             foreach (var typeArg in generic.TypeArgumentList.Arguments)
             {
@@ -254,7 +255,7 @@ namespace CodeLineCounter.Services
             }
         }
 
-        private static void AddDependencyIfExists(string typeName, List<string> usings, HashSet<string> dependencies)
+        private static void AddDependencyIfExists(string typeName, List<string?> usings, HashSet<string> dependencies)
         {
             var fullTypeName = GetFullTypeNameFromSymbol(typeName, usings);
             if (_solutionClasses.Contains(fullTypeName))
@@ -263,7 +264,7 @@ namespace CodeLineCounter.Services
             }
         }
 
-        private static string GetFullTypeNameFromSymbol(string typeName, IEnumerable<string> usings)
+        private static string GetFullTypeNameFromSymbol(string typeName, IEnumerable<string?> usings)
         {
             if (string.IsNullOrEmpty(typeName))
                 return typeName;
@@ -274,7 +275,7 @@ namespace CodeLineCounter.Services
             return HandleGenericType(typeName, usings);
         }
 
-        private static string ResolveSimpleTypeName(string typeName, IEnumerable<string> usings)
+        private static string ResolveSimpleTypeName(string typeName, IEnumerable<string?> usings)
         {
             if (typeName.Contains("."))
                 return typeName;
@@ -282,7 +283,7 @@ namespace CodeLineCounter.Services
             return FindTypeInUsings(typeName, usings);
         }
 
-        private static string FindTypeInUsings(string typeName, IEnumerable<string> usings)
+        private static string FindTypeInUsings(string typeName, IEnumerable<string?> usings)
         {
             foreach (var usingStatement in usings)
             {
@@ -295,7 +296,7 @@ namespace CodeLineCounter.Services
             return typeName;
         }
 
-        private static string HandleGenericType(string typeName, IEnumerable<string> usings)
+        private static string HandleGenericType(string typeName, IEnumerable<string?> usings)
         {
             var parts = SplitGenericType(typeName);
             return string.Join("", parts.Select(p => p.Contains("<")

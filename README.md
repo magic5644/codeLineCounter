@@ -13,7 +13,7 @@ The `CodeLineCounter` project is a tool that counts the number of lines of code 
 Since version `1.0.2` it also check duplications in the code.
 Since version `1.2.0` it also generate duplication report.
 
-All the results are exported to CSV or JSON files. A Graph of dependency is also generated. (dot file graphviz format)
+All the results are exported to CSV or JSON files. A Graph of dependency is also generated. (dot file Graphviz format)
 
 ## Features
 
@@ -131,7 +131,7 @@ The program generates a CSV file named `<SolutionName>-CodeDuplication.csv` in t
 
 ```csv
 Code Hash,FilePath,MethodName,StartLine,NbLines
-0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,EtablirCommunication,91,3
+0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c,C:\temp\NamespaceMetrics.cs,CodeLineCounter\Models\class.cs,OpenCommunication,91,3
 ```
 
 ## Example Output of CodeDuplication.json
@@ -141,7 +141,7 @@ Code Hash,FilePath,MethodName,StartLine,NbLines
   {
     "CodeHash": "0133e750c0fec3d478670cb0441882855926c415a35aacf0360508fdeb73c34c",
     "FilePath": "C:\\temp\\NamespaceMetrics.cs",
-    "MethodName": "EtablirCommunication",
+    "MethodName": "OpenCommunication",
     "StartLine": 91,
     "NbLines": 3
   },
