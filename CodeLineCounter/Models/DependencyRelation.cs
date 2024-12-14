@@ -15,7 +15,7 @@ namespace CodeLineCounter.Models
         [Name("StartLine")]
         public int StartLine { get; set; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not DependencyRelation other)
                 return false;

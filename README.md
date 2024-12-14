@@ -26,13 +26,16 @@ All the results are exported to CSV or JSON files. A Graph of dependency is also
 ## Prerequisites
 
 - .NET 9.0 SDK installed.
-- The following NuGet packages:
+- The following NuGet packages (use dotnet restore):
   - `Microsoft.CodeAnalysis.CSharp`
+  - `coverlet.msbuild`
+  - `CsvHelper`
+  - `QuikGraph.Graphviz`
+  - `Graphviz.Net`
   - `coverlet.collector`
   - `Microsoft.NET.Test.Sdk`
   - `xunit`
   - `xunit.runner.visualstudio`
-  - `coverlet.collector`
 
 ## Installation
 
