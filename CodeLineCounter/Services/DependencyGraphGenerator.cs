@@ -1,7 +1,6 @@
 using CodeLineCounter.Models;
 using QuikGraph;
 using QuikGraph.Graphviz;
-using System.Diagnostics;
 
 namespace CodeLineCounter.Services
 {

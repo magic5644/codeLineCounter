@@ -12,10 +12,18 @@ namespace CodeLineCounter
                 return;
 
             // file deepcode ignore PT: Not a web server. This software is a console application.
-            var solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
+            List <string> solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
             if (solutionFiles.Count == 0)
             {
                 Console.WriteLine("No solution (.sln) found in the specified directory.");
+                return;
+            }
+
+            // If only one solution found in directory, select it automatically
+            // if more than one waiting for user selection
+            if (solutionFiles.Count == 1)
+            {
+                SolutionAnalyzer.AnalyzeAndExportSolution(solutionFiles[0], settings.Verbose, settings.format);
                 return;
             }
 
