@@ -4,11 +4,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
 using System.Collections.Concurrent;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace CodeLineCounter.Services
