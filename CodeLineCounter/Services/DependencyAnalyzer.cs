@@ -112,7 +112,11 @@ namespace CodeLineCounter.Services
                     var relation = new DependencyRelation
                     {
                         SourceClass = GetFullTypeName(classDeclaration),
+                        SourceNamespace = classDeclaration.Ancestors().OfType<NamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString() ?? "",
+                        SourceAssembly = classDeclaration.SyntaxTree.GetRoot().DescendantNodes().OfType<CompilationUnitSyntax>().FirstOrDefault()?.Usings.FirstOrDefault()?.Name.ToString() ?? "",
                         TargetClass = dependency,
+                        TargetNamespace = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
+                        TargetAssembly = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
                         FilePath = filePath,
                         StartLine = classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line
                     };
@@ -140,7 +144,7 @@ namespace CodeLineCounter.Services
         {
             var dependencies = new HashSet<string>();
             var usings = GetUsingsWithCurrentNamespace(classDeclaration);
-            
+
 
             AnalyzeInheritance(classDeclaration, usings, dependencies);
             AnalyzeClassMembers(classDeclaration, usings, dependencies);
@@ -335,7 +339,40 @@ namespace CodeLineCounter.Services
 
         public static List<DependencyRelation> GetDependencies()
         {
-            return _dependencyMap.SelectMany(kvp => kvp.Value).ToList() ?? new List<DependencyRelation>();
+            var allDependencies = _dependencyMap.SelectMany(kvp => kvp.Value).ToList();
+            CalculateDegrees(allDependencies);
+            return allDependencies;
+        }
+
+        private static void CalculateDegrees(List<DependencyRelation> dependencies)
+        {
+            var incomingDegrees = new ConcurrentDictionary<string, int>();
+            var outgoingDegrees = new ConcurrentDictionary<string, int>();
+
+            // Calculate degrees
+            foreach (var dep in dependencies)
+            {
+                // Outgoing degree
+                outgoingDegrees.AddOrUpdate(
+                    dep.SourceClass,
+                    1,
+                    (key, count) => count + 1
+                );
+
+                // Incoming degree
+                incomingDegrees.AddOrUpdate(
+                    dep.TargetClass,
+                    1,
+                    (key, count) => count + 1
+                );
+            }
+
+            // Update relations with calculated degrees
+            foreach (var dep in dependencies)
+            {
+                dep.OutgoingDegree = outgoingDegrees.GetValueOrDefault(dep.SourceClass);
+                dep.IncomingDegree = incomingDegrees.GetValueOrDefault(dep.TargetClass);
+            }
         }
 
         public static void Clear()
@@ -343,5 +380,6 @@ namespace CodeLineCounter.Services
             _dependencyMap.Clear();
             _solutionClasses.Clear();
         }
+
     }
 }

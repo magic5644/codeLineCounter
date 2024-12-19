@@ -11,8 +11,8 @@ namespace CodeLineCounter.Tests
             // Arrange
             var dependencies = new List<DependencyRelation>
             {
-                new DependencyRelation { SourceClass = "ClassA", TargetClass = "ClassB" , FilePath = "path/to/file", StartLine = 1},
-                new DependencyRelation { SourceClass = "ClassB", TargetClass = "ClassC",  FilePath = "path/to/file", StartLine = 1}
+                new DependencyRelation { SourceClass = "ClassA", SourceNamespace = "NamespaceA", SourceAssembly = "AssemblyA", TargetClass = "ClassB" , TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB", FilePath = "path/to/file", StartLine = 1},
+                new DependencyRelation { SourceClass = "ClassB", SourceNamespace = "NamespaceB", SourceAssembly = "AssemblyB", TargetClass = "ClassC", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB",  FilePath = "path/to/file", StartLine = 1}
             };
 
             string outputPath = Path.Combine(Path.GetTempPath(), "test_graph.dot");
