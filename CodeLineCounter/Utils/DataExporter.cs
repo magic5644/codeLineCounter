@@ -44,7 +44,7 @@ namespace CodeLineCounter.Utils
             ExportCollection(filePath, duplications, format);
         }
 
-        public static async void ExportDependencies(string filePath, List<DependencyRelation> dependencies,CoreUtils.ExportFormat format)
+        public static async Task ExportDependencies(string filePath, List<DependencyRelation> dependencies,CoreUtils.ExportFormat format)
         {
             string outputFilePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
             ExportCollection(outputFilePath, dependencies, format);

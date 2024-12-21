@@ -22,7 +22,7 @@ namespace CodeLineCounter.Tests
 
             // Assert
             Assert.True(File.Exists(outputPath));
-            string content = File.ReadAllText(outputPath);
+            string content = await File.ReadAllTextAsync(outputPath);
             Assert.Contains("ClassA", content);
             Assert.Contains("ClassB", content);
             Assert.Contains("ClassC", content);
@@ -43,7 +43,7 @@ namespace CodeLineCounter.Tests
 
             // Assert
             Assert.True(File.Exists(outputPath));
-            string content = File.ReadAllText(outputPath);
+            string content = await File.ReadAllTextAsync(outputPath);
             Assert.Contains("digraph", content);
             Assert.DoesNotContain("->", content);
 

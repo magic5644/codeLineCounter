@@ -59,11 +59,11 @@ namespace CodeLineCounter.Services
             var targetLabel = dep.TargetClass;
 
             var edge = new DotEdge();
-            var dotidentiferFrom = new DotIdentifier(sourceLabel);
-            var dotidentiferTo = new DotIdentifier(targetLabel);
+            var dotIdentifierFrom = new DotIdentifier(sourceLabel);
+            var dotIdentifierTo = new DotIdentifier(targetLabel);
 
-            edge.From = dotidentiferFrom;
-            edge.To = dotidentiferTo;
+            edge.From = dotIdentifierFrom;
+            edge.To = dotIdentifierTo;
             return edge;
         }
 
@@ -73,6 +73,7 @@ namespace CodeLineCounter.Services
             cluster.WithLabel($"cluster_{nsGroup.Key.Replace(".", "_")}");
             cluster.WithIdentifier($"cluster_{nsGroup.Key.Replace(".", "_")}", true);
             cluster.Label = nsGroup.Key;
+            cluster.Style = DotSubgraphStyle.Filled;
             return cluster;
         }
 
@@ -87,12 +88,12 @@ namespace CodeLineCounter.Services
             // Color nodes based on degrees
             if (info.incoming > info.outgoing)
             {
-                node.FillColor = "lightblue";
+                node.FillColor = DotColor.LightGreen;
                 node.Style = DotNodeStyle.Filled;
             }
             else if (info.incoming < info.outgoing)
             {
-                node.FillColor = "lightcoral";
+                node.FillColor = DotColor.LightSalmon;
                 node.Style = DotNodeStyle.Filled;
             }
 
