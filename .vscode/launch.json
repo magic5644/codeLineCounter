@@ -5,7 +5,7 @@
             "name": "C#: CodeLineCounter - new",
             "type": "coreclr",
             "request": "launch",
-            "program": "${workspaceFolder}/CodeLineCounter/bin/Debug/net8.0/CodeLineCounter.dll",
+            "program": "${workspaceFolder}/CodeLineCounter/bin/Debug/net9.0/CodeLineCounter.dll",
             "args": ["-d", "${workspaceFolder}"],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

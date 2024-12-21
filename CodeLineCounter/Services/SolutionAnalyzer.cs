@@ -89,7 +89,7 @@ namespace CodeLineCounter.Services
                         duplicationOutputFilePath,
                         result.DuplicationMap,
                         format),
-                    () => DataExporter.ExportDependencies(
+                    async () => await DataExporter.ExportDependencies(
                         dependenciesOutputFilePath,
                         result.DependencyList,
                         format)

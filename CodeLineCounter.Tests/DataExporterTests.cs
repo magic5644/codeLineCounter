@@ -217,7 +217,7 @@ namespace CodeLineCounter.Tests
             // Arrange
             var dependencies = new List<DependencyRelation>
             {
-                new DependencyRelation { SourceClass = "ClassA", TargetClass = "ClassB", FilePath = "file1.cs", StartLine = 10 },
+                new DependencyRelation { SourceClass = "ClassA", SourceNamespace = "NamespaceA", SourceAssembly = "AssemblyA", TargetClass = "ClassB", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB", FilePath = "file1.cs", StartLine = 10 },
             };
 
             var testFilePath = "test_export";
