@@ -74,6 +74,11 @@ namespace CodeLineCounter.Services
             return classDeclaration.Identifier.Text;
         }
 
+        private static string GetSimpleTypeName(ClassDeclarationSyntax classDeclaration)
+        {
+            return classDeclaration.Identifier.Text;
+        }
+
         public static void AnalyzeProjects(IEnumerable<string> projectFiles)
         {
             foreach (var projectFile in projectFiles)
@@ -104,17 +109,17 @@ namespace CodeLineCounter.Services
 
             Parallel.ForEach(classes, classDeclaration =>
             {
-                var className = GetFullTypeName(classDeclaration);
+                var className = GetSimpleTypeName(classDeclaration);
                 var dependencies = ExtractDependencies(classDeclaration);
 
                 foreach (var dependency in dependencies)
                 {
                     var relation = new DependencyRelation
                     {
-                        SourceClass = GetFullTypeName(classDeclaration),
+                        SourceClass = GetSimpleTypeName(classDeclaration),
                         SourceNamespace = classDeclaration.Ancestors().OfType<NamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString() ?? "",
                         SourceAssembly = classDeclaration.SyntaxTree.GetRoot().DescendantNodes().OfType<CompilationUnitSyntax>().FirstOrDefault()?.Usings.FirstOrDefault()?.Name.ToString() ?? "",
-                        TargetClass = dependency,
+                        TargetClass = dependency.Split('.')[(dependency.Split('.').Length - 1)],
                         TargetNamespace = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
                         TargetAssembly = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
                         FilePath = filePath,

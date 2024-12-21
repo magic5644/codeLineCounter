@@ -44,12 +44,12 @@ namespace CodeLineCounter.Utils
             ExportCollection(filePath, duplications, format);
         }
 
-        public static void ExportDependencies(string filePath, List<DependencyRelation> dependencies,CoreUtils.ExportFormat format)
+        public static async void ExportDependencies(string filePath, List<DependencyRelation> dependencies,CoreUtils.ExportFormat format)
         {
             string outputFilePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
             ExportCollection(outputFilePath, dependencies, format);
 
-            DependencyGraphGenerator.GenerateGraph(dependencies, Path.ChangeExtension(outputFilePath, ".dot"));
+            await DependencyGraphGenerator.GenerateGraph(dependencies, Path.ChangeExtension(outputFilePath, ".dot"));
         }
 
         public static void ExportMetrics(string filePath, List<NamespaceMetrics> metrics,

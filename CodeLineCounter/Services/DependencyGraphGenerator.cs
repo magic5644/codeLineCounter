@@ -1,102 +1,150 @@
 using CodeLineCounter.Models;
-using QuikGraph;
-using QuikGraph.Graphviz;
-using QuikGraph.Graphviz.Dot;
+using DotNetGraph;
+using DotNetGraph.Attributes;
+using DotNetGraph.Compilation;
+using DotNetGraph.Core;
+using DotNetGraph.Extensions;
 
 namespace CodeLineCounter.Services
 {
     public static class DependencyGraphGenerator
     {
-        public static void GenerateGraph(List<DependencyRelation> dependencies, string outputPath, string? filterNamespace = null, string? filterAssembly = null)
+        public static async Task GenerateGraph(List<DependencyRelation> dependencies, string outputPath, string? filterNamespace = null, string? filterAssembly = null)
         {
             var filteredDependencies = dependencies;
             filteredDependencies = FilterNamespaceFromDependencies(dependencies, filterNamespace, filteredDependencies);
             filteredDependencies = FilterAssemblyFromDependencies(filterAssembly, filteredDependencies);
 
-            var graph = new BidirectionalGraph<string, Edge<string>>();
+            var graph = new DotGraph();
+            graph.Directed = true;
+
             var vertexInfo = new Dictionary<string, (int incoming, int outgoing)>();
             var namespaceGroups = new Dictionary<string, List<string>>();
-
+            graph.WithLabel("DependencyGraph");
+            graph.WithIdentifier("DependencyGraph", true);
             // Collect degree information and group by namespace
             foreach (var dep in filteredDependencies)
             {
-                var sourceLabel = GetVertexLabel(dep.SourceClass, dep.SourceNamespace, dep.SourceAssembly);
-                var targetLabel = GetVertexLabel(dep.TargetClass, dep.TargetNamespace, dep.TargetAssembly);
-
-                if (!vertexInfo.ContainsKey(sourceLabel))
-                {
-                    vertexInfo[sourceLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
-                }
-                if (!vertexInfo.ContainsKey(targetLabel))
-                {
-                    vertexInfo[targetLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
-                }
-
-                if (!graph.ContainsVertex(sourceLabel))
-                    graph.AddVertex(sourceLabel);
-                if (!graph.ContainsVertex(targetLabel))
-                    graph.AddVertex(targetLabel);
-
-                graph.AddEdge(new Edge<string>(sourceLabel, targetLabel));
-
-                // Group by namespace
-                if (!namespaceGroups.ContainsKey(dep.SourceNamespace))
-                {
-                    namespaceGroups[dep.SourceNamespace] = new List<string>();
-                }
-                if (!namespaceGroups.ContainsKey(dep.TargetNamespace))
-                {
-                    namespaceGroups[dep.TargetNamespace] = new List<string>();
-                }
-
-                if (!namespaceGroups[dep.SourceNamespace].Contains(sourceLabel))
-                {
-                    namespaceGroups[dep.SourceNamespace].Add(sourceLabel);
-                }
-                if (!namespaceGroups[dep.TargetNamespace].Contains(targetLabel))
-                {
-                    namespaceGroups[dep.TargetNamespace].Add(targetLabel);
-                }
+                GroupByNamespace(vertexInfo, namespaceGroups, dep);
             }
 
-
-            var graphviz = new GraphvizAlgorithm<string, Edge<string>>(graph);
-            graphviz.FormatVertex += (sender, args) =>
+            // Create clusters and add nodes
+            foreach (var nsGroup in namespaceGroups)
             {
-                var info = vertexInfo[args.Vertex];
-                args.VertexFormat.Label = $"{args.Vertex}\\nIn: {info.incoming}, Out: {info.outgoing}";
-                args.VertexFormat.Shape = GraphvizVertexShape.Box;
+                DotSubgraph cluster = CreateCluster(nsGroup);
 
-                // Color the nodes based on their degrees
-                if (info.incoming > info.outgoing)
+                foreach (var vertex in nsGroup.Value)
                 {
-                    args.VertexFormat.Style = GraphvizVertexStyle.Filled;
-                    args.VertexFormat.FillColor = GraphvizColor.LightBlue;
-                }
-                else if (info.incoming < info.outgoing)
-                {
-                    args.VertexFormat.Style = GraphvizVertexStyle.Filled;
-                    args.VertexFormat.FillColor = GraphvizColor.LightCoral;
-                }
-            };
+                    DotNode node = CreateNode(vertexInfo, vertex);
 
-            graphviz.FormatCluster += (sender, args) =>
+                    cluster.Elements.Add(node);
+                }
+
+                graph.Elements.Add(cluster);
+            }
+
+            // Add edges
+            foreach (var dep in filteredDependencies)
             {
-                args.GraphFormat.Label = args.Cluster.ToString();
-            };
+                DotEdge edge = CreateEdge(dep);
+                graph.Elements.Add(edge);
+            }
 
-            // foreach (var nsGroup in namespaceGroups)
-            // {
-            //     //var cluster = graphviz.Clusters.Add(nsGroup.Key);
-            //     // foreach (var vertex in nsGroup.Value)
-            //     // {
-            //     //     graph.AddVertexToCluster(cluster, vertex);
-            //     //     cluster.AddVertex(vertex);
-            //     // }
-            // }
+            await CompileGraphAndWriteToFile(outputPath, graph);
+        }
 
-            var dot = graphviz.Generate();
-            File.WriteAllText(outputPath, dot);
+        private static DotEdge CreateEdge(DependencyRelation dep)
+        {
+            var sourceLabel = dep.SourceClass;
+            var targetLabel = dep.TargetClass;
+
+            var edge = new DotEdge();
+            var dotidentiferFrom = new DotIdentifier(sourceLabel);
+            var dotidentiferTo = new DotIdentifier(targetLabel);
+
+            edge.From = dotidentiferFrom;
+            edge.To = dotidentiferTo;
+            return edge;
+        }
+
+        private static DotSubgraph CreateCluster(KeyValuePair<string, List<string>> nsGroup)
+        {
+            var cluster = new DotSubgraph();
+            cluster.WithLabel($"cluster_{nsGroup.Key.Replace(".", "_")}");
+            cluster.WithIdentifier($"cluster_{nsGroup.Key.Replace(".", "_")}", true);
+            cluster.Label = nsGroup.Key;
+            return cluster;
+        }
+
+        private static DotNode CreateNode(Dictionary<string, (int incoming, int outgoing)> vertexInfo, string vertex)
+        {
+            var info = vertexInfo[vertex];
+            var node = new DotNode();
+            node.WithIdentifier(vertex, true);
+            node.Label = $"{vertex}" +Environment.NewLine +  $"\nIn: {info.incoming}, Out: {info.outgoing}";
+            node.Shape = DotNodeShape.Box;
+
+            // Color nodes based on degrees
+            if (info.incoming > info.outgoing)
+            {
+                node.FillColor = "lightblue";
+                node.Style = DotNodeStyle.Filled;
+            }
+            else if (info.incoming < info.outgoing)
+            {
+                node.FillColor = "lightcoral";
+                node.Style = DotNodeStyle.Filled;
+            }
+
+            return node;
+        }
+
+        private static void GroupByNamespace(Dictionary<string, (int incoming, int outgoing)> vertexInfo, Dictionary<string, List<string>> namespaceGroups, DependencyRelation dep)
+        {
+            var sourceLabel = dep.SourceClass;
+            var targetLabel = dep.TargetClass;
+
+            if (!vertexInfo.ContainsKey(sourceLabel))
+            {
+                vertexInfo[sourceLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
+            }
+            if (!vertexInfo.ContainsKey(targetLabel))
+            {
+                vertexInfo[targetLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
+            }
+
+            // Group by namespace
+            if (!namespaceGroups.ContainsKey(dep.SourceNamespace))
+            {
+                namespaceGroups[dep.SourceNamespace] = new List<string>();
+            }
+            if (!namespaceGroups.ContainsKey(dep.TargetNamespace))
+            {
+                namespaceGroups[dep.TargetNamespace] = new List<string>();
+            }
+
+            if (!namespaceGroups[dep.SourceNamespace].Contains(dep.SourceClass))
+            {
+                namespaceGroups[dep.SourceNamespace].Add(dep.SourceClass);
+            }
+            if (!namespaceGroups[dep.TargetNamespace].Contains(dep.TargetClass))
+            {
+                namespaceGroups[dep.TargetNamespace].Add(dep.TargetClass);
+            }
+        }
+
+        private static async Task CompileGraphAndWriteToFile(string outputPath, DotGraph graph)
+        {
+            await using var writer = new StringWriter();
+            var options = new CompilationOptions();
+            options.Indented = true;
+            var context = new CompilationContext(writer, options);
+            graph.Directed = true;
+            context.DirectedGraph = true;
+
+            await graph.CompileAsync(context);
+            var result = writer.GetStringBuilder().ToString();
+            await File.WriteAllTextAsync(outputPath, result);
         }
 
         private static List<DependencyRelation> FilterAssemblyFromDependencies(string? filterAssembly, List<DependencyRelation> filteredDependencies)
@@ -123,11 +171,5 @@ namespace CodeLineCounter.Services
             return filteredDependencies;
         }
 
-        private static string GetVertexLabel(string className, string namespaceName, string assemblyName)
-        {
-            return $"{className}\\n{namespaceName}\\n{assemblyName}";
-        }
-
-        
     }
 }

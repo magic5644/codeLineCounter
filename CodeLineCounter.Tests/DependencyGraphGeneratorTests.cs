@@ -6,7 +6,7 @@ namespace CodeLineCounter.Tests
     public class DependencyGraphGeneratorTests
     {
         [Fact]
-        public void generate_graph_with_valid_dependencies_creates_dot_file()
+        public async Task generate_graph_with_valid_dependencies_creates_dot_file()
         {
             // Arrange
             var dependencies = new List<DependencyRelation>
@@ -18,7 +18,7 @@ namespace CodeLineCounter.Tests
             string outputPath = Path.Combine(Path.GetTempPath(), "test_graph.dot");
 
             // Act
-            DependencyGraphGenerator.GenerateGraph(dependencies, outputPath);
+            await DependencyGraphGenerator.GenerateGraph(dependencies, outputPath);
 
             // Assert
             Assert.True(File.Exists(outputPath));
@@ -32,14 +32,14 @@ namespace CodeLineCounter.Tests
 
         // Empty dependencies list
         [Fact]
-        public void generate_graph_with_empty_dependencies_creates_empty_graph()
+        public async Task generate_graph_with_empty_dependencies_creates_empty_graph()
         {
             // Arrange
             var dependencies = new List<DependencyRelation>();
             string outputPath = Path.Combine(Path.GetTempPath(), "empty_graph.dot");
 
             // Act
-            DependencyGraphGenerator.GenerateGraph(dependencies, outputPath);
+            await DependencyGraphGenerator.GenerateGraph(dependencies, outputPath);
 
             // Assert
             Assert.True(File.Exists(outputPath));
