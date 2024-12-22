@@ -30,8 +30,7 @@ All the results are exported to CSV or JSON files. A Graph of dependency is also
   - `Microsoft.CodeAnalysis.CSharp`
   - `coverlet.msbuild`
   - `CsvHelper`
-  - `QuikGraph.Graphviz`
-  - `Graphviz.Net`
+  - `DotNetGraph`
   - `coverlet.collector`
   - `Microsoft.NET.Test.Sdk`
   - `xunit`
@@ -157,6 +156,12 @@ Code Hash,FilePath,MethodName,StartLine,NbLines
   }
 ]
 ```
+
+## Example of Graphviz file
+
+![Graphviz](./assets/graphviz.svg)
+
+This graph is generated in the current directory with the name `<SolutionName>-Dependencies.dot`. Y
 
 ## Project Structure
 

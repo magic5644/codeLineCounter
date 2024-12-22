@@ -16,10 +16,6 @@
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="DotNetGraph" Version="3.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
-    <PackageReference Include="QuikGraph" Version="2.5.0" />
-    <PackageReference Include="QuikGraph.Graphviz" Version="2.5.0" />
-    <PackageReference Include="Graphviz.NET" Version="1.0.0" />
-    
   </ItemGroup>
 
 </Project>
