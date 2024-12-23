@@ -3,34 +3,50 @@
 
 name: .NET
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+on: [push, pull_request]
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.platform.name }} ${{ matrix.dotnet.name }}
+    runs-on: ${{ matrix.platform.os }}
+    #runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { name: Linux, os: ubuntu-22.04 }
+          - { name: Windows, os: windows-2022 }
+          - { name: macOS, os: macos-15 }
+        dotnet:
+          - { name: .NET 6, version: "6.0.x" }
+          - { name: .NET 7, version: "7.0.x" }
+          - { name: .NET 8, version: "8.0.x" }
+          - { name: .NET 9, version: "9.0.x" }
 
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET
+      - id: setup-dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
-      - name: Restore dependencies
-        run: dotnet restore
+          dotnet-version: ${{ matrix.dotnet.version }}
+      - name: Enforce SDK Version
+        run: dotnet new globaljson --sdk-version ${{ steps.setup-dotnet.outputs.dotnet-version }} --force
       - name: Build
-        run: dotnet build --no-restore
-
-      - run: dotnet test --results-directory "test-results" --collect:"Code Coverage"
-      - run: dotnet tool update --global dotnet-coverage
-      - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
-      - run: dotnet tool install --global dotnet-reportgenerator-globaltool
-      - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
-      - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+        run: dotnet build -c Release
+      - name: Test
+        if: matrix.dotnet.version == '9.0.x' && matrix.platform.name == 'MacOS'
+        run: |
+          dotnet test --results-directory "test-results" --collect:"Code Coverage"
+          dotnet tool update --global dotnet-coverage
+          dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
+          cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
   
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.3.11
