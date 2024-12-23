@@ -3,36 +3,50 @@
 
 name: .NET
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+on: [push, pull_request]
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.platform.name }} ${{ matrix.dotnet.name }}
+    runs-on: ${{ matrix.platform.os }}
+    #runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { name: Linux, os: ubuntu-24.04 }
+          - { name: Windows, os: windows-2022 }
+          - { name: macOS, os: macos-15 }
+        dotnet:
+          - { name: .NET 9, version: "9.0.x" }
 
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET
+      - id: setup-dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
-      - name: Restore dependencies
-        run: dotnet restore
+          dotnet-version: ${{ matrix.dotnet.version }}
+      - name: Enforce SDK Version
+        run: dotnet new globaljson --sdk-version ${{ steps.setup-dotnet.outputs.dotnet-version }} --force
       - name: Build
-        run: dotnet build --no-restore
-
-      - run: dotnet test --results-directory "test-results" --collect:"Code Coverage"
-      - run: dotnet tool update --global dotnet-coverage
-      - run: dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
-      - run: dotnet tool install --global dotnet-reportgenerator-globaltool
-      - run: reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
-      - run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+        run: dotnet build -c Release
+      - name: Test
+        if: matrix.platform.name == 'MacOS'
+        run: |
+          dotnet test --results-directory "test-results" --collect:"Code Coverage"
+          dotnet tool update --global dotnet-coverage
+          dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
+          cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
   
       - name: ReportGenerator
+        if: matrix.platform.name == 'MacOS'
         uses: danielpalme/ReportGenerator-GitHub-Action@5.3.11
         with:
             reports: "test-result.cobertura.xml"
@@ -41,34 +55,38 @@ jobs:
   
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
+        if: matrix.platform.name == 'MacOS'
         with:
             name: coverage-report
             path: coverage-report
   
       - name: Upload coverage badge artifact
         uses: actions/upload-artifact@v4
+        if: matrix.platform.name == 'MacOS'
         with:
             name: coverage-badge.svg
             path: coverage-report/badge_combined.svg
   
       - name: Add comment to PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && matrix.platform.name == 'MacOS'
         run: gh pr comment $PR_NUMBER --body-file coverage-report/SummaryGithub.md
         env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             PR_NUMBER: ${{ github.event.pull_request.number }}
   
       - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
+        if: matrix.platform.name == 'MacOS'
         run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
         shell: bash
   
       - name: Generate Coverage Badge
+        if: matrix.platform.name == 'MacOS'
         run: |
             echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
             cat coverage-badge.md >> README.md
 
   publish_badge:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - name: Checkout gh-pages

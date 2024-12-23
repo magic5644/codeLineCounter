@@ -117,6 +117,8 @@ namespace CodeLineCounter.Tests
             int solutionCount = 5;
             string input = "3";
             var inputStream = new StringReader(input);
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
             Console.SetIn(inputStream);
 
             // Act
@@ -133,6 +135,8 @@ namespace CodeLineCounter.Tests
             int solutionCount = 5;
             string input = "invalid";
             var inputStream = new StringReader(input);
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
             Console.SetIn(inputStream);
 
             // Act
@@ -149,6 +153,8 @@ namespace CodeLineCounter.Tests
             // Arrange
             var input = "2";
             var consoleInput = new StringReader(input);
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
             Console.SetIn(consoleInput);
 
             // Act
@@ -166,6 +172,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var consoleInput = new StringReader(input);
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
             Console.SetIn(consoleInput);
 
             // Act

@@ -118,7 +118,12 @@ namespace CodeLineCounter.Services
                     {
                         SourceClass = GetSimpleTypeName(classDeclaration),
                         SourceNamespace = classDeclaration.Ancestors().OfType<NamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString() ?? "",
-                        SourceAssembly = classDeclaration.SyntaxTree.GetRoot().DescendantNodes().OfType<CompilationUnitSyntax>().FirstOrDefault()?.Usings.FirstOrDefault()?.Name.ToString() ?? "",
+                        SourceAssembly = classDeclaration.SyntaxTree.GetRoot()
+                            .DescendantNodes()
+                            .OfType<CompilationUnitSyntax>()
+                            .FirstOrDefault()?
+                            .Usings.FirstOrDefault()?
+                            .Name?.ToString() ?? "",
                         TargetClass = dependency.Split('.')[(dependency.Split('.').Length - 1)],
                         TargetNamespace = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
                         TargetAssembly = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
