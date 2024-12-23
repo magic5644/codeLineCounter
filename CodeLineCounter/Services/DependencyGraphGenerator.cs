@@ -64,6 +64,7 @@ namespace CodeLineCounter.Services
 
             edge.From = dotIdentifierFrom;
             edge.To = dotIdentifierTo;
+            edge.Style = DotEdgeStyle.Bold;
             return edge;
         }
 
@@ -73,7 +74,8 @@ namespace CodeLineCounter.Services
             cluster.WithLabel($"cluster_{nsGroup.Key.Replace(".", "_")}");
             cluster.WithIdentifier($"cluster_{nsGroup.Key.Replace(".", "_")}", true);
             cluster.Label = nsGroup.Key;
-            cluster.Style = DotSubgraphStyle.Filled;
+            cluster.Style = DotSubgraphStyle.Dashed;
+
             return cluster;
         }
 
@@ -83,17 +85,18 @@ namespace CodeLineCounter.Services
             var node = new DotNode();
             node.WithIdentifier(vertex, true);
             node.Label = $"{vertex}" +Environment.NewLine +  $"\nIn: {info.incoming}, Out: {info.outgoing}";
-            node.Shape = DotNodeShape.Box;
+            node.Shape = DotNodeShape.Oval;
+            node.WithPenWidth(2);
 
             // Color nodes based on degrees
             if (info.incoming > info.outgoing)
             {
-                node.FillColor = DotColor.LightGreen;
+                node.FillColor = DotColor.MediumSeaGreen;
                 node.Style = DotNodeStyle.Filled;
             }
             else if (info.incoming < info.outgoing)
             {
-                node.FillColor = DotColor.LightSalmon;
+                node.FillColor = DotColor.Salmon;
                 node.Style = DotNodeStyle.Filled;
             }
 

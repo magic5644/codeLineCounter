@@ -1,634 +1,634 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="3173pt" height="641pt" viewBox="0.00 0.00 3173.07 640.80">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 636.8)">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4016pt" height="784pt" viewBox="0.00 0.00 4015.54 783.95">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 779.95)">
 <title>DependencyGraph</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-636.8 3169.07,-636.8 3169.07,4 -4,4"/>
-<text text-anchor="middle" x="1582.54" y="-8.2" font-family="Times,serif" font-size="14.00">DependencyGraph</text>
+<polygon fill="white" stroke="none" points="-4,4 -4,-779.95 4011.54,-779.95 4011.54,4 -4,4"/>
+<text text-anchor="middle" x="2003.77" y="-8.2" font-family="Times,serif" font-size="14.00">DependencyGraph</text>
 <g id="clust1" class="cluster">
 <title>cluster_CodeLineCounter_Tests</title>
-<polygon fill="none" stroke="black" points="221.38,-326.4 221.38,-518.4 1799.38,-518.4 1799.38,-326.4 221.38,-326.4"/>
-<text text-anchor="middle" x="1010.38" y="-501.8" font-family="Times,serif" font-size="14.00">CodeLineCounter.Tests</text>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="232.02,-397.98 232.02,-637.69 2390.02,-637.69 2390.02,-397.98 232.02,-397.98"/>
+<text text-anchor="middle" x="1311.02" y="-621.09" font-family="Times,serif" font-size="14.00">CodeLineCounter.Tests</text>
 </g>
 <g id="clust2" class="cluster">
 <title>cluster_CodeLineCounter_Utils</title>
-<polygon fill="none" stroke="black" points="797.38,-32.8 797.38,-318.4 1199.38,-318.4 1199.38,-32.8 797.38,-32.8"/>
-<text text-anchor="middle" x="998.38" y="-301.8" font-family="Times,serif" font-size="14.00">CodeLineCounter.Utils</text>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="1032.02,-32.8 1032.02,-389.98 1573.02,-389.98 1573.02,-32.8 1032.02,-32.8"/>
+<text text-anchor="middle" x="1302.52" y="-373.38" font-family="Times,serif" font-size="14.00">CodeLineCounter.Utils</text>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster_CodeLineCounter_Models</title>
-<polygon fill="none" stroke="black" points="2599.38,-126.4 2599.38,-318.4 3038.38,-318.4 3038.38,-126.4 2599.38,-126.4"/>
-<text text-anchor="middle" x="2818.88" y="-301.8" font-family="Times,serif" font-size="14.00">CodeLineCounter.Models</text>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="3384.02,-150.26 3384.02,-389.98 3975.02,-389.98 3975.02,-150.26 3384.02,-150.26"/>
+<text text-anchor="middle" x="3679.52" y="-373.38" font-family="Times,serif" font-size="14.00">CodeLineCounter.Models</text>
 </g>
 <g id="clust4" class="cluster">
 <title>cluster_CodeLineCounter_Services</title>
-<polygon fill="none" stroke="black" points="2025.38,-126.4 2025.38,-518.4 2578.38,-518.4 2578.38,-126.4 2025.38,-126.4"/>
-<text text-anchor="middle" x="2301.88" y="-501.8" font-family="Times,serif" font-size="14.00">CodeLineCounter.Services</text>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="2616.02,-150.26 2616.02,-637.69 3376.02,-637.69 3376.02,-150.26 2616.02,-150.26"/>
+<text text-anchor="middle" x="2996.02" y="-621.09" font-family="Times,serif" font-size="14.00">CodeLineCounter.Services</text>
 </g>
 <g id="clust5" class="cluster">
 <title>cluster_CodeLineCounter_Tests_Services</title>
-<polygon fill="none" stroke="black" points="2880.38,-526.4 2880.38,-624.8 3080.38,-624.8 3080.38,-526.4 2880.38,-526.4"/>
-<text text-anchor="middle" x="2980.38" y="-608.2" font-family="Times,serif" font-size="14.00">CodeLineCounter.Tests.Services</text>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="3693.02,-645.69 3693.02,-767.95 3905.02,-767.95 3905.02,-645.69 3693.02,-645.69"/>
+<text text-anchor="middle" x="3799.02" y="-751.35" font-family="Times,serif" font-size="14.00">CodeLineCounter.Tests.Services</text>
 </g>
 <g id="clust6" class="cluster">
 <title>cluster_CodeLineCounter</title>
-<polygon fill="none" stroke="black" points="143.38,-526.4 143.38,-624.8 259.38,-624.8 259.38,-526.4 143.38,-526.4"/>
-<text text-anchor="middle" x="201.38" y="-608.2" font-family="Times,serif" font-size="14.00">CodeLineCounter</text>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="144.02,-645.69 144.02,-767.95 280.02,-767.95 280.02,-645.69 144.02,-645.69"/>
+<text text-anchor="middle" x="212.02" y="-751.35" font-family="Times,serif" font-size="14.00">CodeLineCounter</text>
 </g>
 <!-- CsvHandlerTests -->
 <g id="node1" class="node">
 <title>CsvHandlerTests</title>
-<polygon fill="#ffa07a" stroke="black" points="459.6,-485.6 347.17,-485.6 347.17,-428 459.6,-428 459.6,-485.6"/>
-<text text-anchor="middle" x="403.38" y="-469" font-family="Times,serif" font-size="14.00">CsvHandlerTests</text>
-<text text-anchor="middle" x="403.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 1, Out: 2</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="479.02" cy="-564.16" rx="79.5" ry="40.73"/>
+<text text-anchor="middle" x="479.02" y="-576.36" font-family="Times,serif" font-size="14.00">CsvHandlerTests</text>
+<text text-anchor="middle" x="479.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 1, Out: 2</text>
 </g>
 <!-- TestRecord -->
 <g id="node2" class="node">
 <title>TestRecord</title>
-<polygon fill="#ffa07a" stroke="black" points="1073.6,-392 989.16,-392 989.16,-334.4 1073.6,-334.4 1073.6,-392"/>
-<text text-anchor="middle" x="1031.38" y="-375.4" font-family="Times,serif" font-size="14.00">TestRecord</text>
-<text text-anchor="middle" x="1031.38" y="-342.6" font-family="Times,serif" font-size="14.00">In: 1, Out: 2</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="1302.02" cy="-446.71" rx="59.71" ry="40.73"/>
+<text text-anchor="middle" x="1302.02" y="-458.91" font-family="Times,serif" font-size="14.00">TestRecord</text>
+<text text-anchor="middle" x="1302.02" y="-426.11" font-family="Times,serif" font-size="14.00">In: 1, Out: 2</text>
 </g>
 <!-- CsvHandlerTests&#45;&gt;TestRecord -->
 <g id="edge1" class="edge">
 <title>CsvHandlerTests-&gt;TestRecord</title>
-<path fill="none" stroke="black" d="M459.76,-430.54C462.65,-429.61 465.53,-428.75 468.38,-428 650.88,-379.75 876.14,-367.98 977.49,-365.12"/>
-<polygon fill="black" stroke="black" points="977.52,-368.62 987.43,-364.86 977.34,-361.62 977.52,-368.62"/>
+<path fill="none" stroke="black" stroke-width="2" d="M535.31,-534.56C545.65,-530.23 556.5,-526.27 567.02,-523.43 804.11,-459.51 1097.58,-448.84 1230.56,-447.53"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1228.78,-451.04 1238.75,-447.46 1228.72,-444.04 1228.78,-451.04"/>
 </g>
 <!-- CsvHandler -->
 <g id="node13" class="node">
 <title>CsvHandler</title>
-<polygon fill="none" stroke="black" points="958.6,-98.4 874.16,-98.4 874.16,-40.8 958.6,-40.8 958.6,-98.4"/>
-<text text-anchor="middle" x="916.38" y="-81.8" font-family="Times,serif" font-size="14.00">CsvHandler</text>
-<text text-anchor="middle" x="916.38" y="-49" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="1191.02" cy="-81.53" rx="59.71" ry="40.73"/>
+<text text-anchor="middle" x="1191.02" y="-93.73" font-family="Times,serif" font-size="14.00">CsvHandler</text>
+<text text-anchor="middle" x="1191.02" y="-60.93" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
 </g>
 <!-- CsvHandlerTests&#45;&gt;CsvHandler -->
 <g id="edge2" class="edge">
 <title>CsvHandlerTests-&gt;CsvHandler</title>
-<path fill="none" stroke="black" d="M423.74,-427.87C471.2,-364.76 595.77,-210.13 735.38,-126.4 774.74,-102.8 824.98,-88.34 862.54,-80.08"/>
-<polygon fill="black" stroke="black" points="863.22,-83.51 872.28,-78.02 861.77,-76.66 863.22,-83.51"/>
+<path fill="none" stroke="black" stroke-width="2" d="M509.71,-525.73C578.2,-444.67 752.31,-252.07 940.02,-150.26 996.76,-119.48 1068.43,-101.96 1120.65,-92.48"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1119.59,-96.22 1128.84,-91.04 1118.38,-89.32 1119.59,-96.22"/>
 </g>
 <!-- FileUtilsTests -->
 <g id="node3" class="node">
 <title>FileUtilsTests</title>
-<polygon fill="#90ee90" stroke="black" points="825.66,-485.6 731.1,-485.6 731.1,-428 825.66,-428 825.66,-485.6"/>
-<text text-anchor="middle" x="778.38" y="-469" font-family="Times,serif" font-size="14.00">FileUtilsTests</text>
-<text text-anchor="middle" x="778.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 6, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="987.02" cy="-564.16" rx="66.86" ry="40.73"/>
+<text text-anchor="middle" x="987.02" y="-576.36" font-family="Times,serif" font-size="14.00">FileUtilsTests</text>
+<text text-anchor="middle" x="987.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 6, Out: 1</text>
 </g>
 <!-- FileUtils -->
 <g id="node18" class="node">
 <title>FileUtils</title>
-<polygon fill="#90ee90" stroke="black" points="1076.6,-285.6 992.16,-285.6 992.16,-228 1076.6,-228 1076.6,-285.6"/>
-<text text-anchor="middle" x="1034.38" y="-269" font-family="Times,serif" font-size="14.00">FileUtils</text>
-<text text-anchor="middle" x="1034.38" y="-236.2" font-family="Times,serif" font-size="14.00">In: 6, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="1349.02" cy="-316.45" rx="59.71" ry="40.73"/>
+<text text-anchor="middle" x="1349.02" y="-328.65" font-family="Times,serif" font-size="14.00">FileUtils</text>
+<text text-anchor="middle" x="1349.02" y="-295.85" font-family="Times,serif" font-size="14.00">In: 6, Out: 1</text>
 </g>
 <!-- FileUtilsTests&#45;&gt;FileUtils -->
 <g id="edge12" class="edge">
 <title>FileUtilsTests-&gt;FileUtils</title>
-<path fill="none" stroke="black" d="M797.87,-427.66C820.73,-397.1 861.64,-349.57 909.38,-326.4 935.17,-313.88 947.61,-330.95 973.38,-318.4 985.32,-312.59 996.33,-303.5 1005.61,-294.11"/>
-<polygon fill="black" stroke="black" points="1008.01,-296.67 1012.27,-286.97 1002.89,-291.89 1008.01,-296.67"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1013.75,-525.97C1044.51,-486.45 1098.99,-425.9 1162.02,-397.98 1204,-379.38 1222.64,-407.64 1265.02,-389.98 1281.51,-383.11 1297.07,-371.7 1310.21,-359.95"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1311.35,-363.67 1316.27,-354.28 1306.58,-358.55 1311.35,-363.67"/>
 </g>
 <!-- JsonHandlerTests -->
 <g id="node4" class="node">
 <title>JsonHandlerTests</title>
-<polygon fill="none" stroke="black" points="713.15,-485.6 597.61,-485.6 597.61,-428 713.15,-428 713.15,-485.6"/>
-<text text-anchor="middle" x="655.38" y="-469" font-family="Times,serif" font-size="14.00">JsonHandlerTests</text>
-<text text-anchor="middle" x="655.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="820.02" cy="-564.16" rx="81.7" ry="40.73"/>
+<text text-anchor="middle" x="820.02" y="-576.36" font-family="Times,serif" font-size="14.00">JsonHandlerTests</text>
+<text text-anchor="middle" x="820.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
 </g>
 <!-- TestClass -->
 <g id="node5" class="node">
 <title>TestClass</title>
-<polygon fill="none" stroke="black" points="1175.6,-392 1091.16,-392 1091.16,-334.4 1175.6,-334.4 1175.6,-392"/>
-<text text-anchor="middle" x="1133.38" y="-375.4" font-family="Times,serif" font-size="14.00">TestClass</text>
-<text text-anchor="middle" x="1133.38" y="-342.6" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="1439.02" cy="-446.71" rx="59.71" ry="40.73"/>
+<text text-anchor="middle" x="1439.02" y="-458.91" font-family="Times,serif" font-size="14.00">TestClass</text>
+<text text-anchor="middle" x="1439.02" y="-426.11" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
 </g>
 <!-- JsonHandlerTests&#45;&gt;TestClass -->
 <g id="edge13" class="edge">
 <title>JsonHandlerTests-&gt;TestClass</title>
-<path fill="none" stroke="black" d="M713.5,-430.5C716.48,-429.58 719.45,-428.74 722.38,-428 874.82,-389.65 926.42,-437.19 1080.04,-392.22"/>
-<polygon fill="black" stroke="black" points="1080.78,-395.66 1089.34,-389.41 1078.76,-388.96 1080.78,-395.66"/>
+<path fill="none" stroke="black" stroke-width="2" d="M877.75,-534.55C888.59,-530.17 899.98,-526.19 911.02,-523.43 1109.97,-473.72 1175.32,-548.71 1371.02,-487.43 1376.13,-485.83 1381.28,-483.79 1386.32,-481.48"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1386.38,-485.36 1393.77,-477.77 1383.26,-479.09 1386.38,-485.36"/>
 </g>
 <!-- JsonHandler -->
 <g id="node19" class="node">
 <title>JsonHandler</title>
-<polygon fill="none" stroke="black" points="1116.38,-98.4 1030.39,-98.4 1030.39,-40.8 1116.38,-40.8 1116.38,-98.4"/>
-<text text-anchor="middle" x="1073.38" y="-81.8" font-family="Times,serif" font-size="14.00">JsonHandler</text>
-<text text-anchor="middle" x="1073.38" y="-49" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="1403.02" cy="-81.53" rx="60.8" ry="40.73"/>
+<text text-anchor="middle" x="1403.02" y="-93.73" font-family="Times,serif" font-size="14.00">JsonHandler</text>
+<text text-anchor="middle" x="1403.02" y="-60.93" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
 </g>
 <!-- JsonHandlerTests&#45;&gt;JsonHandler -->
 <g id="edge14" class="edge">
 <title>JsonHandlerTests-&gt;JsonHandler</title>
-<path fill="none" stroke="black" d="M658.41,-427.88C667.01,-363.38 697.69,-203.68 796.38,-126.4 857.02,-78.92 892.05,-114.41 967.38,-98.4 984.24,-94.82 1002.44,-90.29 1018.93,-85.93"/>
-<polygon fill="black" stroke="black" points="1019.81,-89.32 1028.56,-83.35 1018,-82.56 1019.81,-89.32"/>
+<path fill="none" stroke="black" stroke-width="2" d="M827.56,-522.92C845.74,-438.14 900.54,-241.46 1031.02,-150.26 1073.04,-120.89 1209.74,-132.26 1260.02,-122.26 1285.44,-117.2 1312.97,-109.99 1337.01,-103.09"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1336.27,-106.95 1344.89,-100.79 1334.31,-100.23 1336.27,-106.95"/>
 </g>
 <!-- CyclomaticComplexityCalculatorTests -->
 <g id="node6" class="node">
 <title>CyclomaticComplexityCalculatorTests</title>
-<polygon fill="#90ee90" stroke="black" points="1217.64,-485.6 983.13,-485.6 983.13,-428 1217.64,-428 1217.64,-485.6"/>
-<text text-anchor="middle" x="1100.38" y="-469" font-family="Times,serif" font-size="14.00">CyclomaticComplexityCalculatorTests</text>
-<text text-anchor="middle" x="1100.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="1426.02" cy="-564.16" rx="165.82" ry="40.73"/>
+<text text-anchor="middle" x="1426.02" y="-576.36" font-family="Times,serif" font-size="14.00">CyclomaticComplexityCalculatorTests</text>
+<text text-anchor="middle" x="1426.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
 </g>
 <!-- CyclomaticComplexityCalculator -->
 <g id="node27" class="node">
 <title>CyclomaticComplexityCalculator</title>
-<polygon fill="#90ee90" stroke="black" points="2237.86,-285.6 2032.9,-285.6 2032.9,-228 2237.86,-228 2237.86,-285.6"/>
-<text text-anchor="middle" x="2135.38" y="-269" font-family="Times,serif" font-size="14.00">CyclomaticComplexityCalculator</text>
-<text text-anchor="middle" x="2135.38" y="-236.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="2769.02" cy="-316.45" rx="144.93" ry="40.73"/>
+<text text-anchor="middle" x="2769.02" y="-328.65" font-family="Times,serif" font-size="14.00">CyclomaticComplexityCalculator</text>
+<text text-anchor="middle" x="2769.02" y="-295.85" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
 </g>
 <!-- CyclomaticComplexityCalculatorTests&#45;&gt;CyclomaticComplexityCalculator -->
 <g id="edge26" class="edge">
 <title>CyclomaticComplexityCalculatorTests-&gt;CyclomaticComplexityCalculator</title>
-<path fill="none" stroke="black" d="M1218.07,-429.73C1220.87,-429.14 1223.64,-428.57 1226.38,-428 1511.61,-369.16 1849.01,-308.25 2021.44,-277.75"/>
-<polygon fill="black" stroke="black" points="2021.83,-281.23 2031.07,-276.05 2020.61,-274.34 2021.83,-281.23"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1545.88,-535.14C1564.32,-531.07 1583.15,-527.04 1601.02,-523.43 1972.52,-448.55 2413.56,-374.87 2632.13,-339.37"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="2631.03,-343.09 2640.34,-338.04 2629.91,-336.18 2631.03,-343.09"/>
 </g>
 <!-- CodeDuplicationCheckerTests -->
 <g id="node7" class="node">
 <title>CodeDuplicationCheckerTests</title>
-<polygon fill="#90ee90" stroke="black" points="1423.3,-485.6 1235.46,-485.6 1235.46,-428 1423.3,-428 1423.3,-485.6"/>
-<text text-anchor="middle" x="1329.38" y="-469" font-family="Times,serif" font-size="14.00">CodeDuplicationCheckerTests</text>
-<text text-anchor="middle" x="1329.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="1743.02" cy="-564.16" rx="132.82" ry="40.73"/>
+<text text-anchor="middle" x="1743.02" y="-576.36" font-family="Times,serif" font-size="14.00">CodeDuplicationCheckerTests</text>
+<text text-anchor="middle" x="1743.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
 </g>
 <!-- CodeDuplicationChecker -->
 <g id="node28" class="node">
 <title>CodeDuplicationChecker</title>
-<polygon fill="#90ee90" stroke="black" points="2414.53,-285.6 2256.24,-285.6 2256.24,-228 2414.53,-228 2414.53,-285.6"/>
-<text text-anchor="middle" x="2335.38" y="-269" font-family="Times,serif" font-size="14.00">CodeDuplicationChecker</text>
-<text text-anchor="middle" x="2335.38" y="-236.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="3044.02" cy="-316.45" rx="111.93" ry="40.73"/>
+<text text-anchor="middle" x="3044.02" y="-328.65" font-family="Times,serif" font-size="14.00">CodeDuplicationChecker</text>
+<text text-anchor="middle" x="3044.02" y="-295.85" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
 </g>
 <!-- CodeDuplicationCheckerTests&#45;&gt;CodeDuplicationChecker -->
 <g id="edge27" class="edge">
 <title>CodeDuplicationCheckerTests-&gt;CodeDuplicationChecker</title>
-<path fill="none" stroke="black" d="M1423.55,-429.77C1426.52,-429.14 1429.47,-428.55 1432.38,-428 1574.3,-401.1 1613.54,-419.28 1755.38,-392 1863.13,-371.28 1884.9,-342.83 1993.38,-326.4 2049,-317.98 2192.89,-335.81 2246.38,-318.4 2263.44,-312.85 2280.22,-302.94 2294.53,-292.72"/>
-<polygon fill="black" stroke="black" points="2296.41,-295.69 2302.34,-286.91 2292.23,-290.07 2296.41,-295.69"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1836.38,-534.27C1852.48,-530.08 1869.14,-526.25 1885.02,-523.43 2087.38,-487.58 2145.41,-532.03 2346.02,-487.43 2456.33,-462.91 2473.08,-419.49 2584.02,-397.98 2621.01,-390.8 2886.83,-400.45 2923.02,-389.98 2945.16,-383.57 2967.37,-372.07 2986.61,-360.09"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="2987.02,-363.99 2993.55,-355.64 2983.24,-358.1 2987.02,-363.99"/>
 </g>
 <!-- DataExporterTests -->
 <g id="node8" class="node">
 <title>DataExporterTests</title>
-<polygon fill="#90ee90" stroke="black" points="964.86,-485.6 843.9,-485.6 843.9,-428 964.86,-428 964.86,-485.6"/>
-<text text-anchor="middle" x="904.38" y="-469" font-family="Times,serif" font-size="14.00">DataExporterTests</text>
-<text text-anchor="middle" x="904.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 7, Out: 6</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="1157.02" cy="-564.16" rx="85.53" ry="40.73"/>
+<text text-anchor="middle" x="1157.02" y="-576.36" font-family="Times,serif" font-size="14.00">DataExporterTests</text>
+<text text-anchor="middle" x="1157.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 7, Out: 6</text>
 </g>
 <!-- DataExporterTests&#45;&gt;TestClass -->
 <g id="edge38" class="edge">
 <title>DataExporterTests-&gt;TestClass</title>
-<path fill="none" stroke="black" d="M965.01,-431.48C968.17,-430.29 971.31,-429.12 974.38,-428 1018.76,-411.81 1033.97,-412.07 1080.4,-392.59"/>
-<polygon fill="black" stroke="black" points="1081.61,-395.88 1089.41,-388.72 1078.85,-389.45 1081.61,-395.88"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1219.85,-535.5C1230.19,-531.27 1240.85,-527.1 1251.02,-523.43 1303.41,-504.57 1319.96,-509.64 1371.02,-487.43 1375.66,-485.42 1380.38,-483.15 1385.06,-480.76"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1385.35,-484.57 1392.52,-476.77 1382.05,-478.4 1385.35,-484.57"/>
 </g>
 <!-- DataExporter -->
 <g id="node14" class="node">
 <title>DataExporter</title>
-<polygon fill="none" stroke="black" points="1191.09,-285.6 1099.68,-285.6 1099.68,-228 1191.09,-228 1191.09,-285.6"/>
-<text text-anchor="middle" x="1145.38" y="-269" font-family="Times,serif" font-size="14.00">DataExporter</text>
-<text text-anchor="middle" x="1145.38" y="-236.2" font-family="Times,serif" font-size="14.00">In: 7, Out: 7</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="1500.02" cy="-316.45" rx="64.63" ry="40.73"/>
+<text text-anchor="middle" x="1500.02" y="-328.65" font-family="Times,serif" font-size="14.00">DataExporter</text>
+<text text-anchor="middle" x="1500.02" y="-295.85" font-family="Times,serif" font-size="14.00">In: 7, Out: 7</text>
 </g>
 <!-- DataExporterTests&#45;&gt;DataExporter -->
 <g id="edge39" class="edge">
 <title>DataExporterTests-&gt;DataExporter</title>
-<path fill="none" stroke="black" d="M912.35,-427.55C922.63,-396.91 943.69,-349.3 980.38,-326.4 1000.24,-314.01 1064.14,-328.22 1085.38,-318.4 1097.44,-312.82 1108.41,-303.71 1117.58,-294.23"/>
-<polygon fill="black" stroke="black" points="1120.02,-296.76 1124.14,-287 1114.83,-292.05 1120.02,-296.76"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1163.38,-522.78C1171.89,-483.62 1191.09,-426.14 1233.02,-397.98 1250.1,-386.51 1398.94,-397.68 1418.02,-389.98 1434.07,-383.5 1449.07,-372.45 1461.75,-360.91"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1462.72,-364.82 1467.54,-355.38 1457.89,-359.75 1462.72,-364.82"/>
 </g>
 <!-- CoreUtils -->
 <g id="node15" class="node">
 <title>CoreUtils</title>
-<polygon fill="none" stroke="black" points="889.6,-192 805.16,-192 805.16,-134.4 889.6,-134.4 889.6,-192"/>
-<text text-anchor="middle" x="847.38" y="-175.4" font-family="Times,serif" font-size="14.00">CoreUtils</text>
-<text text-anchor="middle" x="847.38" y="-142.6" font-family="Times,serif" font-size="14.00">In: 7, Out: 7</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="1100.02" cy="-198.99" rx="59.71" ry="40.73"/>
+<text text-anchor="middle" x="1100.02" y="-211.19" font-family="Times,serif" font-size="14.00">CoreUtils</text>
+<text text-anchor="middle" x="1100.02" y="-178.39" font-family="Times,serif" font-size="14.00">In: 7, Out: 7</text>
 </g>
 <!-- DataExporterTests&#45;&gt;CoreUtils -->
 <g id="edge37" class="edge">
 <title>DataExporterTests-&gt;CoreUtils</title>
-<path fill="none" stroke="black" d="M896.88,-427.53C889.71,-399.85 878.9,-356.43 871.38,-318.4 863.72,-279.63 857,-234.98 852.63,-203.74"/>
-<polygon fill="black" stroke="black" points="856.12,-203.39 851.29,-193.96 849.18,-204.34 856.12,-203.39"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1149.64,-522.63C1143.34,-487.57 1134.2,-435.49 1127.02,-389.98 1119.66,-343.3 1112.17,-290.03 1106.95,-251.8"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1110.63,-252.88 1105.82,-243.44 1103.69,-253.82 1110.63,-252.88"/>
 </g>
 <!-- DependencyRelation -->
 <g id="node21" class="node">
 <title>DependencyRelation</title>
-<polygon fill="#90ee90" stroke="black" points="2871.08,-192 2737.68,-192 2737.68,-134.4 2871.08,-134.4 2871.08,-192"/>
-<text text-anchor="middle" x="2804.38" y="-175.4" font-family="Times,serif" font-size="14.00">DependencyRelation</text>
-<text text-anchor="middle" x="2804.38" y="-142.6" font-family="Times,serif" font-size="14.00">In: 9, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="3662.02" cy="-198.99" rx="94.33" ry="40.73"/>
+<text text-anchor="middle" x="3662.02" y="-211.19" font-family="Times,serif" font-size="14.00">DependencyRelation</text>
+<text text-anchor="middle" x="3662.02" y="-178.39" font-family="Times,serif" font-size="14.00">In: 9, Out: 1</text>
 </g>
 <!-- DataExporterTests&#45;&gt;DependencyRelation -->
 <g id="edge42" class="edge">
 <title>DataExporterTests-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M965.12,-430.42C968.22,-429.52 971.32,-428.7 974.38,-428 1184.16,-379.72 1244.29,-422.49 1457.38,-392 1595.93,-372.18 1626.26,-341.71 1765.38,-326.4 1777.13,-325.11 2606.7,-325.17 2616.38,-318.4 2651.56,-293.8 2620.53,-258.85 2650.38,-228 2656.52,-221.66 2691.76,-206.88 2726.98,-193.14"/>
-<polygon fill="black" stroke="black" points="2727.91,-196.53 2735.97,-189.66 2725.39,-190.01 2727.91,-196.53"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1216.93,-534.24C1228.04,-529.92 1239.71,-526.05 1251.02,-523.43 1539.42,-456.83 1622.43,-525.02 1916.02,-487.43 2113.96,-462.09 2157.54,-418.71 2356.02,-397.98 2370.64,-396.45 3402.27,-398.81 3414.02,-389.98 3456.37,-358.14 3411.02,-313.64 3448.02,-275.72 3484.24,-238.6 3510.14,-257.06 3559.02,-239.72 3566.39,-237.1 3574.02,-234.32 3581.65,-231.47"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3581.44,-235.29 3589.57,-228.5 3578.98,-228.74 3581.44,-235.29"/>
 </g>
 <!-- DuplicationCode -->
 <g id="node22" class="node">
 <title>DuplicationCode</title>
-<polygon fill="#ffa07a" stroke="black" points="2719.21,-192 2607.56,-192 2607.56,-134.4 2719.21,-134.4 2719.21,-192"/>
-<text text-anchor="middle" x="2663.38" y="-175.4" font-family="Times,serif" font-size="14.00">DuplicationCode</text>
-<text text-anchor="middle" x="2663.38" y="-142.6" font-family="Times,serif" font-size="14.00">In: 6, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="3471.02" cy="-198.99" rx="78.95" ry="40.73"/>
+<text text-anchor="middle" x="3471.02" y="-211.19" font-family="Times,serif" font-size="14.00">DuplicationCode</text>
+<text text-anchor="middle" x="3471.02" y="-178.39" font-family="Times,serif" font-size="14.00">In: 6, Out: 7</text>
 </g>
 <!-- DataExporterTests&#45;&gt;DuplicationCode -->
 <g id="edge41" class="edge">
 <title>DataExporterTests-&gt;DuplicationCode</title>
-<path fill="none" stroke="black" d="M965.18,-430.67C968.27,-429.7 971.35,-428.81 974.38,-428 1051.94,-407.4 1609.37,-332.42 1689.38,-326.4 1701.75,-325.47 2572.02,-325.21 2582.38,-318.4 2619.09,-294.26 2601.56,-266.68 2622.38,-228 2627.05,-219.33 2632.48,-210.29 2637.84,-201.83"/>
-<polygon fill="black" stroke="black" points="2640.74,-203.79 2643.23,-193.49 2634.86,-199.99 2640.74,-203.79"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1217.84,-534.57C1228.71,-530.3 1240.06,-526.36 1251.02,-523.43 1306.67,-508.6 2222.55,-401.68 2280.02,-397.98 2295.27,-396.99 3367.59,-398.86 3380.02,-389.98 3423.79,-358.69 3395.91,-323.82 3420.02,-275.72 3424.82,-266.15 3430.63,-256.36 3436.6,-247.13"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3438.54,-250.53 3441.15,-240.26 3432.71,-246.66 3438.54,-250.53"/>
 </g>
 <!-- NamespaceMetrics -->
 <g id="node23" class="node">
 <title>NamespaceMetrics</title>
-<polygon fill="#ffa07a" stroke="black" points="3030.02,-192 2906.74,-192 2906.74,-134.4 3030.02,-134.4 3030.02,-192"/>
-<text text-anchor="middle" x="2968.38" y="-175.4" font-family="Times,serif" font-size="14.00">NamespaceMetrics</text>
-<text text-anchor="middle" x="2968.38" y="-142.6" font-family="Times,serif" font-size="14.00">In: 6, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="3880.02" cy="-198.99" rx="87.17" ry="40.73"/>
+<text text-anchor="middle" x="3880.02" y="-211.19" font-family="Times,serif" font-size="14.00">NamespaceMetrics</text>
+<text text-anchor="middle" x="3880.02" y="-178.39" font-family="Times,serif" font-size="14.00">In: 6, Out: 7</text>
 </g>
 <!-- DataExporterTests&#45;&gt;NamespaceMetrics -->
 <g id="edge40" class="edge">
 <title>DataExporterTests-&gt;NamespaceMetrics</title>
-<path fill="none" stroke="black" d="M965.1,-430.35C968.21,-429.47 971.32,-428.67 974.38,-428 1257.38,-365.71 1337.35,-423.73 1625.38,-392 1802.71,-372.47 1843.68,-342.16 2021.38,-326.4 2056.03,-323.33 2614.49,-329.71 2647.38,-318.4 2710.19,-296.8 2706.81,-257.36 2766.38,-228 2817.84,-202.64 2838.35,-210.22 2895.58,-192.71"/>
-<polygon fill="black" stroke="black" points="2896.41,-196.12 2904.86,-189.73 2894.27,-189.46 2896.41,-196.12"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1216.9,-534.11C1228.01,-529.8 1239.7,-525.97 1251.02,-523.43 1446.14,-479.81 1951.42,-510.51 2150.02,-487.43 2357.77,-463.3 2403.93,-418.95 2612.02,-397.98 2635.04,-395.66 3423.39,-398.2 3445.02,-389.98 3517.23,-362.51 3506.28,-308.95 3576.02,-275.72 3660.32,-235.54 3693.29,-265.57 3783.02,-239.72 3790.72,-237.5 3798.63,-234.87 3806.46,-232.04"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3806.09,-235.92 3814.23,-229.13 3803.64,-229.36 3806.09,-235.92"/>
 </g>
 <!-- HashUtilsTests -->
 <g id="node9" class="node">
 <title>HashUtilsTests</title>
-<polygon fill="#90ee90" stroke="black" points="579.16,-485.6 477.61,-485.6 477.61,-428 579.16,-428 579.16,-485.6"/>
-<text text-anchor="middle" x="528.38" y="-469" font-family="Times,serif" font-size="14.00">HashUtilsTests</text>
-<text text-anchor="middle" x="528.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="648.02" cy="-564.16" rx="71.81" ry="40.73"/>
+<text text-anchor="middle" x="648.02" y="-576.36" font-family="Times,serif" font-size="14.00">HashUtilsTests</text>
+<text text-anchor="middle" x="648.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 2, Out: 1</text>
 </g>
 <!-- HashUtils -->
 <g id="node20" class="node">
 <title>HashUtils</title>
-<polygon fill="none" stroke="black" points="964.6,-285.6 880.16,-285.6 880.16,-228 964.6,-228 964.6,-285.6"/>
-<text text-anchor="middle" x="922.38" y="-269" font-family="Times,serif" font-size="14.00">HashUtils</text>
-<text text-anchor="middle" x="922.38" y="-236.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="1196.02" cy="-316.45" rx="59.71" ry="40.73"/>
+<text text-anchor="middle" x="1196.02" y="-328.65" font-family="Times,serif" font-size="14.00">HashUtils</text>
+<text text-anchor="middle" x="1196.02" y="-295.85" font-family="Times,serif" font-size="14.00">In: 2, Out: 2</text>
 </g>
 <!-- HashUtilsTests&#45;&gt;HashUtils -->
 <g id="edge46" class="edge">
 <title>HashUtilsTests-&gt;HashUtils</title>
-<path fill="none" stroke="black" d="M579.49,-430.12C654.46,-392.44 793.57,-322.54 869.52,-284.36"/>
-<polygon fill="black" stroke="black" points="871.09,-287.49 878.46,-279.87 867.95,-281.24 871.09,-287.49"/>
+<path fill="none" stroke="black" stroke-width="2" d="M701.9,-536.36C710.93,-531.98 720.22,-527.53 729.02,-523.43 873.38,-456.23 1045.17,-381.88 1134.76,-343.53"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1134.67,-347.37 1142.49,-340.22 1131.92,-340.94 1134.67,-347.37"/>
 </g>
 <!-- CodeAnalyzerTests -->
 <g id="node10" class="node">
 <title>CodeAnalyzerTests</title>
-<polygon fill="#90ee90" stroke="black" points="1567.59,-485.6 1441.18,-485.6 1441.18,-428 1567.59,-428 1567.59,-485.6"/>
-<text text-anchor="middle" x="1504.38" y="-469" font-family="Times,serif" font-size="14.00">CodeAnalyzerTests</text>
-<text text-anchor="middle" x="1504.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 6, Out: 2</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="1983.02" cy="-564.16" rx="89.38" ry="40.73"/>
+<text text-anchor="middle" x="1983.02" y="-576.36" font-family="Times,serif" font-size="14.00">CodeAnalyzerTests</text>
+<text text-anchor="middle" x="1983.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 6, Out: 2</text>
 </g>
 <!-- CodeAnalyzerTests&#45;&gt;FileUtils -->
 <g id="edge47" class="edge">
 <title>CodeAnalyzerTests-&gt;FileUtils</title>
-<path fill="none" stroke="black" d="M1440.69,-430.11C1437.9,-429.33 1435.13,-428.62 1432.38,-428 1383.26,-416.81 1014.56,-429.01 980.38,-392 955.14,-364.66 977.2,-324.01 1000.28,-294.62"/>
-<polygon fill="black" stroke="black" points="1002.84,-297.01 1006.46,-287.06 997.42,-292.58 1002.84,-297.01"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1920.21,-534.17C1908.72,-529.88 1896.67,-526.04 1885.02,-523.43 1814.22,-507.59 1282.89,-540.13 1233.02,-487.43 1205.69,-458.56 1208.55,-429.31 1233.02,-397.98 1242.04,-386.42 1252.01,-396.73 1265.02,-389.98 1280.59,-381.9 1295.71,-370.39 1308.74,-358.91"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1309.7,-362.77 1314.74,-353.45 1304.98,-357.6 1309.7,-362.77"/>
 </g>
 <!-- CodeMetricsAnalyzer -->
 <g id="node29" class="node">
 <title>CodeMetricsAnalyzer</title>
-<polygon fill="#ffa07a" stroke="black" points="2487.19,-392 2347.57,-392 2347.57,-334.4 2487.19,-334.4 2487.19,-392"/>
-<text text-anchor="middle" x="2417.38" y="-375.4" font-family="Times,serif" font-size="14.00">CodeMetricsAnalyzer</text>
-<text text-anchor="middle" x="2417.38" y="-342.6" font-family="Times,serif" font-size="14.00">In: 2, Out: 5</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="3156.02" cy="-446.71" rx="98.73" ry="40.73"/>
+<text text-anchor="middle" x="3156.02" y="-458.91" font-family="Times,serif" font-size="14.00">CodeMetricsAnalyzer</text>
+<text text-anchor="middle" x="3156.02" y="-426.11" font-family="Times,serif" font-size="14.00">In: 2, Out: 5</text>
 </g>
 <!-- CodeAnalyzerTests&#45;&gt;CodeMetricsAnalyzer -->
 <g id="edge48" class="edge">
 <title>CodeAnalyzerTests-&gt;CodeMetricsAnalyzer</title>
-<path fill="none" stroke="black" d="M1568.07,-430.1C1570.86,-429.33 1573.64,-428.62 1576.38,-428 1613.05,-419.72 2132.11,-383.67 2336,-369.73"/>
-<polygon fill="black" stroke="black" points="2335.98,-373.24 2345.71,-369.07 2335.5,-366.25 2335.98,-373.24"/>
+<path fill="none" stroke="black" stroke-width="2" d="M2045.86,-534.32C2057.36,-530.02 2069.4,-526.13 2081.02,-523.43 2092.7,-520.73 2775.38,-473.77 3046.63,-455.19"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3045.31,-458.79 3055.04,-454.61 3044.83,-451.8 3045.31,-458.79"/>
 </g>
 <!-- CoreUtilsTests -->
 <g id="node11" class="node">
 <title>CoreUtilsTests</title>
-<polygon fill="#90ee90" stroke="black" points="329.38,-485.6 229.39,-485.6 229.39,-428 329.38,-428 329.38,-485.6"/>
-<text text-anchor="middle" x="279.38" y="-469" font-family="Times,serif" font-size="14.00">CoreUtilsTests</text>
-<text text-anchor="middle" x="279.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 7, Out: 1</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="311.02" cy="-564.16" rx="70.71" ry="40.73"/>
+<text text-anchor="middle" x="311.02" y="-576.36" font-family="Times,serif" font-size="14.00">CoreUtilsTests</text>
+<text text-anchor="middle" x="311.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 7, Out: 1</text>
 </g>
 <!-- CoreUtilsTests&#45;&gt;CoreUtils -->
 <g id="edge49" class="edge">
 <title>CoreUtilsTests-&gt;CoreUtils</title>
-<path fill="none" stroke="black" d="M329.79,-429.92C436.84,-374.97 685.96,-247.07 794.86,-191.17"/>
-<polygon fill="black" stroke="black" points="796.3,-194.36 803.6,-186.68 793.11,-188.13 796.3,-194.36"/>
+<path fill="none" stroke="black" stroke-width="2" d="M364.26,-536.42C373.17,-532.03 382.34,-527.57 391.02,-523.43 629.59,-409.82 916.81,-281.3 1039.59,-226.75"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1039.42,-230.66 1047.14,-223.4 1036.58,-224.26 1039.42,-230.66"/>
 </g>
 <!-- DependencyGraphGeneratorTests -->
 <g id="node12" class="node">
 <title>DependencyGraphGeneratorTests</title>
-<polygon fill="#90ee90" stroke="black" points="1791.62,-485.6 1585.15,-485.6 1585.15,-428 1791.62,-428 1791.62,-485.6"/>
-<text text-anchor="middle" x="1688.38" y="-469" font-family="Times,serif" font-size="14.00">DependencyGraphGeneratorTests</text>
-<text text-anchor="middle" x="1688.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 9, Out: 2</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="2236.02" cy="-564.16" rx="146" ry="40.73"/>
+<text text-anchor="middle" x="2236.02" y="-576.36" font-family="Times,serif" font-size="14.00">DependencyGraphGeneratorTests</text>
+<text text-anchor="middle" x="2236.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 9, Out: 2</text>
 </g>
 <!-- DependencyGraphGeneratorTests&#45;&gt;DependencyRelation -->
 <g id="edge50" class="edge">
 <title>DependencyGraphGeneratorTests-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M1787.08,-427.53C1819.7,-417.34 1855.94,-405.09 1888.38,-392 1949.51,-367.34 1957.29,-341.78 2021.38,-326.4 2055.37,-318.25 2618.8,-333.36 2650.38,-318.4 2697.82,-295.94 2689.02,-264.86 2726.38,-228 2736.21,-218.3 2747.39,-208.53 2758.15,-199.63"/>
-<polygon fill="black" stroke="black" points="2760.33,-202.37 2765.88,-193.35 2755.92,-196.94 2760.33,-202.37"/>
+<path fill="none" stroke="black" stroke-width="2" d="M2345.34,-536.4C2388.09,-524.07 2436.88,-507.64 2479.02,-487.43 2543.26,-456.63 2543.98,-419.09 2612.02,-397.98 2634.2,-391.09 3427.6,-401.04 3448.02,-389.98 3501.64,-360.91 3479.1,-316.97 3524.02,-275.72 3541.83,-259.36 3563.82,-245.26 3584.96,-233.82"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3585.02,-237.74 3592.25,-229.99 3581.77,-231.54 3585.02,-237.74"/>
 </g>
 <!-- DependencyGraphGenerator -->
 <g id="node25" class="node">
 <title>DependencyGraphGenerator</title>
-<polygon fill="#ffa07a" stroke="black" points="2209.84,-485.6 2032.92,-485.6 2032.92,-428 2209.84,-428 2209.84,-485.6"/>
-<text text-anchor="middle" x="2121.38" y="-469" font-family="Times,serif" font-size="14.00">DependencyGraphGenerator</text>
-<text text-anchor="middle" x="2121.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="2749.02" cy="-564.16" rx="125.1" ry="40.73"/>
+<text text-anchor="middle" x="2749.02" y="-576.36" font-family="Times,serif" font-size="14.00">DependencyGraphGenerator</text>
+<text text-anchor="middle" x="2749.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 2, Out: 7</text>
 </g>
 <!-- DependencyGraphGeneratorTests&#45;&gt;DependencyGraphGenerator -->
 <g id="edge51" class="edge">
 <title>DependencyGraphGeneratorTests-&gt;DependencyGraphGenerator</title>
-<path fill="none" stroke="black" d="M1791.98,-456.8C1868.43,-456.8 1944.87,-456.8 2021.32,-456.8"/>
-<polygon fill="black" stroke="black" points="2021.09,-460.3 2031.09,-456.8 2021.09,-453.3 2021.09,-460.3"/>
+<path fill="none" stroke="black" stroke-width="2" d="M2382.81,-564.16C2459.16,-564.16 2535.52,-564.16 2611.87,-564.16"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="2610.11,-567.66 2620.11,-564.16 2610.11,-560.66 2610.11,-567.66"/>
 </g>
 <!-- DataExporter&#45;&gt;CoreUtils -->
 <g id="edge4" class="edge">
 <title>DataExporter-&gt;CoreUtils</title>
-<path fill="none" stroke="black" d="M1099.29,-233.2C1094.65,-231.3 1089.96,-229.53 1085.38,-228 1012.53,-203.71 989.83,-214.43 916.38,-192 911.25,-190.43 905.96,-188.64 900.71,-186.74"/>
-<polygon fill="black" stroke="black" points="902.04,-183.5 891.45,-183.25 899.58,-190.05 902.04,-183.5"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1451.12,-288.84C1440.45,-283.87 1429.04,-279.16 1418.02,-275.72 1318.42,-244.63 1285.91,-269.89 1186.02,-239.72 1176.64,-236.88 1166.97,-233.22 1157.65,-229.26"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1160.64,-226.75 1150.08,-225.92 1157.81,-233.16 1160.64,-226.75"/>
 </g>
 <!-- CsvExportStrategy -->
 <g id="node16" class="node">
 <title>CsvExportStrategy</title>
-<polygon fill="#ffa07a" stroke="black" points="1047.66,-192 925.11,-192 925.11,-134.4 1047.66,-134.4 1047.66,-192"/>
-<text text-anchor="middle" x="986.38" y="-175.4" font-family="Times,serif" font-size="14.00">CsvExportStrategy</text>
-<text text-anchor="middle" x="986.38" y="-142.6" font-family="Times,serif" font-size="14.00">In: 1, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="1282.02" cy="-198.99" rx="86.65" ry="40.73"/>
+<text text-anchor="middle" x="1282.02" y="-211.19" font-family="Times,serif" font-size="14.00">CsvExportStrategy</text>
+<text text-anchor="middle" x="1282.02" y="-178.39" font-family="Times,serif" font-size="14.00">In: 1, Out: 7</text>
 </g>
 <!-- DataExporter&#45;&gt;CsvExportStrategy -->
 <g id="edge5" class="edge">
 <title>DataExporter-&gt;CsvExportStrategy</title>
-<path fill="none" stroke="black" d="M1099.39,-229.31C1082.45,-219.54 1063.01,-208.35 1045.09,-198.02"/>
-<polygon fill="black" stroke="black" points="1047.04,-195.11 1036.63,-193.15 1043.55,-201.17 1047.04,-195.11"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1450.55,-289.25C1420.61,-273.39 1382.03,-252.95 1349.33,-235.64"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1352.54,-233.38 1342.06,-231.79 1349.26,-239.56 1352.54,-233.38"/>
 </g>
 <!-- JsonExportStrategy -->
 <g id="node17" class="node">
 <title>JsonExportStrategy</title>
-<polygon fill="#ffa07a" stroke="black" points="1191.21,-192 1065.56,-192 1065.56,-134.4 1191.21,-134.4 1191.21,-192"/>
-<text text-anchor="middle" x="1128.38" y="-175.4" font-family="Times,serif" font-size="14.00">JsonExportStrategy</text>
-<text text-anchor="middle" x="1128.38" y="-142.6" font-family="Times,serif" font-size="14.00">In: 1, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="1476.02" cy="-198.99" rx="88.85" ry="40.73"/>
+<text text-anchor="middle" x="1476.02" y="-211.19" font-family="Times,serif" font-size="14.00">JsonExportStrategy</text>
+<text text-anchor="middle" x="1476.02" y="-178.39" font-family="Times,serif" font-size="14.00">In: 1, Out: 7</text>
 </g>
 <!-- DataExporter&#45;&gt;JsonExportStrategy -->
 <g id="edge6" class="edge">
 <title>DataExporter-&gt;JsonExportStrategy</title>
-<path fill="none" stroke="black" d="M1140.19,-227.82C1138.77,-220.17 1137.2,-211.73 1135.69,-203.57"/>
-<polygon fill="black" stroke="black" points="1139.14,-203.01 1133.88,-193.81 1132.26,-204.28 1139.14,-203.01"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1491.63,-275.06C1490.03,-267.37 1488.34,-259.23 1486.68,-251.25"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1490.45,-252.19 1484.99,-243.12 1483.59,-253.62 1490.45,-252.19"/>
 </g>
 <!-- DataExporter&#45;&gt;DependencyRelation -->
 <g id="edge8" class="edge">
 <title>DataExporter-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M1191.5,-254.34C1436.19,-246.57 2576.6,-209.71 2726.24,-191.61"/>
-<polygon fill="black" stroke="black" points="2726.7,-195.08 2736.07,-190.14 2725.67,-188.15 2726.7,-195.08"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1565.19,-313.12C1914.15,-300.67 3546.5,-242.29 3559.02,-239.72 3567.76,-237.92 3576.73,-235.47 3585.56,-232.65"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3585,-236.53 3593.36,-230.02 3582.77,-229.9 3585,-236.53"/>
 </g>
 <!-- DataExporter&#45;&gt;DuplicationCode -->
 <g id="edge7" class="edge">
 <title>DataExporter-&gt;DuplicationCode</title>
-<path fill="none" stroke="black" d="M1191.55,-254.54C1422.09,-248.12 2443.22,-218.4 2582.38,-192 2586.98,-191.13 2591.68,-190.05 2596.38,-188.83"/>
-<polygon fill="black" stroke="black" points="2597.16,-192.24 2605.84,-186.16 2595.26,-185.5 2597.16,-192.24"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1565.19,-313.15C1891.6,-301.61 3334.85,-250.1 3380.02,-239.72 3387.99,-237.89 3396.13,-235.37 3404.11,-232.48"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3403.95,-236.29 3412.02,-229.44 3401.43,-229.76 3403.95,-236.29"/>
 </g>
 <!-- DataExporter&#45;&gt;NamespaceMetrics -->
 <g id="edge10" class="edge">
 <title>DataExporter-&gt;NamespaceMetrics</title>
-<path fill="none" stroke="black" d="M1191.48,-254.34C1454.03,-245.99 2753.66,-204.3 2895.41,-191.4"/>
-<polygon fill="black" stroke="black" points="2895.51,-194.92 2905.01,-190.23 2894.66,-187.97 2895.51,-194.92"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1565.19,-313C1736.61,-306.61 2214.29,-288.94 2612.02,-275.72 2872.22,-267.07 3528.38,-293.92 3783.02,-239.72 3791.25,-237.97 3799.67,-235.55 3807.95,-232.77"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3807.62,-236.6 3815.86,-229.94 3805.27,-230.01 3807.62,-236.6"/>
 </g>
 <!-- DataExporter&#45;&gt;DependencyGraphGenerator -->
 <g id="edge9" class="edge">
 <title>DataExporter-&gt;DependencyGraphGenerator</title>
-<path fill="none" stroke="black" d="M1191.36,-257.6C1326.82,-257.76 1721.76,-263.72 1831.38,-326.4 1862.75,-344.33 1849.53,-371.65 1879.38,-392 1921.17,-420.49 1974.99,-436.26 2021.26,-444.99"/>
-<polygon fill="black" stroke="black" points="2020.59,-448.43 2031.05,-446.75 2021.82,-441.54 2020.59,-448.43"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1565.36,-319.59C1763.9,-326.58 2350.83,-351.06 2422.02,-397.98 2459.7,-422.81 2434.7,-459.36 2470.02,-487.43 2511.84,-520.68 2567.11,-539.37 2617.43,-549.86"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="2614.96,-552.94 2625.45,-551.45 2616.32,-546.08 2614.96,-552.94"/>
 </g>
 <!-- CoreUtils&#45;&gt;CoreUtils -->
 <g id="edge11" class="edge">
 <title>CoreUtils-&gt;CoreUtils</title>
-<path fill="none" stroke="black" d="M889.87,-180.44C900.06,-179.09 907.6,-173.35 907.6,-163.2 907.6,-157.18 904.94,-152.7 900.65,-149.78"/>
-<polygon fill="black" stroke="black" points="901.89,-146.51 891.3,-146.47 899.55,-153.1 901.89,-146.51"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1151.58,-220.93C1166.35,-220.07 1177.73,-212.75 1177.73,-198.99 1177.73,-188.99 1171.72,-182.39 1162.77,-179.2"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1165.04,-176.08 1154.56,-177.62 1163.72,-182.95 1165.04,-176.08"/>
 </g>
 <!-- CsvExportStrategy&#45;&gt;CsvHandler -->
 <g id="edge22" class="edge">
 <title>CsvExportStrategy-&gt;CsvHandler</title>
-<path fill="none" stroke="black" d="M965,-134.22C958.61,-125.86 951.51,-116.57 944.75,-107.72"/>
-<polygon fill="black" stroke="black" points="947.65,-105.75 938.79,-99.93 942.09,-110 947.65,-105.75"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1251.97,-159.86C1243.72,-149.39 1234.7,-137.95 1226.19,-127.15"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1230,-126.33 1221.06,-120.65 1224.5,-130.67 1230,-126.33"/>
 </g>
 <!-- JsonExportStrategy&#45;&gt;JsonHandler -->
 <g id="edge36" class="edge">
 <title>JsonExportStrategy-&gt;JsonHandler</title>
-<path fill="none" stroke="black" d="M1111.58,-134.22C1106.72,-126.13 1101.34,-117.15 1096.18,-108.56"/>
-<polygon fill="black" stroke="black" points="1099.2,-106.79 1091.05,-100.02 1093.2,-110.4 1099.2,-106.79"/>
+<path fill="none" stroke="black" stroke-width="2" d="M1451.31,-158.9C1445.35,-149.48 1438.92,-139.32 1432.77,-129.57"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1436.64,-129.16 1428.34,-122.57 1430.73,-132.9 1436.64,-129.16"/>
 </g>
 <!-- DependencyRelation&#45;&gt;DependencyRelation -->
 <g id="edge3" class="edge">
 <title>DependencyRelation-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M2871.48,-179.28C2881.95,-176.88 2889.08,-171.52 2889.08,-163.2 2889.08,-158.13 2886.43,-154.16 2882,-151.29"/>
-<polygon fill="black" stroke="black" points="2883.47,-148.11 2872.89,-147.67 2880.89,-154.62 2883.47,-148.11"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3743.81,-220.36C3761.51,-218.27 3774.35,-211.15 3774.35,-198.99 3774.35,-189.58 3766.67,-183.19 3755,-179.81"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3757.26,-176.69 3746.78,-178.2 3755.92,-183.56 3757.26,-176.69"/>
 </g>
 <!-- AnalysisResult -->
 <g id="node24" class="node">
 <title>AnalysisResult</title>
-<polygon fill="#ffa07a" stroke="black" points="3030.77,-285.6 2929.99,-285.6 2929.99,-228 3030.77,-228 3030.77,-285.6"/>
-<text text-anchor="middle" x="2980.38" y="-269" font-family="Times,serif" font-size="14.00">AnalysisResult</text>
-<text text-anchor="middle" x="2980.38" y="-236.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="3799.02" cy="-316.45" rx="71.26" ry="40.73"/>
+<text text-anchor="middle" x="3799.02" y="-328.65" font-family="Times,serif" font-size="14.00">AnalysisResult</text>
+<text text-anchor="middle" x="3799.02" y="-295.85" font-family="Times,serif" font-size="14.00">In: 2, Out: 7</text>
 </g>
 <!-- AnalysisResult&#45;&gt;DependencyRelation -->
 <g id="edge25" class="edge">
 <title>AnalysisResult-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M2929.95,-229.55C2910.83,-219.6 2888.8,-208.14 2868.58,-197.61"/>
-<polygon fill="black" stroke="black" points="2870.34,-194.58 2859.86,-193.07 2867.11,-200.79 2870.34,-194.58"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3759.03,-281.74C3744.77,-269.72 3728.5,-256.01 3713.41,-243.3"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3716.91,-241.67 3707.01,-237.9 3712.4,-247.02 3716.91,-241.67"/>
 </g>
 <!-- AnalysisResult&#45;&gt;DuplicationCode -->
 <g id="edge24" class="edge">
 <title>AnalysisResult-&gt;DuplicationCode</title>
-<path fill="none" stroke="black" d="M2929.51,-245.37C2880.53,-234.79 2804.35,-216.91 2730.43,-192.5"/>
-<polygon fill="black" stroke="black" points="2731.57,-189.2 2720.98,-189.34 2729.35,-195.83 2731.57,-189.2"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3734.9,-297.46C3686.15,-283.25 3617.69,-262.13 3559.02,-239.72 3552.65,-237.28 3546.08,-234.62 3539.54,-231.86"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3542.66,-229.39 3532.09,-228.66 3539.9,-235.82 3542.66,-229.39"/>
 </g>
 <!-- AnalysisResult&#45;&gt;NamespaceMetrics -->
 <g id="edge23" class="edge">
 <title>AnalysisResult-&gt;NamespaceMetrics</title>
-<path fill="none" stroke="black" d="M2976.72,-227.82C2975.71,-220.17 2974.61,-211.73 2973.54,-203.57"/>
-<polygon fill="black" stroke="black" points="2977.03,-203.29 2972.26,-193.83 2970.09,-204.2 2977.03,-203.29"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3825.54,-277.64C3832.19,-268.17 3839.4,-257.89 3846.34,-247.99"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3848.27,-251.34 3851.15,-241.15 3842.54,-247.32 3848.27,-251.34"/>
 </g>
 <!-- DependencyGraphGenerator&#45;&gt;DependencyRelation -->
 <g id="edge52" class="edge">
 <title>DependencyGraphGenerator-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M2210.03,-442.68C2378.53,-416.94 2731.77,-358.81 2770.38,-318.4 2799.57,-287.86 2805.94,-238.22 2806.38,-203.54"/>
-<polygon fill="black" stroke="black" points="2809.88,-203.9 2806.34,-193.91 2802.88,-203.93 2809.88,-203.9"/>
+<path fill="none" stroke="black" stroke-width="2" d="M2865.22,-548.18C2993.1,-531.33 3190.31,-504.12 3264.02,-487.43 3407.37,-454.99 3470.62,-488.12 3580.02,-389.98 3620.4,-353.75 3641.67,-294.15 3652.33,-251.37"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3655.35,-253.81 3654.24,-243.27 3648.54,-252.2 3655.35,-253.81"/>
 </g>
 <!-- SolutionAnalyzer -->
 <g id="node26" class="node">
 <title>SolutionAnalyzer</title>
-<polygon fill="#ffa07a" stroke="black" points="2474.76,-485.6 2360,-485.6 2360,-428 2474.76,-428 2474.76,-485.6"/>
-<text text-anchor="middle" x="2417.38" y="-469" font-family="Times,serif" font-size="14.00">SolutionAnalyzer</text>
-<text text-anchor="middle" x="2417.38" y="-436.2" font-family="Times,serif" font-size="14.00">In: 2, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="3156.02" cy="-564.16" rx="81.15" ry="40.73"/>
+<text text-anchor="middle" x="3156.02" y="-576.36" font-family="Times,serif" font-size="14.00">SolutionAnalyzer</text>
+<text text-anchor="middle" x="3156.02" y="-543.56" font-family="Times,serif" font-size="14.00">In: 2, Out: 7</text>
 </g>
 <!-- SolutionAnalyzer&#45;&gt;DataExporter -->
 <g id="edge33" class="edge">
 <title>SolutionAnalyzer-&gt;DataExporter</title>
-<path fill="none" stroke="black" d="M2359.52,-447.41C2319.83,-441.73 2265.95,-434.17 2218.38,-428 2151.58,-419.34 1975.54,-426 1917.38,-392 1886.2,-373.77 1900.79,-344.25 1869.38,-326.4 1755.85,-261.88 1353.06,-256.84 1202.62,-257.28"/>
-<polygon fill="black" stroke="black" points="1202.88,-253.78 1192.9,-257.32 1202.91,-260.78 1202.88,-253.78"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3078.49,-550.85C3023.92,-542.44 2949.12,-531.41 2883.02,-523.43 2799.91,-513.4 2577.72,-533.8 2508.02,-487.43 2470.45,-462.44 2497.74,-422.74 2460.02,-397.98 2386.83,-349.92 1791.08,-326.6 1576.6,-319.7"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1578.29,-316.26 1568.18,-319.44 1578.07,-323.25 1578.29,-316.26"/>
 </g>
 <!-- SolutionAnalyzer&#45;&gt;CoreUtils -->
 <g id="edge30" class="edge">
 <title>SolutionAnalyzer-&gt;CoreUtils</title>
-<path fill="none" stroke="black" d="M2359.73,-438.96C2265.71,-411.99 2073.22,-358.88 1907.38,-326.4 1596.05,-265.43 1514.87,-269.82 1200.38,-228 1074.26,-211.23 1039.52,-224.04 916.38,-192 911.19,-190.65 905.86,-189 900.58,-187.19"/>
-<polygon fill="black" stroke="black" points="901.89,-183.95 891.29,-183.81 899.49,-190.52 901.89,-183.95"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3086.01,-542.78C2966.41,-508.58 2714.65,-439.36 2498.02,-397.98 2091.13,-320.25 1985.67,-322.03 1574.02,-275.72 1401.92,-256.36 1353.27,-284.68 1186.02,-239.72 1176.56,-237.17 1166.84,-233.66 1157.5,-229.77"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1160.49,-227.26 1149.93,-226.46 1157.69,-233.67 1160.49,-227.26"/>
 </g>
 <!-- SolutionAnalyzer&#45;&gt;NamespaceMetrics -->
 <g id="edge34" class="edge">
 <title>SolutionAnalyzer-&gt;NamespaceMetrics</title>
-<path fill="none" stroke="black" d="M2475.09,-455.54C2585.25,-453.84 2819.77,-444.03 2878.38,-392 2934.74,-341.98 2888.9,-295.99 2921.38,-228 2925.73,-218.89 2931.45,-209.76 2937.4,-201.37"/>
-<polygon fill="black" stroke="black" points="2940.11,-203.59 2943.24,-193.47 2934.48,-199.43 2940.11,-203.59"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3237.83,-562.34C3368.14,-559.28 3614.42,-545.69 3676.02,-487.43 3745.78,-421.46 3659.72,-351.23 3719.02,-275.72 3725.17,-267.88 3765.99,-248.72 3804.98,-231.63"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3804.82,-235.52 3812.59,-228.32 3802.03,-229.11 3804.82,-235.52"/>
 </g>
 <!-- SolutionAnalyzer&#45;&gt;AnalysisResult -->
 <g id="edge31" class="edge">
 <title>SolutionAnalyzer-&gt;AnalysisResult</title>
-<path fill="none" stroke="black" d="M2474.9,-455.21C2590.72,-452.95 2846.96,-442.25 2916.38,-392 2947.48,-369.49 2964.05,-327.84 2972.47,-296.88"/>
-<polygon fill="black" stroke="black" points="2975.79,-298.04 2974.85,-287.49 2969,-296.32 2975.79,-298.04"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3237.94,-561.27C3374.09,-556.64 3639.38,-540.83 3714.02,-487.43 3753.43,-459.24 3775.59,-407.46 3787.33,-368.43"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3790.23,-371.02 3789.61,-360.44 3783.5,-369.1 3790.23,-371.02"/>
 </g>
 <!-- SolutionAnalyzer&#45;&gt;CodeMetricsAnalyzer -->
 <g id="edge32" class="edge">
 <title>SolutionAnalyzer-&gt;CodeMetricsAnalyzer</title>
-<path fill="none" stroke="black" d="M2417.38,-427.82C2417.38,-420.17 2417.38,-411.73 2417.38,-403.57"/>
-<polygon fill="black" stroke="black" points="2420.88,-403.84 2417.38,-393.84 2413.88,-403.84 2420.88,-403.84"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3156.02,-522.46C3156.02,-515.13 3156.02,-507.4 3156.02,-499.8"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3159.52,-501.46 3156.02,-491.46 3152.52,-501.46 3159.52,-501.46"/>
 </g>
 <!-- ComplexityWalker -->
 <g id="node30" class="node">
 <title>ComplexityWalker</title>
-<polygon fill="none" stroke="black" points="2197.03,-192 2073.73,-192 2073.73,-134.4 2197.03,-134.4 2197.03,-192"/>
-<text text-anchor="middle" x="2135.38" y="-175.4" font-family="Times,serif" font-size="14.00">ComplexityWalker</text>
-<text text-anchor="middle" x="2135.38" y="-142.6" font-family="Times,serif" font-size="14.00">In: 1, Out: 1</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="2769.02" cy="-198.99" rx="87.19" ry="40.73"/>
+<text text-anchor="middle" x="2769.02" y="-211.19" font-family="Times,serif" font-size="14.00">ComplexityWalker</text>
+<text text-anchor="middle" x="2769.02" y="-178.39" font-family="Times,serif" font-size="14.00">In: 1, Out: 1</text>
 </g>
 <!-- CyclomaticComplexityCalculator&#45;&gt;ComplexityWalker -->
 <g id="edge35" class="edge">
 <title>CyclomaticComplexityCalculator-&gt;ComplexityWalker</title>
-<path fill="none" stroke="black" d="M2135.38,-227.82C2135.38,-220.17 2135.38,-211.73 2135.38,-203.57"/>
-<polygon fill="black" stroke="black" points="2138.88,-203.84 2135.38,-193.84 2131.88,-203.84 2138.88,-203.84"/>
+<path fill="none" stroke="black" stroke-width="2" d="M2769.02,-274.74C2769.02,-267.41 2769.02,-259.68 2769.02,-252.08"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="2772.52,-253.74 2769.02,-243.74 2765.52,-253.74 2772.52,-253.74"/>
 </g>
 <!-- CodeDuplicationChecker&#45;&gt;HashUtils -->
 <g id="edge29" class="edge">
 <title>CodeDuplicationChecker-&gt;HashUtils</title>
-<path fill="none" stroke="black" d="M2305.18,-285.87C2287.14,-300.82 2262.82,-317 2237.38,-322.4 2220.47,-325.99 1009.3,-325.99 992.38,-322.4 975.31,-318.78 960.48,-307.12 948.92,-294.62"/>
-<polygon fill="black" stroke="black" points="951.61,-292.38 942.44,-287.07 946.3,-296.94 951.61,-292.38"/>
+<path fill="none" stroke="black" stroke-width="2" d="M2997.56,-354.34C2974.09,-370.71 2944.23,-387.57 2914.02,-393.98 2891.94,-398.66 1311.1,-398.66 1289.02,-393.98 1267.48,-389.41 1248,-375.6 1232.5,-360.87"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1236.45,-359.88 1226.9,-355.28 1231.5,-364.82 1236.45,-359.88"/>
 </g>
 <!-- CodeDuplicationChecker&#45;&gt;DuplicationCode -->
 <g id="edge28" class="edge">
 <title>CodeDuplicationChecker-&gt;DuplicationCode</title>
-<path fill="none" stroke="black" d="M2414.92,-230.35C2417.77,-229.54 2420.6,-228.75 2423.38,-228 2493.32,-209.07 2512.68,-211.79 2582.38,-192 2587.1,-190.66 2591.94,-189.21 2596.8,-187.69"/>
-<polygon fill="black" stroke="black" points="2597.52,-191.13 2605.98,-184.75 2595.39,-184.47 2597.52,-191.13"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3124.24,-287.23C3137.75,-283.02 3151.71,-279 3165.02,-275.72 3259.09,-252.54 3287.15,-267.31 3380.02,-239.72 3387.55,-237.48 3395.27,-234.78 3402.89,-231.86"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3402.76,-235.68 3410.75,-228.72 3400.17,-229.18 3402.76,-235.68"/>
 </g>
 <!-- CodeMetricsAnalyzer&#45;&gt;FileUtils -->
 <g id="edge56" class="edge">
 <title>CodeMetricsAnalyzer-&gt;FileUtils</title>
-<path fill="none" stroke="black" d="M2347.08,-356.76C2237.14,-348.51 2017.79,-333.1 1831.38,-326.4 1810.81,-325.66 1109.2,-326.75 1090.38,-318.4 1078.65,-313.19 1068.28,-304.21 1059.74,-294.73"/>
-<polygon fill="black" stroke="black" points="1062.5,-292.58 1053.4,-287.14 1057.13,-297.06 1062.5,-292.58"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3058.75,-437.61C2918.29,-426.33 2650.45,-406.31 2422.02,-397.98 2394.37,-396.97 1451.7,-400.28 1426.02,-389.98 1410.51,-383.75 1396.3,-372.79 1384.42,-361.24"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1388.18,-360.08 1378.7,-355.37 1383.17,-364.97 1388.18,-360.08"/>
 </g>
 <!-- CodeMetricsAnalyzer&#45;&gt;DependencyRelation -->
 <g id="edge55" class="edge">
 <title>CodeMetricsAnalyzer-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M2487.64,-359.68C2566.78,-355.58 2689.22,-345.02 2726.38,-318.4 2764.56,-291.05 2785.22,-239.48 2795.5,-203.54"/>
-<polygon fill="black" stroke="black" points="2798.87,-204.5 2798.09,-193.94 2792.11,-202.68 2798.87,-204.5"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3253.83,-439.41C3347.15,-431.89 3479.85,-416.84 3524.02,-389.98 3531.45,-385.46 3590.28,-302.56 3628.69,-247.77"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3630.54,-251.25 3633.41,-241.05 3624.8,-247.23 3630.54,-251.25"/>
 </g>
 <!-- CodeMetricsAnalyzer&#45;&gt;DuplicationCode -->
 <g id="edge54" class="edge">
 <title>CodeMetricsAnalyzer-&gt;DuplicationCode</title>
-<path fill="none" stroke="black" d="M2487.58,-353.79C2535.72,-346.69 2594.06,-335 2612.38,-318.4 2644.77,-289.06 2656.63,-238.73 2660.95,-203.58"/>
-<polygon fill="black" stroke="black" points="2664.42,-204.11 2661.99,-193.79 2657.46,-203.37 2664.42,-204.11"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3251.48,-434.75C3313.4,-425.81 3386.73,-411.16 3410.02,-389.98 3448.76,-354.75 3463.02,-294.89 3468.2,-251.77"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3471.51,-253.68 3469.09,-243.37 3464.55,-252.95 3471.51,-253.68"/>
 </g>
 <!-- CodeMetricsAnalyzer&#45;&gt;NamespaceMetrics -->
 <g id="edge53" class="edge">
 <title>CodeMetricsAnalyzer-&gt;NamespaceMetrics</title>
-<path fill="none" stroke="black" d="M2487.55,-357.92C2575.5,-351.8 2720.74,-338.95 2770.38,-318.4 2774.81,-316.57 2866.82,-244.3 2923.83,-199.37"/>
-<polygon fill="black" stroke="black" points="2925.79,-202.28 2931.48,-193.34 2921.46,-196.78 2925.79,-202.28"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3254.16,-440.5C3361.29,-433.47 3524.94,-418.43 3580.02,-389.98 3641.57,-358.19 3628.43,-314.21 3686.02,-275.72 3724.25,-250.17 3740.18,-256.43 3783.02,-239.72 3789.97,-237.01 3797.18,-234.14 3804.39,-231.25"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3804.15,-235.12 3812.11,-228.13 3801.53,-228.63 3804.15,-235.12"/>
 </g>
 <!-- CodeMetricsAnalyzer&#45;&gt;CyclomaticComplexityCalculator -->
 <g id="edge59" class="edge">
 <title>CodeMetricsAnalyzer-&gt;CyclomaticComplexityCalculator</title>
-<path fill="none" stroke="black" d="M2347.1,-348.15C2315.99,-340.9 2279.3,-330.93 2247.38,-318.4 2228.63,-311.04 2209.04,-301.24 2191.58,-291.67"/>
-<polygon fill="black" stroke="black" points="2193.33,-288.64 2182.89,-286.82 2189.92,-294.75 2193.33,-288.64"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3066.27,-428.75C3022.45,-419.34 2969.33,-406.23 2923.02,-389.98 2897.77,-381.11 2871.11,-369.45 2847.2,-358.07"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="2850.39,-355.72 2839.86,-354.53 2847.35,-362.02 2850.39,-355.72"/>
 </g>
 <!-- CodeMetricsAnalyzer&#45;&gt;CodeDuplicationChecker -->
 <g id="edge57" class="edge">
 <title>CodeMetricsAnalyzer-&gt;CodeDuplicationChecker</title>
-<path fill="none" stroke="black" d="M2395.19,-333.95C2385.8,-321.99 2374.73,-307.9 2364.69,-295.11"/>
-<polygon fill="black" stroke="black" points="2367.46,-292.97 2358.53,-287.27 2361.95,-297.29 2367.46,-292.97"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3122.72,-407.57C3110.97,-394.12 3097.62,-378.83 3085.29,-364.71"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3088.98,-363.61 3079.77,-358.38 3083.71,-368.21 3088.98,-363.61"/>
 </g>
 <!-- DependencyAnalyzer -->
 <g id="node31" class="node">
 <title>DependencyAnalyzer</title>
-<polygon fill="#ffa07a" stroke="black" points="2570.02,-285.6 2432.75,-285.6 2432.75,-228 2570.02,-228 2570.02,-285.6"/>
-<text text-anchor="middle" x="2501.38" y="-269" font-family="Times,serif" font-size="14.00">DependencyAnalyzer</text>
-<text text-anchor="middle" x="2501.38" y="-236.2" font-family="Times,serif" font-size="14.00">In: 1, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="3271.02" cy="-316.45" rx="97.06" ry="40.73"/>
+<text text-anchor="middle" x="3271.02" y="-328.65" font-family="Times,serif" font-size="14.00">DependencyAnalyzer</text>
+<text text-anchor="middle" x="3271.02" y="-295.85" font-family="Times,serif" font-size="14.00">In: 1, Out: 7</text>
 </g>
 <!-- CodeMetricsAnalyzer&#45;&gt;DependencyAnalyzer -->
 <g id="edge58" class="edge">
 <title>CodeMetricsAnalyzer-&gt;DependencyAnalyzer</title>
-<path fill="none" stroke="black" d="M2440.11,-333.95C2449.83,-321.88 2461.29,-307.63 2471.66,-294.74"/>
-<polygon fill="black" stroke="black" points="2474.14,-297.24 2477.68,-287.25 2468.69,-292.85 2474.14,-297.24"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3190.21,-407.57C3202.61,-393.74 3216.75,-377.98 3229.7,-363.54"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3231.07,-367.25 3235.14,-357.47 3225.86,-362.58 3231.07,-367.25"/>
 </g>
 <!-- DependencyAnalyzer&#45;&gt;FileUtils -->
 <g id="edge61" class="edge">
 <title>DependencyAnalyzer-&gt;FileUtils</title>
-<path fill="none" stroke="black" d="M2475.65,-285.83C2459.82,-300.97 2438.07,-317.37 2414.38,-322.4 2396.52,-326.19 1117.25,-326.19 1099.38,-322.4 1082.94,-318.91 1069.07,-307.28 1058.42,-294.77"/>
-<polygon fill="black" stroke="black" points="1061.43,-292.94 1052.5,-287.24 1055.93,-297.26 1061.43,-292.94"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3231.29,-354.39C3210.64,-371 3183.93,-388.05 3156.02,-393.98 3132.64,-398.94 1458.4,-398.94 1435.02,-393.98 1414.78,-389.68 1396.91,-376.3 1382.78,-361.84"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1386.72,-360.96 1377.37,-355.98 1381.58,-365.7 1386.72,-360.96"/>
 </g>
 <!-- DependencyAnalyzer&#45;&gt;DependencyRelation -->
 <g id="edge60" class="edge">
 <title>DependencyAnalyzer-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M2570.38,-235.2C2578.79,-232.74 2587.28,-230.3 2595.38,-228 2650.97,-212.26 2668.1,-210.68 2726.39,-192.53"/>
-<polygon fill="black" stroke="black" points="2727.42,-195.87 2735.91,-189.53 2725.32,-189.2 2727.42,-195.87"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3342.05,-287.81C3354.59,-283.43 3367.61,-279.21 3380.02,-275.72 3458.14,-253.76 3481.11,-262.4 3559.02,-239.72 3566.95,-237.41 3575.14,-234.75 3583.26,-231.93"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3582.78,-235.81 3591.02,-229.15 3580.43,-229.22 3582.78,-235.81"/>
 </g>
 <!-- SolutionAnalyzerTest -->
 <g id="node32" class="node">
 <title>SolutionAnalyzerTest</title>
-<polygon fill="#ffa07a" stroke="black" points="3049.81,-592 2910.95,-592 2910.95,-534.4 3049.81,-534.4 3049.81,-592"/>
-<text text-anchor="middle" x="2980.38" y="-575.4" font-family="Times,serif" font-size="14.00">SolutionAnalyzerTest</text>
-<text text-anchor="middle" x="2980.38" y="-542.6" font-family="Times,serif" font-size="14.00">In: 6, Out: 7</text>
+<ellipse fill="#fa8072" stroke="black" stroke-width="2" cx="3799.02" cy="-694.42" rx="98.19" ry="40.73"/>
+<text text-anchor="middle" x="3799.02" y="-706.62" font-family="Times,serif" font-size="14.00">SolutionAnalyzerTest</text>
+<text text-anchor="middle" x="3799.02" y="-673.82" font-family="Times,serif" font-size="14.00">In: 6, Out: 7</text>
 </g>
 <!-- SolutionAnalyzerTest&#45;&gt;CoreUtils -->
 <g id="edge21" class="edge">
 <title>SolutionAnalyzerTest-&gt;CoreUtils</title>
-<path fill="none" stroke="black" d="M2910.67,-561.76C2483.91,-558.97 241.74,-543.15 217.38,-518.4 157.52,-457.58 166.39,-394.82 217.38,-326.4 287.05,-232.93 654.06,-184.73 793.54,-169.57"/>
-<polygon fill="black" stroke="black" points="793.67,-173.08 803.24,-168.53 792.93,-166.12 793.67,-173.08"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3700.25,-692.82C3127.73,-689.2 259.35,-669.51 228.02,-637.69 153.28,-561.77 163.31,-482.61 228.02,-397.98 325.85,-270.02 838.03,-219.41 1028.55,-204.83"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1027.09,-208.45 1036.8,-204.21 1026.56,-201.47 1027.09,-208.45"/>
 </g>
 <!-- SolutionAnalyzerTest&#45;&gt;FileUtils -->
 <g id="edge15" class="edge">
 <title>SolutionAnalyzerTest-&gt;FileUtils</title>
-<path fill="none" stroke="black" d="M2910.75,-561.17C2704.37,-557.81 2105.09,-545.8 2021.38,-518.4 1924.99,-486.85 1896.22,-469.99 1831.38,-392 1811.12,-367.62 1829.74,-344.02 1803.38,-326.4 1786.92,-315.39 1108.48,-326.44 1090.38,-318.4 1078.66,-313.19 1068.28,-304.21 1059.74,-294.73"/>
-<polygon fill="black" stroke="black" points="1062.5,-292.57 1053.41,-287.14 1057.13,-297.06 1062.5,-292.57"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3700.08,-692.24C3433.3,-688.58 2712.5,-675.29 2612.02,-637.69 2511.19,-599.97 2483.03,-576.14 2422.02,-487.43 2398.41,-453.11 2427.49,-422.78 2394.02,-397.98 2372.42,-381.96 1450.97,-400 1426.02,-389.98 1410.51,-383.75 1396.3,-372.78 1384.42,-361.24"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1388.19,-360.08 1378.7,-355.37 1383.17,-364.97 1388.19,-360.08"/>
 </g>
 <!-- SolutionAnalyzerTest&#45;&gt;DependencyRelation -->
 <g id="edge20" class="edge">
 <title>SolutionAnalyzerTest-&gt;DependencyRelation</title>
-<path fill="none" stroke="black" d="M3050.08,-539.98C3058.92,-534.31 3066.81,-527.22 3072.38,-518.4 3106.84,-463.83 3113.16,-278.02 3072.38,-228 3022.21,-166.45 2974.39,-211.39 2897.38,-192 2892.52,-190.77 2887.53,-189.46 2882.5,-188.09"/>
-<polygon fill="black" stroke="black" points="2883.53,-184.74 2872.95,-185.43 2881.65,-191.48 2883.53,-184.74"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3877.63,-669C3891.3,-661.19 3903.76,-650.98 3912.02,-637.69 3954.5,-569.38 3960.59,-339.84 3912.02,-275.72 3876.34,-228.61 3840.57,-256.87 3784.02,-239.72 3772.15,-236.12 3759.67,-232.2 3747.41,-228.28"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3750.19,-225.5 3739.59,-225.77 3748.04,-232.16 3750.19,-225.5"/>
 </g>
 <!-- SolutionAnalyzerTest&#45;&gt;DuplicationCode -->
 <g id="edge19" class="edge">
 <title>SolutionAnalyzerTest-&gt;DuplicationCode</title>
-<path fill="none" stroke="black" d="M2990.88,-534.12C3016.95,-462.1 3079.75,-273.31 3039.38,-228 2995.23,-178.44 2813.43,-206.94 2730.64,-191.83"/>
-<polygon fill="black" stroke="black" points="2731.4,-188.41 2720.88,-189.66 2729.88,-195.25 2731.4,-188.41"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3814.7,-653.28C3849.98,-559.81 3928.78,-331.39 3879.02,-275.72 3831.33,-222.36 3628.03,-258.67 3559.02,-239.72 3551.96,-237.78 3544.75,-235.34 3537.64,-232.64"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3540.73,-230.11 3530.15,-229.64 3538.13,-236.61 3540.73,-230.11"/>
 </g>
 <!-- SolutionAnalyzerTest&#45;&gt;NamespaceMetrics -->
 <g id="edge18" class="edge">
 <title>SolutionAnalyzerTest-&gt;NamespaceMetrics</title>
-<path fill="none" stroke="black" d="M3050.21,-554.96C3073.15,-548.88 3096.35,-537.94 3110.38,-518.4 3185.68,-413.57 3180.49,-336.36 3110.38,-228 3094.77,-203.87 3067.62,-188.78 3041.22,-179.38"/>
-<polygon fill="black" stroke="black" points="3042.41,-176.08 3031.82,-176.28 3040.22,-182.73 3042.41,-176.08"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3890.99,-678.85C3913.98,-670.61 3936.04,-657.75 3950.02,-637.69 4042,-505.7 4008.65,-425.53 3950.02,-275.72 3945.52,-264.23 3938.38,-253.44 3930.33,-243.8"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3934.02,-242.68 3924.76,-237.55 3928.8,-247.34 3934.02,-242.68"/>
 </g>
 <!-- SolutionAnalyzerTest&#45;&gt;AnalysisResult -->
 <g id="edge17" class="edge">
 <title>SolutionAnalyzerTest-&gt;AnalysisResult</title>
-<path fill="none" stroke="black" d="M2980.38,-534.11C2980.38,-479.63 2980.38,-359.51 2980.38,-297.13"/>
-<polygon fill="black" stroke="black" points="2983.88,-297.34 2980.38,-287.34 2976.88,-297.34 2983.88,-297.34"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3799.02,-652.83C3799.02,-584.11 3799.02,-444.96 3799.02,-369.29"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3802.52,-371.18 3799.02,-361.18 3795.52,-371.18 3802.52,-371.18"/>
 </g>
 <!-- SolutionAnalyzerTest&#45;&gt;SolutionAnalyzer -->
 <g id="edge16" class="edge">
 <title>SolutionAnalyzerTest-&gt;SolutionAnalyzer</title>
-<path fill="none" stroke="black" d="M2910.5,-549.24C2801.85,-529.09 2593.73,-490.5 2485.91,-470.51"/>
-<polygon fill="black" stroke="black" points="2486.81,-467.12 2476.34,-468.73 2485.54,-474 2486.81,-467.12"/>
+<path fill="none" stroke="black" stroke-width="2" d="M3710.63,-675.79C3587.28,-651.19 3364.95,-606.84 3242.59,-582.43"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3244.89,-579.32 3234.4,-580.8 3243.52,-586.19 3244.89,-579.32"/>
 </g>
 <!-- Program -->
 <g id="node33" class="node">
 <title>Program</title>
-<polygon fill="#90ee90" stroke="black" points="243.6,-592 159.16,-592 159.16,-534.4 243.6,-534.4 243.6,-592"/>
-<text text-anchor="middle" x="201.38" y="-575.4" font-family="Times,serif" font-size="14.00">Program</text>
-<text text-anchor="middle" x="201.38" y="-542.6" font-family="Times,serif" font-size="14.00">In: 7, Out: 3</text>
+<ellipse fill="#3cb371" stroke="black" stroke-width="2" cx="212.02" cy="-694.42" rx="59.71" ry="40.73"/>
+<text text-anchor="middle" x="212.02" y="-706.62" font-family="Times,serif" font-size="14.00">Program</text>
+<text text-anchor="middle" x="212.02" y="-673.82" font-family="Times,serif" font-size="14.00">In: 7, Out: 3</text>
 </g>
 <!-- Program&#45;&gt;CoreUtils -->
 <g id="edge43" class="edge">
 <title>Program-&gt;CoreUtils</title>
-<path fill="none" stroke="black" d="M158.77,-556.72C115.27,-550.15 52.1,-537.57 37.38,-518.4 -47.07,-408.43 23.77,-282.22 151.38,-228 266.93,-178.91 650.44,-167.49 793.21,-164.92"/>
-<polygon fill="black" stroke="black" points="793.22,-168.42 803.16,-164.75 793.1,-161.42 793.22,-168.42"/>
+<path fill="none" stroke="black" stroke-width="2" d="M151.77,-689.84C115.32,-684.18 71.49,-670.45 48.02,-637.69 -50.2,-500.58 10.18,-349.15 162.02,-275.72 314.62,-201.92 836.15,-198 1028.24,-199.17"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1026.54,-202.65 1036.56,-199.22 1026.59,-195.65 1026.54,-202.65"/>
 </g>
 <!-- Program&#45;&gt;FileUtils -->
 <g id="edge44" class="edge">
 <title>Program-&gt;FileUtils</title>
-<path fill="none" stroke="black" d="M192.72,-533.94C179.34,-483.89 160.7,-379.93 217.38,-326.4 232.65,-311.98 954.01,-326.51 973.38,-318.4 985.84,-313.19 997.12,-304.08 1006.49,-294.5"/>
-<polygon fill="black" stroke="black" points="1009.04,-296.9 1013.19,-287.15 1003.86,-292.18 1009.04,-296.9"/>
+<path fill="none" stroke="black" stroke-width="2" d="M199.38,-653.77C181.72,-589.68 159,-463.86 228.02,-397.98 238.44,-388.03 1251.54,-395.05 1265.02,-389.98 1281.88,-383.63 1297.64,-372.24 1310.84,-360.34"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="1312.07,-363.99 1316.93,-354.58 1307.26,-358.91 1312.07,-363.99"/>
 </g>
 <!-- Program&#45;&gt;SolutionAnalyzer -->
 <g id="edge45" class="edge">
 <title>Program-&gt;SolutionAnalyzer</title>
-<path fill="none" stroke="black" d="M243.73,-561.98C516.17,-560.44 2017.25,-550.58 2218.38,-518.4 2262.88,-511.28 2311.27,-496.71 2349.19,-483.63"/>
-<polygon fill="black" stroke="black" points="2349.89,-487.1 2358.17,-480.49 2347.58,-480.49 2349.89,-487.1"/>
+<path fill="none" stroke="black" stroke-width="2" d="M272.52,-693.03C644.74,-690.47 2617.01,-675.25 2883.02,-637.69 2949.8,-628.26 3023.62,-608.03 3077.64,-591.33"/>
+<polygon fill="black" stroke="black" stroke-width="2" points="3077.12,-595.16 3085.62,-588.83 3075.03,-588.48 3077.12,-595.16"/>
 </g>
 </g>
 </svg>

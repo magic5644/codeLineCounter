@@ -161,7 +161,8 @@ Code Hash,FilePath,MethodName,StartLine,NbLines
 
 ![Graphviz](./assets/graphviz.svg)
 
-This graph is generated in the current directory with the name `<SolutionName>-Dependencies.dot`. Y
+This graph is generated in the current directory with the name `<SolutionName>-Dependencies.dot`.
+You can open it with Graphviz or any other tool that supports the .dot format.
 
 ## Project Structure
 
