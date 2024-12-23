@@ -34,7 +34,7 @@ jobs:
           dotnet-version: 9.0.x
       
       - name: Build on MacOS
-        if: matrix.kind == 'macos'
+        if: matrix.kind == 'macos' || matrix.kind == 'macos-arm64'
         run: |
           tag=$(git describe --tags --abbrev=0)
           release_name="CodeLineCounter-$tag-${{ matrix.target }}"
