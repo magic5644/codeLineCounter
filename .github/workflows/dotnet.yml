@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Test
-        if: matrix.dotnet.version == '9.0.x' && matrix.platform.name == 'MacOS'
+        if: matrix.platform.name == 'MacOS'
         run: |
           dotnet test --results-directory "test-results" --collect:"Code Coverage"
           dotnet tool update --global dotnet-coverage
@@ -46,6 +46,7 @@ jobs:
           cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
   
       - name: ReportGenerator
+        if: matrix.platform.name == 'MacOS'
         uses: danielpalme/ReportGenerator-GitHub-Action@5.3.11
         with:
             reports: "test-result.cobertura.xml"
@@ -54,28 +55,32 @@ jobs:
   
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
+        if: matrix.platform.name == 'MacOS'
         with:
             name: coverage-report
             path: coverage-report
   
       - name: Upload coverage badge artifact
         uses: actions/upload-artifact@v4
+        if: matrix.platform.name == 'MacOS'
         with:
             name: coverage-badge.svg
             path: coverage-report/badge_combined.svg
   
       - name: Add comment to PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && matrix.platform.name == 'MacOS'
         run: gh pr comment $PR_NUMBER --body-file coverage-report/SummaryGithub.md
         env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             PR_NUMBER: ${{ github.event.pull_request.number }}
   
       - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
+        if: matrix.platform.name == 'MacOS'
         run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
         shell: bash
   
       - name: Generate Coverage Badge
+        if: matrix.platform.name == 'MacOS'
         run: |
             echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
             cat coverage-badge.md >> README.md
