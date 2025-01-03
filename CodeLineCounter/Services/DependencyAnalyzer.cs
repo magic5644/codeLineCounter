@@ -125,8 +125,8 @@ namespace CodeLineCounter.Services
                             .Usings.FirstOrDefault()?
                             .Name?.ToString() ?? "",
                         TargetClass = dependency.Split('.')[(dependency.Split('.').Length - 1)],
-                        TargetNamespace = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
-                        TargetAssembly = dependency.Contains(".") ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
+                        TargetNamespace = dependency.Contains('.') ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
+                        TargetAssembly = dependency.Contains('.') ? dependency.Substring(0, dependency.LastIndexOf('.')) : "",
                         FilePath = filePath,
                         StartLine = classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line
                     };
@@ -150,7 +150,7 @@ namespace CodeLineCounter.Services
             });
         }
 
-        private static IEnumerable<string> ExtractDependencies(ClassDeclarationSyntax classDeclaration)
+        private static HashSet<string> ExtractDependencies(ClassDeclarationSyntax classDeclaration)
         {
             var dependencies = new HashSet<string>();
             var usings = GetUsingsWithCurrentNamespace(classDeclaration);
@@ -278,7 +278,7 @@ namespace CodeLineCounter.Services
             if (string.IsNullOrEmpty(typeName))
                 return typeName;
 
-            if (!typeName.Contains("<"))
+            if (!typeName.Contains('<'))
                 return ResolveSimpleTypeName(typeName, usings);
 
             return HandleGenericType(typeName, usings);
@@ -286,7 +286,7 @@ namespace CodeLineCounter.Services
 
         private static string ResolveSimpleTypeName(string typeName, IEnumerable<string?> usings)
         {
-            if (typeName.Contains("."))
+            if (typeName.Contains('.'))
                 return typeName;
 
             return FindTypeInUsings(typeName, usings);
@@ -308,7 +308,7 @@ namespace CodeLineCounter.Services
         private static string HandleGenericType(string typeName, IEnumerable<string?> usings)
         {
             var parts = SplitGenericType(typeName);
-            return string.Join("", parts.Select(p => p.Contains("<")
+            return string.Join("", parts.Select(p => p.Contains('<')
                 ? p
                 : GetFullTypeNameFromSymbol(p, usings)));
         }

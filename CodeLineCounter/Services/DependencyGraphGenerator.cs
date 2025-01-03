@@ -118,30 +118,36 @@ namespace CodeLineCounter.Services
             }
 
             // Group by namespace
-            if (!namespaceGroups.ContainsKey(dep.SourceNamespace))
+            if (!namespaceGroups.TryGetValue(dep.SourceNamespace, out var sourceNamespaceList))
             {
-                namespaceGroups[dep.SourceNamespace] = new List<string>();
+                sourceNamespaceList = [];
+                namespaceGroups[dep.SourceNamespace] = sourceNamespaceList;
+
             }
-            if (!namespaceGroups.ContainsKey(dep.TargetNamespace))
+            if (!sourceNamespaceList.Contains(dep.SourceClass))
             {
-                namespaceGroups[dep.TargetNamespace] = new List<string>();
+                sourceNamespaceList.Add(dep.SourceClass);
             }
 
-            if (!namespaceGroups[dep.SourceNamespace].Contains(dep.SourceClass))
+            if (!namespaceGroups.TryGetValue(dep.TargetNamespace, out var targetNamespaceList))
             {
-                namespaceGroups[dep.SourceNamespace].Add(dep.SourceClass);
+                targetNamespaceList = [];
+                namespaceGroups[dep.TargetNamespace] = targetNamespaceList;
             }
-            if (!namespaceGroups[dep.TargetNamespace].Contains(dep.TargetClass))
+  
+            if (!targetNamespaceList.Contains(dep.TargetClass))
             {
-                namespaceGroups[dep.TargetNamespace].Add(dep.TargetClass);
+                targetNamespaceList.Add(dep.TargetClass);
             }
         }
 
         private static async Task CompileGraphAndWriteToFile(string outputPath, DotGraph graph)
         {
             await using var writer = new StringWriter();
-            var options = new CompilationOptions();
-            options.Indented = true;
+            var options = new CompilationOptions
+            {
+                Indented = true
+            };
             var context = new CompilationContext(writer, options);
             graph.Directed = true;
             context.DirectedGraph = true;

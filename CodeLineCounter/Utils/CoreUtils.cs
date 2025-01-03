@@ -49,7 +49,7 @@ namespace CodeLineCounter.Utils
                             }
                             else
                             {
-                                Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames(typeof(ExportFormat)))}. Using default format {format}");
+                                Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames<ExportFormat>())}. Using default format {format}");
                             }
                         }
                         break;
