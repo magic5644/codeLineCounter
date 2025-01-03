@@ -31,8 +31,44 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet.version }}
+
+      - name: Setup Java
+        if: matrix.platform.name == 'MacOS'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Cache SonarCloud packages
+        if: matrix.platform.name == 'MacOS'
+        uses: actions/cache@v4
+        with:
+          path: ~/sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+  
+      - name: Cache SonarCloud scanner
+        if: matrix.platform.name == 'MacOS'
+        id: cache-sonar-scanner
+        uses: actions/cache@v4
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true' && matrix.platform.name == 'MacOS'
+        shell: pwsh
+        run: |
+          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
       - name: Enforce SDK Version
         run: dotnet new globaljson --sdk-version ${{ steps.setup-dotnet.outputs.dotnet-version }} --force
+
+      - name: pre_build
+        if: matrix.platform.name == 'MacOS'
+        run: ./.sonar/scanner/dotnet-sonarscanner begin /k:"magic5644_codeLineCounter" /o:"magic5644" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+      
       - name: Build
         run: dotnet build -c Release
       - name: Test
@@ -44,6 +80,10 @@ jobs:
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
           cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+
+      - name: post_build
+        if: matrix.platform.name == 'MacOS'
+        run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
   
       - name: ReportGenerator
         if: matrix.platform.name == 'MacOS'
@@ -85,20 +125,7 @@ jobs:
             echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
             cat coverage-badge.md >> README.md
   
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-24.04
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    
+
 
   publish_badge:
     runs-on: ubuntu-24.04
