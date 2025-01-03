@@ -73,7 +73,7 @@ jobs:
           dotnet restore
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"magic5644_codeLineCounter" /o:"magic5644" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.scanner.scanAll=false
           dotnet build --no-incremental
-          dotnet-coverage collect 'dotnet test --no-build' -f cobertura  -o 'coverage.xml'
+          dotnet-coverage collect 'dotnet test --no-build' -f xml  -o 'coverage.xml'
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       
       - name: Build Release
