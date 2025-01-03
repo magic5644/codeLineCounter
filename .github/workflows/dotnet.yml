@@ -33,14 +33,12 @@ jobs:
           dotnet-version: ${{ matrix.dotnet.version }}
 
       - name: Setup Java
-        if: matrix.platform.name == 'MacOS'
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '21'
 
       - name: Cache SonarCloud packages
-        if: matrix.platform.name == 'MacOS'
         uses: actions/cache@v4
         with:
           path: ~/sonar/cache
@@ -48,7 +46,6 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
   
       - name: Cache SonarCloud scanner
-        if: matrix.platform.name == 'MacOS'
         id: cache-sonar-scanner
         uses: actions/cache@v4
         with:
@@ -66,7 +63,6 @@ jobs:
         run: dotnet new globaljson --sdk-version ${{ steps.setup-dotnet.outputs.dotnet-version }} --force
 
       - name: build and analyze
-        if: matrix.platform.name == 'MacOS'
         shell: pwsh
         run: |
           dotnet tool install --global dotnet-coverage
@@ -76,83 +72,3 @@ jobs:
           dotnet-coverage collect 'dotnet test --no-build --results-directory "test-results" --collect:"Code Coverage"' -f xml  -o 'coverage.xml'
           dotnet-coverage merge --output coverage.xml --output-format xml "test-results/**/*.coverage"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-      
-      - name: Build Release
-        run: dotnet build -c Release
-      - name: Test
-        if: matrix.platform.name == 'MacOS'
-        run: |
-          dotnet test --results-directory "test-results" --collect:"Code Coverage"
-          dotnet tool update --global dotnet-coverage
-          dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          reportgenerator -reports:test-result.cobertura.xml -targetdir:coverage-report -reporttypes:"Html;JsonSummary;MarkdownSummaryGithub;Badges"
-          cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
-  
-      - name: ReportGenerator_CoverageReport
-        if: matrix.platform.name == 'MacOS'
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.11
-        with:
-            reports: "test-result.cobertura.xml"
-            targetdir: "coverage-report"
-            reporttypes: "Html;JsonSummary;MarkdownSummaryGithub;Badges"
-  
-      - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v4
-        if: matrix.platform.name == 'MacOS'
-        with:
-            name: coverage-report
-            path: coverage-report
-  
-      - name: Upload coverage badge artifact
-        uses: actions/upload-artifact@v4
-        if: matrix.platform.name == 'MacOS'
-        with:
-            name: coverage-badge.svg
-            path: coverage-report/badge_combined.svg
-  
-      - name: Add comment to PR
-        if: github.event_name == 'pull_request' && matrix.platform.name == 'MacOS'
-        run: gh pr comment $PR_NUMBER --body-file coverage-report/SummaryGithub.md
-        env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            PR_NUMBER: ${{ github.event.pull_request.number }}
-  
-      - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
-        if: matrix.platform.name == 'MacOS'
-        run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
-        shell: bash
-  
-      - name: Generate Coverage Badge
-        if: matrix.platform.name == 'MacOS'
-        run: |
-            echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
-            cat coverage-badge.md >> README.md
-  
-
-
-  publish_badge:
-    runs-on: ubuntu-24.04
-    needs: build
-    steps:
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}
-          repository: "magic5644/magic5644"
-          ref: gh-pages
-
-      - name: download badge
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-badge.svg
-          path: coverage-report/badge_combined.svg
-
-      - name: Deploy Badges
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Update badges [skip ci]"
-          branch: gh-pages
-          skip_fetch: true
-          skip_checkout: true
-          file_pattern: "*.svg"
