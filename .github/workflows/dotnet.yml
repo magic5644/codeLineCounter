@@ -84,6 +84,13 @@ jobs:
         run: |
             echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
             cat coverage-badge.md >> README.md
+      
+      - name : Sonarqube (SonarCloud)
+        if: matrix.platform.name == 'MacOS'
+        uses: SonarSource/sonarqube-scan-action@v4.2.1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        
 
   publish_badge:
     runs-on: ubuntu-24.04

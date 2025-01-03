@@ -20,3 +20,7 @@
 /codeql*
 /*.dot
 /*snyk*
+
+# Mac OS
+.DS_Store
+.AppleDouble
