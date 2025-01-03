@@ -2,7 +2,9 @@
 # CodeLineCounter
 
 [![.NET](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml/badge.svg)](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml)
-[![Coverage](https://magic5644.github.io/magic5644/coverage-report/badge_combined.svg/badge_combined.svg)]([./coverage-report/index.html](https://github.com/magic5644/CodeLineCounter/actions/workflows/dotnet.yml))
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=magic5644_codeLineCounter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=magic5644_codeLineCounter)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=magic5644_codeLineCounter&metric=coverage)](https://sonarcloud.io/summary/new_code?id=magic5644_codeLineCounter)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=magic5644_codeLineCounter&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=magic5644_codeLineCounter)
 
 <div align="center"><img src="./assets/codelinecounter-logo.svg" alt="CodeLineCounter logo" width="200" height="200" center="true"></div>
 
