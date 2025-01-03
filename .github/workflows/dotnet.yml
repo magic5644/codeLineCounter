@@ -84,13 +84,21 @@ jobs:
         run: |
             echo "![Coverage](./coverage-report/badge_combined.svg)" > coverage-badge.md
             cat coverage-badge.md >> README.md
-      
-      - name : Sonarqube (SonarCloud)
-        if: matrix.platform.name == 'MacOS'
-        uses: SonarSource/sonarqube-scan-action@v4.2.1
+  
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-24.04
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    
 
   publish_badge:
     runs-on: ubuntu-24.04
