@@ -1,3 +1,4 @@
+using System.Text;
 using CodeLineCounter.Models;
 using DotNetGraph;
 using DotNetGraph.Attributes;
@@ -84,7 +85,7 @@ namespace CodeLineCounter.Services
             var info = vertexInfo[vertex];
             var node = new DotNode();
             node.WithIdentifier(vertex, true);
-            node.Label = $"{vertex}" +Environment.NewLine +  $"\nIn: {info.incoming}, Out: {info.outgoing}";
+            node.Label = $"{vertex}" + Environment.NewLine + $"\nIn: {info.incoming}, Out: {info.outgoing}";
             node.Shape = DotNodeShape.Oval;
             node.WithPenWidth(2);
 
@@ -134,7 +135,7 @@ namespace CodeLineCounter.Services
                 targetNamespaceList = [];
                 namespaceGroups[dep.TargetNamespace] = targetNamespaceList;
             }
-  
+
             if (!targetNamespaceList.Contains(dep.TargetClass))
             {
                 targetNamespaceList.Add(dep.TargetClass);
@@ -154,7 +155,8 @@ namespace CodeLineCounter.Services
 
             await graph.CompileAsync(context);
             var result = writer.GetStringBuilder().ToString();
-            await File.WriteAllTextAsync(outputPath, result);
+            //using sync write for reliability with async we got some issues
+            File.WriteAllText(outputPath, result);
         }
 
         private static List<DependencyRelation> FilterAssemblyFromDependencies(string? filterAssembly, List<DependencyRelation> filteredDependencies)
