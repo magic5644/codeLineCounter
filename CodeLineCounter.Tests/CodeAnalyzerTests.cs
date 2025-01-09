@@ -1,3 +1,4 @@
+using CodeLineCounter.Models;
 using CodeLineCounter.Services;
 using CodeLineCounter.Utils;
 
@@ -78,10 +79,28 @@ namespace CodeLineCounter.Tests
             };
 
             // Act
-            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics,  lines, out _, out _, out int fileCyclomaticComplexity);
+            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out _, out int fileCyclomaticComplexity);
 
             // Assert
             Assert.Equal(1, fileCyclomaticComplexity);
+        }
+
+        [Fact]
+        public void DependencyRelation_equals_returns_false_for_different_type()
+        {
+            var relation = new DependencyRelation
+            {
+                SourceClass = "Class1",
+                SourceNamespace = "Namespace1",
+                SourceAssembly = "Assembly1",
+                TargetClass = "Class2",
+                TargetNamespace = "Namespace2",
+                TargetAssembly = "Assembly2",
+                FilePath = "path/to/file",
+                StartLine = 1
+            };
+
+            Assert.False(relation.Equals("not a dependency relation"));
         }
     }
 }
