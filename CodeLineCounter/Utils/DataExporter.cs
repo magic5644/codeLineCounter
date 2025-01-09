@@ -14,11 +14,6 @@ namespace CodeLineCounter.Utils
             { CoreUtils.ExportFormat.JSON, new JsonExportStrategy() }
         };
 
-        public static  Dictionary<CoreUtils.ExportFormat, IExportStrategy> ExportStrategies
-        {
-            get { return _exportStrategies; }
-        }
-
         public static void Export<T>(string filePath, T data, CoreUtils.ExportFormat format) where T : class
         {
             ArgumentNullException.ThrowIfNull(data);

@@ -271,28 +271,6 @@ namespace CodeLineCounter.Tests
             Assert.Equal("File path cannot be null or empty (Parameter 'filePath')", exception.Message);
         }
 
-        // ExportCollection throws IOException when there is an IO error during export
-        // [Fact]
-        // public void export_collection_throws_ioexception_on_io_error()
-        // {
-        //     // Arrange
-        //     var filePath = "invalid_path/test.csv";
-        //     var testData = new List<TestClass> { new TestClass() };
-        //     var format = CoreUtils.ExportFormat.CSV;
-
-        //     // Mock the export strategy to throw an IOException
-        //     var mockExportStrategy = new Mock<IExportStrategy>();
-        //     mockExportStrategy
-        //         .Setup(strategy => strategy.Export(It.IsAny<string>(), It.IsAny<IEnumerable<TestClass>>()))
-        //         .Throws(new IOException("IO error"));
-
-        //     DataExporter.ExportStrategies[format] = mockExportStrategy.Object;
-
-        //     // Act & Assert
-        //     Assert.Throws<IOException>(() =>
-        //         DataExporter.ExportCollection(filePath, testData, format));
-        // }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
