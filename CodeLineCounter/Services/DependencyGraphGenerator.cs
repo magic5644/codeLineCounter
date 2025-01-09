@@ -10,7 +10,7 @@ namespace CodeLineCounter.Services
 {
     public static class DependencyGraphGenerator
     {
-        public static async Task GenerateGraph(List<DependencyRelation> dependencies, string outputPath, string? filterNamespace = null, string? filterAssembly = null)
+        public static DotGraph GenerateGraphOnly(List<DependencyRelation> dependencies, string? filterNamespace = null, string? filterAssembly = null)
         {
             var filteredDependencies = dependencies;
             filteredDependencies = FilterNamespaceFromDependencies(dependencies, filterNamespace, filteredDependencies);
@@ -51,7 +51,7 @@ namespace CodeLineCounter.Services
                 graph.Elements.Add(edge);
             }
 
-            await CompileGraphAndWriteToFile(outputPath, graph);
+            return graph;
         }
 
         private static DotEdge CreateEdge(DependencyRelation dep)
@@ -80,7 +80,7 @@ namespace CodeLineCounter.Services
             return cluster;
         }
 
-        private static DotNode CreateNode(Dictionary<string, (int incoming, int outgoing)> vertexInfo, string vertex)
+        public static DotNode CreateNode(Dictionary<string, (int incoming, int outgoing)> vertexInfo, string vertex)
         {
             var info = vertexInfo[vertex];
             var node = new DotNode();
@@ -142,7 +142,7 @@ namespace CodeLineCounter.Services
             }
         }
 
-        private static async Task CompileGraphAndWriteToFile(string outputPath, DotGraph graph)
+        public static async Task CompileGraphAndWriteToFile(string outputPath, DotGraph graph)
         {
             await using var writer = new StringWriter();
             var options = new CompilationOptions

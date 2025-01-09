@@ -31,5 +31,29 @@ namespace CodeLineCounter.Tests
             Assert.False(string.IsNullOrEmpty(basePath), "Base path should not be null or empty.");
             Assert.True(Directory.Exists(basePath), "Base path should be a valid directory.");
         }
+
+        [Fact]
+        public void get_solution_files_throws_exception_for_nonexistent_directory()
+        {
+            // Arrange
+            var nonExistentPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+
+            // Act & Assert
+            Assert.Throws<UnauthorizedAccessException>(() => FileUtils.GetSolutionFiles(nonExistentPath));
+        }
+
+        // Throws UnauthorizedAccessException when solution file does not exist
+        [Fact]
+        public void get_project_files_throws_when_file_not_exists()
+        {
+            // Arrange
+            var nonExistentPath = "nonexistent.sln";
+
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                FileUtils.GetProjectFiles(nonExistentPath));
+
+            Assert.Contains(nonExistentPath, exception.Message);
+        }
     }
 }

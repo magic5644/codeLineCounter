@@ -1,5 +1,6 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Services;
+using DotNetGraph.Core;
 
 
 namespace CodeLineCounter.Utils
@@ -20,7 +21,7 @@ namespace CodeLineCounter.Utils
             ExportCollection(filePath, [data], format);
         }
 
-        public static void ExportCollection<T>(string filePath, IEnumerable<T> data, CoreUtils.ExportFormat format) where T : class
+        public static void ExportCollection<T>(string? filePath, IEnumerable<T> data, CoreUtils.ExportFormat format) where T : class
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
@@ -48,7 +49,8 @@ namespace CodeLineCounter.Utils
             string outputFilePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
             ExportCollection(outputFilePath, dependencies, format);
 
-            await DependencyGraphGenerator.GenerateGraph(dependencies, Path.ChangeExtension(outputFilePath, ".dot"));
+            DotGraph graph =  DependencyGraphGenerator.GenerateGraphOnly(dependencies);
+            await DependencyGraphGenerator.CompileGraphAndWriteToFile(Path.ChangeExtension(outputFilePath, ".dot"), graph);
         }
 
         public static void ExportMetrics(string filePath, List<NamespaceMetrics> metrics,

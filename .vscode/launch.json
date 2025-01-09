@@ -10,6 +10,16 @@
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
+        },
+        {
+            "name": "C#: CodeLineCounter - Isacompta",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/CodeLineCounter/bin/Debug/net9.0/CodeLineCounter.dll",
+            "args": ["-d", "E:/_TFS/Isagri.CO/Isagri_Dev_CO_Compta/Isagri.CO/Main/Isaco/DotNet/Sources"],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         }
     ]
 }
