@@ -8,6 +8,40 @@ namespace CodeLineCounter.Tests.Services
     {
 
         [Fact]
+        public void analyze_and_export_solution_succeeds_with_valid_inputs()
+        {
+            // Arrange
+            var basePath = FileUtils.GetBasePath();
+            var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
+            solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
+            var sw = new StringWriter();
+            Console.SetOut(sw);
+            var verbose = false;
+            var format = CoreUtils.ExportFormat.JSON;
+
+            // Act & Assert
+            var exception = Record.Exception(() =>
+                SolutionAnalyzer.AnalyzeAndExportSolution(solutionPath, verbose, format));
+
+            Assert.Null(exception);
+        }
+
+        [Fact]
+        public void analyze_and_export_solution_throws_on_invalid_path()
+        {
+            // Arrange
+            var invalidPath = "";
+            var verbose = false;
+            var format = CoreUtils.ExportFormat.JSON;
+
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                SolutionAnalyzer.AnalyzeAndExportSolution(invalidPath, verbose, format));
+
+            Assert.Contains("Access to the path '' is denied.", exception.Message);
+        }
+
+        [Fact]
         public void PerformAnalysis_ShouldReturnCorrectAnalysisResult()
         {
             // Arrange
@@ -106,7 +140,7 @@ namespace CodeLineCounter.Tests.Services
                 SolutionAnalyzer.OutputDetailedMetrics(metrics, projectTotals);
 
                 // Assert
-                var expectedOutput = 
+                var expectedOutput =
                     $"Project Project1 (/path/to/project1) - Namespace Namespace1 in file File1.cs (/path/to/project1/File1.cs) has 100 lines of code and a cyclomatic complexity of 10.{Environment.NewLine}" +
                     $"Project Project2 (/path/to/project2) - Namespace Namespace2 in file File2.cs (/path/to/project2/File2.cs) has 200 lines of code and a cyclomatic complexity of 20.{Environment.NewLine}" +
                     $"Project Project1 has 100 total lines of code.{Environment.NewLine}" +
@@ -116,39 +150,39 @@ namespace CodeLineCounter.Tests.Services
             }
         }
 
-            // Export metrics, duplications and dependencies data in parallel for valid input
-[Fact]
-public void export_results_with_valid_input_exports_all_files()
-{
-    // Arrange
-    var result = new AnalysisResult
-    {
-        SolutionFileName = "TestSolution",
-        Metrics = new List<NamespaceMetrics>(),
-        ProjectTotals = new Dictionary<string, int >(),
-        TotalLines = 1000,
-        DuplicationMap = new List<DuplicationCode>(),
-        DependencyList = new List<DependencyRelation>()
-    };
+        // Export metrics, duplications and dependencies data in parallel for valid input
+        [Fact]
+        public void export_results_with_valid_input_exports_all_files()
+        {
+            // Arrange
+            var result = new AnalysisResult
+            {
+                SolutionFileName = "TestSolution",
+                Metrics = new List<NamespaceMetrics>(),
+                ProjectTotals = new Dictionary<string, int>(),
+                TotalLines = 1000,
+                DuplicationMap = new List<DuplicationCode>(),
+                DependencyList = new List<DependencyRelation>()
+            };
 
-    var basePath = FileUtils.GetBasePath();
-    var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
+            var basePath = FileUtils.GetBasePath();
+            var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
 
-    solutionPath = Path.Combine(solutionPath, "TestSolution.sln"); 
-    var format = CoreUtils.ExportFormat.CSV;
+            solutionPath = Path.Combine(solutionPath, "TestSolution.sln");
+            var format = CoreUtils.ExportFormat.CSV;
 
-    // Act
-    using (var sw = new StringWriter())
-    {
-        Console.SetOut(sw);
-        SolutionAnalyzer.ExportResults(result, solutionPath, format);
-    }
+            // Act
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                SolutionAnalyzer.ExportResults(result, solutionPath, format);
+            }
 
-    // Assert
-    Assert.True(File.Exists("TestSolution-CodeMetrics.csv"));
-    Assert.True(File.Exists("TestSolution-CodeDuplications.csv")); 
-    Assert.True(File.Exists("TestSolution-CodeDependencies.csv"));
-}
+            // Assert
+            Assert.True(File.Exists("TestSolution-CodeMetrics.csv"));
+            Assert.True(File.Exists("TestSolution-CodeDuplications.csv"));
+            Assert.True(File.Exists("TestSolution-CodeDependencies.csv"));
+        }
 
     }
 }

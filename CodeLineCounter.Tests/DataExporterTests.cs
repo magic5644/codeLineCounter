@@ -1,5 +1,6 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
+using Moq;
 
 namespace CodeLineCounter.Tests
 {
@@ -212,7 +213,7 @@ namespace CodeLineCounter.Tests
 
         // Successfully exports dependencies to specified format (CSV/JSON) and creates DOT file
         [Fact]
-        public void export_dependencies_creates_files_in_correct_formats()
+        public async Task export_dependencies_creates_files_in_correct_formats()
         {
             // Arrange
             var dependencies = new List<DependencyRelation>
@@ -224,7 +225,7 @@ namespace CodeLineCounter.Tests
             var format = CoreUtils.ExportFormat.JSON;
 
             // Act
-            DataExporter.ExportDependencies(testFilePath, dependencies, format);
+            await DataExporter.ExportDependencies(testFilePath, dependencies, format);
 
             // Assert
             string expectedJsonPath = CoreUtils.GetExportFileNameWithExtension(testFilePath, format);
@@ -240,7 +241,7 @@ namespace CodeLineCounter.Tests
                     File.Delete(expectedJsonPath);
                 }
 
-                if (File.Exists(expectedDotPath)) 
+                if (File.Exists(expectedDotPath))
                 {
                     File.Delete(expectedDotPath);
                 }
@@ -249,11 +250,48 @@ namespace CodeLineCounter.Tests
             {
                 throw new IOException($"Error deleting files: {ex.Message}", ex);
             }
-            catch (UnauthorizedAccessException ex) 
+            catch (UnauthorizedAccessException ex)
             {
                 throw new UnauthorizedAccessException($"Access denied while deleting files: {ex.Message}", ex);
             }
         }
+
+        // Throws ArgumentException when file path is null
+        [Fact]
+        public void export_collection_throws_when_filepath_null()
+        {
+            // Arrange
+            string? filePath = null;
+            var testData = new List<TestClass> { new TestClass { Id = 1, Name = "Test" } };
+            var format = CoreUtils.ExportFormat.CSV;
+
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentException>(() =>
+                DataExporter.ExportCollection(filePath, testData, format));
+            Assert.Equal("File path cannot be null or empty (Parameter 'filePath')", exception.Message);
+        }
+
+        // ExportCollection throws IOException when there is an IO error during export
+        // [Fact]
+        // public void export_collection_throws_ioexception_on_io_error()
+        // {
+        //     // Arrange
+        //     var filePath = "invalid_path/test.csv";
+        //     var testData = new List<TestClass> { new TestClass() };
+        //     var format = CoreUtils.ExportFormat.CSV;
+
+        //     // Mock the export strategy to throw an IOException
+        //     var mockExportStrategy = new Mock<IExportStrategy>();
+        //     mockExportStrategy
+        //         .Setup(strategy => strategy.Export(It.IsAny<string>(), It.IsAny<IEnumerable<TestClass>>()))
+        //         .Throws(new IOException("IO error"));
+
+        //     DataExporter.ExportStrategies[format] = mockExportStrategy.Object;
+
+        //     // Act & Assert
+        //     Assert.Throws<IOException>(() =>
+        //         DataExporter.ExportCollection(filePath, testData, format));
+        // }
 
         protected virtual void Dispose(bool disposing)
         {

@@ -1,5 +1,7 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Services;
+using DotNetGraph.Core;
+using DotNetGraph.Extensions;
 
 namespace CodeLineCounter.Tests
 {
@@ -18,7 +20,9 @@ namespace CodeLineCounter.Tests
             string outputPath = Path.Combine(Path.GetTempPath(), "test_graph.dot");
 
             // Act
-            await DependencyGraphGenerator.GenerateGraph(dependencies, outputPath);
+
+            DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
+            await DependencyGraphGenerator.CompileGraphAndWriteToFile(outputPath, graph);
 
             // Assert
             Assert.True(File.Exists(outputPath));
@@ -39,7 +43,8 @@ namespace CodeLineCounter.Tests
             string outputPath = Path.Combine(Path.GetTempPath(), "empty_graph.dot");
 
             // Act
-            await DependencyGraphGenerator.GenerateGraph(dependencies, outputPath);
+            DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
+            await DependencyGraphGenerator.CompileGraphAndWriteToFile(outputPath, graph);
 
             // Assert
             Assert.True(File.Exists(outputPath));
@@ -48,6 +53,34 @@ namespace CodeLineCounter.Tests
             Assert.DoesNotContain("->", content);
 
             File.Delete(outputPath);
+        }
+
+        [Fact]
+        public void create_node_sets_correct_fillcolor_and_style_incoming_greater()
+        {
+            var vertexInfo = new Dictionary<string, (int incoming, int outgoing)>
+            {
+                { "TestVertex", (3, 2) }
+            };
+
+            DotNode node = DependencyGraphGenerator.CreateNode(vertexInfo, "TestVertex");
+
+            Assert.Equal(DotColor.MediumSeaGreen.ToHexString(), node.FillColor.Value);
+            Assert.Equal(DotNodeStyle.Filled.FlagsToString(), node.Style.Value);
+        }
+
+        [Fact]
+        public void create_node_sets_correct_fillcolor_and_style_incoming_lower()
+        {
+            var vertexInfo = new Dictionary<string, (int incoming, int outgoing)>
+            {
+                { "TestVertex", (3, 4) }
+            };
+
+            DotNode node = DependencyGraphGenerator.CreateNode(vertexInfo, "TestVertex");
+
+            Assert.Equal(DotColor.Salmon.ToHexString(), node.FillColor.Value);
+            Assert.Equal(DotNodeStyle.Filled.FlagsToString(), node.Style.Value);
         }
 
 
