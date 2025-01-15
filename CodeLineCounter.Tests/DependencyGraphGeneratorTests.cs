@@ -83,6 +83,34 @@ namespace CodeLineCounter.Tests
             Assert.Equal(DotNodeStyle.Filled.FlagsToString(), node.Style.Value);
         }
 
+        // Returns empty quoted string '""' for non-empty input string
+        [Fact]
+        public void enclose_string_in_quotes_returns_empty_quoted_string_for_nonempty_input()
+        {
+            // Arrange
+            var input = "test string";
+
+            // Act 
+            var result = DependencyGraphGenerator.EncloseNotEmptyOrNullStringInQuotes(input);
+
+            // Assert
+            Assert.Equal("\"test string\"", result);
+        }
+
+        // Returns quoted string with null value for null input
+        [Fact]
+        public void enclose_string_in_quotes_returns_quoted_null_for_null_input()
+        {
+            // Arrange
+            string? input = null;
+
+            // Act
+            var result = DependencyGraphGenerator.EncloseNotEmptyOrNullStringInQuotes(input);
+
+            // Assert
+            Assert.Equal(string.Empty, result);
+        }
+
 
     }
 }
