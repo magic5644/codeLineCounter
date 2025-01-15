@@ -36,7 +36,7 @@ namespace CodeLineCounter.Services
 
                 foreach (var vertex in nsGroup.Value)
                 {
-                    DotNode node = CreateNode(vertexInfo, vertex);
+                    DotNode node = CreateNode(vertexInfo, EncloseNotEmptyOrNullStringInQuotes(vertex));
 
                     cluster.Elements.Add(node);
                 }
@@ -60,8 +60,8 @@ namespace CodeLineCounter.Services
             var targetLabel = dep.TargetClass;
 
             var edge = new DotEdge();
-            var dotIdentifierFrom = new DotIdentifier(sourceLabel);
-            var dotIdentifierTo = new DotIdentifier(targetLabel);
+            var dotIdentifierFrom = new DotIdentifier(EncloseNotEmptyOrNullStringInQuotes(sourceLabel));
+            var dotIdentifierTo = new DotIdentifier(EncloseNotEmptyOrNullStringInQuotes(targetLabel));
 
             edge.From = dotIdentifierFrom;
             edge.To = dotIdentifierTo;
@@ -82,7 +82,7 @@ namespace CodeLineCounter.Services
 
         public static DotNode CreateNode(Dictionary<string, (int incoming, int outgoing)> vertexInfo, string vertex)
         {
-            var info = vertexInfo[vertex];
+            var info = vertexInfo[RemoveQuotes(vertex) ?? vertex];
             var node = new DotNode();
             node.WithIdentifier(vertex, true);
             node.Label = $"{vertex}" + Environment.NewLine + $"\nIn: {info.incoming}, Out: {info.outgoing}";
@@ -181,6 +181,24 @@ namespace CodeLineCounter.Services
             }
 
             return filteredDependencies;
+        }
+
+        public static string EncloseNotEmptyOrNullStringInQuotes(string? str)
+        {
+            if (!string.IsNullOrEmpty(str))
+            {
+                return  $"\"{str}\"";
+            }
+            else
+            {
+                return string.Empty;
+            }
+            
+        }
+
+        public static string RemoveQuotes(string str)
+        {
+            return str.Replace("\"", "");
         }
 
     }
