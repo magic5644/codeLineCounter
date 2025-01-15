@@ -111,6 +111,18 @@ namespace CodeLineCounter.Tests
             Assert.Equal(string.Empty, result);
         }
 
+        // Graph initialization with empty values
+        [Fact]
+        public void initialize_graph_sets_default_label_and_identifier()
+        {
+            var graph = DependencyGraphGenerator.InitializeGraph();
+
+            Assert.Equal("DependencyGraph", graph.Label.Value);
+            Assert.Equal("DependencyGraph", graph.Identifier.Value);
+        }
+
+
+
 
     }
 }

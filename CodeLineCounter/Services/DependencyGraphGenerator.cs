@@ -16,20 +16,33 @@ namespace CodeLineCounter.Services
             filteredDependencies = FilterNamespaceFromDependencies(dependencies, filterNamespace, filteredDependencies);
             filteredDependencies = FilterAssemblyFromDependencies(filterAssembly, filteredDependencies);
 
-            var graph = new DotGraph();
-            graph.Directed = true;
-
             var vertexInfo = new Dictionary<string, (int incoming, int outgoing)>();
             var namespaceGroups = new Dictionary<string, List<string>>();
-            graph.WithLabel("DependencyGraph");
-            graph.WithIdentifier("DependencyGraph", true);
+            DotGraph graph = InitializeGraph();
+
             // Collect degree information and group by namespace
-            foreach (var dep in filteredDependencies)
-            {
-                GroupByNamespace(vertexInfo, namespaceGroups, dep);
-            }
+            CollectDegreeInformationAndGroupByNamespace(filteredDependencies, vertexInfo, namespaceGroups);
 
             // Create clusters and add nodes
+            CreateClustersAndNodes(vertexInfo, namespaceGroups, graph);
+
+            // Add edges
+            AddEdgesBetweenDependencies(filteredDependencies, graph);
+
+            return graph;
+        }
+
+        public static void AddEdgesBetweenDependencies(List<DependencyRelation> filteredDependencies, DotGraph graph)
+        {
+            foreach (var dep in filteredDependencies)
+            {
+                DotEdge edge = CreateEdge(dep);
+                graph.Elements.Add(edge);
+            }
+        }
+
+        public static void CreateClustersAndNodes(Dictionary<string, (int incoming, int outgoing)> vertexInfo, Dictionary<string, List<string>> namespaceGroups, DotGraph graph)
+        {
             foreach (var nsGroup in namespaceGroups)
             {
                 DotSubgraph cluster = CreateCluster(nsGroup);
@@ -43,14 +56,22 @@ namespace CodeLineCounter.Services
 
                 graph.Elements.Add(cluster);
             }
+        }
 
-            // Add edges
+        public static void CollectDegreeInformationAndGroupByNamespace(List<DependencyRelation> filteredDependencies, Dictionary<string, (int incoming, int outgoing)> vertexInfo, Dictionary<string, List<string>> namespaceGroups)
+        {
             foreach (var dep in filteredDependencies)
             {
-                DotEdge edge = CreateEdge(dep);
-                graph.Elements.Add(edge);
+                GroupByNamespace(vertexInfo, namespaceGroups, dep);
             }
+        }
 
+        public static DotGraph InitializeGraph()
+        {
+            var graph = new DotGraph();
+            graph.Directed = true;
+            graph.WithLabel("DependencyGraph");
+            graph.WithIdentifier("DependencyGraph", true);
             return graph;
         }
 
@@ -144,19 +165,21 @@ namespace CodeLineCounter.Services
 
         public static async Task CompileGraphAndWriteToFile(string outputPath, DotGraph graph)
         {
-            await using var writer = new StringWriter();
-            var options = new CompilationOptions
-            {
-                Indented = true
-            };
+            // Use memory buffer
+            using var memoryStream = new MemoryStream();
+            using var writer = new StreamWriter(memoryStream);
+
+            var options = new CompilationOptions { Indented = true };
             var context = new CompilationContext(writer, options);
             graph.Directed = true;
             context.DirectedGraph = true;
 
             await graph.CompileAsync(context);
-            var result = writer.GetStringBuilder().ToString();
-            //using sync write for reliability with async we got some issues
-            File.WriteAllText(outputPath, result);
+            await writer.FlushAsync(); // Ensure all data is written to memory
+
+            memoryStream.Position = 0; // Reset position to start
+            using var fileStream = File.Create(outputPath);
+            await memoryStream.CopyToAsync(fileStream); // Write complete buffer to file
         }
 
         private static List<DependencyRelation> FilterAssemblyFromDependencies(string? filterAssembly, List<DependencyRelation> filteredDependencies)
@@ -187,13 +210,13 @@ namespace CodeLineCounter.Services
         {
             if (!string.IsNullOrEmpty(str))
             {
-                return  $"\"{str}\"";
+                return $"\"{str}\"";
             }
             else
             {
                 return string.Empty;
             }
-            
+
         }
 
         public static string RemoveQuotes(string str)
