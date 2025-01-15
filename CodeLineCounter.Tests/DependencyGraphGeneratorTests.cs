@@ -111,6 +111,18 @@ namespace CodeLineCounter.Tests
             Assert.Equal(string.Empty, result);
         }
 
+        // Setting graph properties after initialization
+        [Fact]
+        public void initialize_graph_should_set_correct_graph_properties()
+        {
+            DotGraph graph;
+
+            DependencyGraphGenerator.InitializeGraph(out graph);
+
+            Assert.Equal("DependencyGraph", graph.Label.Value);
+            Assert.Equal("DependencyGraph", graph.Identifier.Value);
+        }
+
 
     }
 }
