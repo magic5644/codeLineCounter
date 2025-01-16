@@ -7,6 +7,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void ComputeHash_EmptyString_ReturnsEmptyString()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             string input = "";
 
@@ -20,6 +23,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void ComputeHash_NullString_ReturnsEmptyString()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             string? input = null;
 
@@ -33,6 +39,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void ComputeHash_ValidString_ReturnsHash()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             string input = "Hello, World!";
 
@@ -47,6 +56,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void ComputeHash_DuplicateStrings_ReturnSameHash()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+            
             // Arrange
             string input1 = "Hello, World!";
             string input2 = "Hello, World!";

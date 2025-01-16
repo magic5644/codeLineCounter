@@ -20,11 +20,12 @@ namespace CodeLineCounter.Tests.Services
         public void analyze_and_export_solution_succeeds_with_valid_inputs()
         {
             // Arrange
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
+            
             var verbose = false;
             var format = CoreUtils.ExportFormat.JSON;
 
@@ -39,6 +40,8 @@ namespace CodeLineCounter.Tests.Services
         public void analyze_and_export_solution_throws_on_invalid_path()
         {
             // Arrange
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var invalidPath = "";
             var verbose = false;
             var format = CoreUtils.ExportFormat.JSON;

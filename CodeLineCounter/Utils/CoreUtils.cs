@@ -138,7 +138,7 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static string GetExportFileNameWithExtension(string filePath, CoreUtils.ExportFormat format, string? outputPath = null)
+        public static string GetExportFileNameWithExtension(string filePath, ExportFormat format, string? outputPath = null)
         {
             string fileName = Path.GetFileName(filePath);
             if (filePath == null)
@@ -147,15 +147,28 @@ namespace CodeLineCounter.Utils
             }
             string newExtension = format switch
             {
-                CoreUtils.ExportFormat.CSV => ".csv",
-                CoreUtils.ExportFormat.JSON => ".json",
+                ExportFormat.CSV => ".csv",
+                ExportFormat.JSON => ".json",
                 _ => throw new ArgumentException($"Unsupported format: {format}", nameof(format))
             };
 
+            string currentExtension = Path.GetExtension(filePath);
+
             // If file already has the desired extension, keep it, otherwise change it
-            if (!Path.GetExtension(fileName).Equals(newExtension, StringComparison.OrdinalIgnoreCase))
+            if (!currentExtension.Equals(newExtension, StringComparison.OrdinalIgnoreCase))
             {
-                fileName = Path.ChangeExtension(fileName, newExtension);
+                if (!string.IsNullOrEmpty(currentExtension))
+                {
+                    fileName = Path.ChangeExtension(fileName, newExtension);
+                }
+                else
+                {
+                    fileName = fileName + newExtension;
+                }
+            }
+            else 
+            {
+                fileName = filePath;
             }
 
             // If an output directory is specified, combine the path

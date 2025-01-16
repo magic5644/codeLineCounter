@@ -121,15 +121,22 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = new[] { "-format", "INVALID" };
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            Settings result;
+            string sortieConsole;
 
             // Act
-            var result = CoreUtils.ParseArguments(args);
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                result = CoreUtils.ParseArguments(args);
+                sortieConsole = sw.ToString();
+            }
 
-            // Assert
+                        // Assert
             Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
-            Assert.Contains("Invalid format", consoleOutput.ToString());
+            Assert.Contains("Invalid format", sortieConsole.ToString());
+
+
         }
 
         [Fact]
@@ -226,7 +233,7 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void DisplaySolutions_Should_Write_Solutions_To_Console()
         {
-            
+
             var envNewLine = Environment.NewLine;
             // Arrange
             List<string> solutionFiles =

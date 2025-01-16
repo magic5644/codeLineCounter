@@ -23,6 +23,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void Serialize_ValidData_WritesToFile()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             var data = new List<TestRecord>
             {
@@ -47,6 +50,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void Deserialize_ValidFile_ReturnsData()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             string filePath = Path.Combine(_testDirectory,"test_2.csv");
             var data = new List<string>
@@ -72,6 +78,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void Serialize_EmptyData_WritesEmptyFile()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             var data = new List<TestRecord>();
             string filePath = Path.Combine(_testDirectory,"test_3.csv");
@@ -90,6 +99,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void Deserialize_EmptyFile_ReturnsEmptyList()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+            
             // Arrange
             string filePath = Path.Combine(_testDirectory,"test_4.csv");
             File.WriteAllText(filePath, "Id,Name");

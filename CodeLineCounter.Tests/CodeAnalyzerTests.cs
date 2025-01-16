@@ -9,6 +9,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void TestAnalyzeSolution()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             string basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
 
@@ -28,6 +31,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void AnalyzeSourceCode_Should_Set_CurrentNamespace()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
             var lines = new string[]
@@ -48,6 +54,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void AnalyzeSourceCode_Should_Set_FileLineCount()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
             var lines = new string[]
@@ -68,6 +77,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void AnalyzeSourceCode_Should_Set_FileCyclomaticComplexity()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+            
             // Arrange
             var projectNamespaceMetrics = new Dictionary<string, int>();
             var lines = new string[]

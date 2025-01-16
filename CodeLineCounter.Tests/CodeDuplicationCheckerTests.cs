@@ -16,6 +16,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void DetectCodeDuplicationInFiles_ShouldDetectDuplicates()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+            
             // Arrange
             var file1 = Path.Combine(_testDirectory, "TestFile1.cs");
             var file2 = Path.Combine(_testDirectory, "TestFile2.cs");
@@ -67,6 +70,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void DetectCodeDuplicationInSourceCode_ShouldDetectDuplicates()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             var checker = new CodeDuplicationChecker();
 
@@ -111,6 +117,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void DetectCodeDuplicationInSourceCode_ShouldNotDetectDuplicatesForDifferentCode()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
             var checker = new CodeDuplicationChecker();
 

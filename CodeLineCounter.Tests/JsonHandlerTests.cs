@@ -3,8 +3,18 @@ using System.Text.Json;
 
 namespace CodeLineCounter.Tests
 {
-    public class JsonHandlerTests
+    public class JsonHandlerTests :IDisposable
     {
+
+        private readonly string _testDirectory;
+        private bool _disposed;
+
+        public JsonHandlerTests()
+        {
+            _testDirectory = Path.Combine(Path.GetTempPath(), "JsonHandlerTests");
+            Directory.CreateDirectory(_testDirectory);
+        }
+
         public class TestClass
         {
             public int Id { get; set; }
@@ -20,8 +30,11 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void deserialize_valid_json_file_returns_expected_objects()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             // Arrange
-            var testFilePath = "test.json";
+            var testFilePath = Path.Combine(_testDirectory, "test.json");
             var expectedData = new[] { new TestClass(id: 1, name: "Test") };
             File.WriteAllText(testFilePath, JsonSerializer.Serialize(expectedData));
 
@@ -34,6 +47,33 @@ namespace CodeLineCounter.Tests
             Assert.Equal(expectedData[0].Name, result.First().Name);
 
             File.Delete(testFilePath);
+        }
+
+         protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing && Directory.Exists(_testDirectory))
+                {
+                    // Dispose managed resources
+                    Directory.Delete(_testDirectory, true);
+                }
+
+                // Dispose unmanaged resources (if any)
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~JsonHandlerTests()
+        {
+            Dispose(false);
         }
 
     }

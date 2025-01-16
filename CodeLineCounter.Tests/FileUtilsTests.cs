@@ -15,6 +15,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void GetSolutionFiles_Should_Return_List_Of_Solution_Files()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
             // Arrange
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
@@ -32,6 +34,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void GetBasePath_Should_Return_NonEmptyString()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
             // Act
             string basePath = FileUtils.GetBasePath();
 
@@ -43,6 +47,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_solution_files_throws_exception_for_nonexistent_directory()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
             // Arrange
             var nonExistentPath = Path.Combine(_testDirectory, Guid.NewGuid().ToString());
 
@@ -54,6 +60,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_project_files_throws_when_file_not_exists()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
             // Arrange
             var nonExistentPath = Path.Combine(_testDirectory, "nonexistent.sln");
 
