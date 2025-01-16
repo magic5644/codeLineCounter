@@ -69,22 +69,20 @@ namespace CodeLineCounter.Services
         {
             string baseFileName = Path.GetFileNameWithoutExtension(solutionPath);
             
-            // Export des métriques
+            // Export metrics
             string metricsFileName = $"{baseFileName}-CodeMetrics";
             string metricsOutputPath = CoreUtils.GetExportFileNameWithExtension(metricsFileName, format, outputPath);
-            // Export des métriques...
 
-            // Export des duplications
+            // Export duplications
             string duplicationsFileName = $"{baseFileName}-CodeDuplication";
             string duplicationsOutputPath = CoreUtils.GetExportFileNameWithExtension(duplicationsFileName, format, outputPath);
             // Export des duplications...
 
-            // Export du graphe de dépendances
+            // Export dependencies graph
             string graphFileName = $"{baseFileName}-Dependencies.dot";
             string graphOutputPath = outputPath != null 
                 ? Path.Combine(outputPath, graphFileName)
                 : graphFileName;
-            // Export du graphe...
 
             try
             {

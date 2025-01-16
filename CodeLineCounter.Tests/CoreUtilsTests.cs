@@ -19,6 +19,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = ["-verbose", "-d", "testDirectory", "-output", _testDirectory];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             Settings settings = CoreUtils.ParseArguments(args);
@@ -33,6 +35,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = ["-help"];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             var settings = CoreUtils.ParseArguments(args);
@@ -46,6 +50,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = [];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             var settings = CoreUtils.ParseArguments(args);
@@ -60,6 +66,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = ["-invalid", "-d", "testDirectory", "-f", "json"];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             var settings = CoreUtils.ParseArguments(args);
@@ -75,6 +83,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = new[] { "-verbose", "-d", "C:/test", "-format", "JSON", "-help" };
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             var result = CoreUtils.ParseArguments(args);
@@ -92,6 +102,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] emptyArgs = Array.Empty<string>();
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             var result = CoreUtils.ParseArguments(emptyArgs);

@@ -14,62 +14,68 @@ namespace CodeLineCounter.Utils
         {
             var settings = new Settings();
             int argIndex = 0;
-            
+
             while (argIndex < args.Length)
             {
                 switch (args[argIndex])
                 {
                     case "-help":
                         settings.Help = true;
-                        argIndex++;
                         break;
                     case "-verbose":
                         settings.Verbose = true;
-                        argIndex++;
                         break;
                     case "-d":
-                        if (argIndex + 1 < args.Length)
-                        {
-                            settings.DirectoryPath = args[argIndex + 1];
-                            argIndex += 2;
-                        }
-                        else
-                        {
-                            argIndex++;
-                        }
+                        HandleDirectory(args, settings, ref argIndex);
                         break;
                     case "-format":
-                        if (argIndex + 1 < args.Length)
-                        {
-                            string formatString = args[argIndex + 1];
-                            argIndex += 2;
-                            if (Enum.TryParse<ExportFormat>(formatString, true, out ExportFormat result))
-                            {
-                                settings.Format = result;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames<ExportFormat>())}. Using default format {settings.Format}");
-                            }
-                        }
+                        HandleFormat(args, settings, ref argIndex);
                         break;
                     case "-output":
-                        if (argIndex + 1 < args.Length)
-                        {
-                            settings.OutputPath = args[argIndex + 1];
-                            argIndex += 2;
-                        }
-                        else
-                        {
-                            argIndex++;
-                        }
+                        HandleOutput(args, settings, ref argIndex);
                         break;
                     default:
-                        argIndex++;
                         break;
                 }
+                argIndex++;
             }
             return settings;
+        }
+
+        private static void HandleDirectory(string[] args, Settings settings, ref int argIndex)
+        {
+            if (argIndex + 1 < args.Length)
+            {
+                settings.DirectoryPath = args[argIndex + 1];
+                argIndex++;
+            }
+
+        }
+
+        private static void HandleFormat(string[] args, Settings settings, ref int argIndex)
+        {
+            if (argIndex + 1 < args.Length)
+            {
+                string formatString = args[argIndex + 1];
+                argIndex++;
+                if (Enum.TryParse<ExportFormat>(formatString, true, out ExportFormat result))
+                {
+                    settings.Format = result;
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames<ExportFormat>())}. Using default format {settings.Format}");
+                }
+            }
+        }
+
+        private static void HandleOutput(string[] args, Settings settings, ref int argIndex)
+        {
+            if (argIndex + 1 < args.Length)
+            {
+                settings.OutputPath = args[argIndex + 1];
+                argIndex++;
+            }
         }
 
         /// <summary>
@@ -153,9 +159,9 @@ namespace CodeLineCounter.Utils
             }
 
             // If an output directory is specified, combine the path
-            return outputPath != null 
+            return outputPath != null
                 ? Path.Combine(Path.GetFullPath(outputPath), fileName)
                 : Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetFullPath("."), fileName);
-        } 
+        }
     }
 }
