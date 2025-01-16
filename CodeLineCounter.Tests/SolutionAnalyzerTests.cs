@@ -4,8 +4,17 @@ using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Tests.Services
 {
-    public class SolutionAnalyzerTest
+    public class SolutionAnalyzerTest : IDisposable
     {
+
+        private readonly string _testDirectory;
+        private bool _disposed;
+
+        public SolutionAnalyzerTest()
+        {
+            _testDirectory = Path.Combine(Path.GetTempPath(), "SolutionAnalyzerTest");
+            Directory.CreateDirectory(_testDirectory);
+        }
 
         [Fact]
         public void analyze_and_export_solution_succeeds_with_valid_inputs()
@@ -14,7 +23,7 @@ namespace CodeLineCounter.Tests.Services
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
-            var sw = new StringWriter();
+            using var sw = new StringWriter();
             Console.SetOut(sw);
             var verbose = false;
             var format = CoreUtils.ExportFormat.JSON;
@@ -48,7 +57,7 @@ namespace CodeLineCounter.Tests.Services
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
-            var sw = new StringWriter();
+            using var sw = new StringWriter();
             Console.SetOut(sw);
             Console.WriteLine($"Constructed solution path: {solutionPath}");
             Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
@@ -165,7 +174,7 @@ namespace CodeLineCounter.Tests.Services
                 DependencyList = new List<DependencyRelation>()
             };
 
-            var basePath = FileUtils.GetBasePath();
+            var basePath = _testDirectory;
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
 
             solutionPath = Path.Combine(solutionPath, "TestSolution.sln");
@@ -182,6 +191,33 @@ namespace CodeLineCounter.Tests.Services
             Assert.True(File.Exists("TestSolution-CodeMetrics.csv"));
             Assert.True(File.Exists("TestSolution-CodeDuplications.csv"));
             Assert.True(File.Exists("TestSolution-CodeDependencies.csv"));
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing && Directory.Exists(_testDirectory))
+                {
+                    // Dispose managed resources
+                    Directory.Delete(_testDirectory, true);
+                }
+
+                // Dispose unmanaged resources (if any)
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~SolutionAnalyzerTest()
+        {
+            Dispose(false);
         }
 
     }

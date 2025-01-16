@@ -2,8 +2,16 @@ using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Tests
 {
-    public class FileUtilsTests
+    public class FileUtilsTests : IDisposable
     {
+        private readonly string _testDirectory;
+        private bool _disposed;
+
+        public FileUtilsTests()
+        {
+            _testDirectory = Path.Combine(Path.GetTempPath(), "DependencyGraphGeneratorTests");
+            Directory.CreateDirectory(_testDirectory);
+        }
         [Fact]
         public void GetSolutionFiles_Should_Return_List_Of_Solution_Files()
         {
@@ -36,7 +44,7 @@ namespace CodeLineCounter.Tests
         public void get_solution_files_throws_exception_for_nonexistent_directory()
         {
             // Arrange
-            var nonExistentPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            var nonExistentPath = Path.Combine(_testDirectory, Guid.NewGuid().ToString());
 
             // Act & Assert
             Assert.Throws<UnauthorizedAccessException>(() => FileUtils.GetSolutionFiles(nonExistentPath));
@@ -47,13 +55,40 @@ namespace CodeLineCounter.Tests
         public void get_project_files_throws_when_file_not_exists()
         {
             // Arrange
-            var nonExistentPath = "nonexistent.sln";
+            var nonExistentPath = Path.Combine(_testDirectory, "nonexistent.sln");
 
             // Act & Assert
             var exception = Assert.Throws<UnauthorizedAccessException>(() =>
                 FileUtils.GetProjectFiles(nonExistentPath));
 
             Assert.Contains(nonExistentPath, exception.Message);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing && Directory.Exists(_testDirectory))
+                {
+                    // Dispose managed resources
+                    Directory.Delete(_testDirectory, true);
+                }
+
+                // Dispose unmanaged resources (if any)
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~FileUtilsTests()
+        {
+            Dispose(false);
         }
     }
 }

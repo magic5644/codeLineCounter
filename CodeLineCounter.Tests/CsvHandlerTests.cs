@@ -2,12 +2,22 @@ using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Tests
 {
-    public class CsvHandlerTests
+    public class CsvHandlerTests : IDisposable
     {
+
+        private readonly string _testDirectory;
+        private bool _disposed;
+
         private class TestRecord
         {
             public int Id { get; set; }
             public string? Name { get; set; }
+        }
+
+        public CsvHandlerTests()
+        {
+            _testDirectory = Path.Combine(Path.GetTempPath(), "CsvHandlerTests");
+            Directory.CreateDirectory(_testDirectory);
         }
 
         [Fact]
@@ -19,7 +29,7 @@ namespace CodeLineCounter.Tests
                 new() { Id = 1, Name = "Alice" },
                 new() { Id = 2, Name = "Bob" }
             };
-            string filePath = "test_1.csv";
+            string filePath = Path.Combine(_testDirectory,"test_1.csv");
 
             // Act
             CsvHandler.Serialize(data, filePath);
@@ -38,7 +48,7 @@ namespace CodeLineCounter.Tests
         public void Deserialize_ValidFile_ReturnsData()
         {
             // Arrange
-            string filePath = "test_2.csv";
+            string filePath = Path.Combine(_testDirectory,"test_2.csv");
             var data = new List<string>
             {
                 "Id,Name",
@@ -64,7 +74,7 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var data = new List<TestRecord>();
-            string filePath = "test_3.csv";
+            string filePath = Path.Combine(_testDirectory,"test_3.csv");
 
             // Act
             CsvHandler.Serialize(data, filePath);
@@ -81,7 +91,7 @@ namespace CodeLineCounter.Tests
         public void Deserialize_EmptyFile_ReturnsEmptyList()
         {
             // Arrange
-            string filePath = "test_4.csv";
+            string filePath = Path.Combine(_testDirectory,"test_4.csv");
             File.WriteAllText(filePath, "Id,Name");
 
             // Act
@@ -92,6 +102,33 @@ namespace CodeLineCounter.Tests
 
             // Cleanup
             File.Delete(filePath);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing && Directory.Exists(_testDirectory))
+                {
+                    // Dispose managed resources
+                    Directory.Delete(_testDirectory, true);
+                }
+
+                // Dispose unmanaged resources (if any)
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~CsvHandlerTests()
+        {
+            Dispose(false);
         }
     }
 }

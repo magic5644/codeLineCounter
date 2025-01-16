@@ -39,30 +39,49 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static void ExportDuplications(string filePath, List<DuplicationCode> duplications, CoreUtils.ExportFormat format)
+        public static void ExportDuplications(string outputPath, List<DuplicationCode> duplications, CoreUtils.ExportFormat format)
         {
-            ExportCollection(filePath, duplications, format);
+            string? directory = Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            ExportCollection(outputPath, duplications, format);
         }
 
-        public static async Task ExportDependencies(string filePath, List<DependencyRelation> dependencies,CoreUtils.ExportFormat format)
+        public static async Task ExportDependencies(string outputPath, List<DependencyRelation> dependencies, CoreUtils.ExportFormat format)
         {
-            string outputFilePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
+            string? directory = Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            string outputFilePath = CoreUtils.GetExportFileNameWithExtension(outputPath, format);
             ExportCollection(outputFilePath, dependencies, format);
 
-            DotGraph graph =  DependencyGraphGenerator.GenerateGraphOnly(dependencies);
-            await DependencyGraphGenerator.CompileGraphAndWriteToFile(Path.ChangeExtension(outputFilePath, ".dot"), graph);
+            DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
+
+            await DependencyGraphGenerator.CompileGraphAndWriteToFile(outputPath, graph);
         }
 
-        public static void ExportMetrics(string filePath, List<NamespaceMetrics> metrics,
-            Dictionary<string, int> projectTotals, int totalLines,
-            List<DuplicationCode> duplications, string? solutionPath, CoreUtils.ExportFormat format)
+        public static void ExportMetrics(string outputPath, List<NamespaceMetrics> metrics, 
+            Dictionary<string, int> projectTotals, int totalLines, 
+            List<DuplicationCode> duplicationMap, string solutionPath, CoreUtils.ExportFormat format)
         {
+            string? directory = Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            var filePath = CoreUtils.GetExportFileNameWithExtension(outputPath, format);
+
             try
             {
                 string? currentProject = null;
-                filePath = CoreUtils.GetExportFileNameWithExtension(filePath, format);
+                
                 List<NamespaceMetrics> namespaceMetrics = [];
-                var duplicationCounts = GetDuplicationCounts(duplications);
+                var duplicationCounts = GetDuplicationCounts(duplicationMap);
 
                 foreach (var metric in metrics)
                 {
@@ -99,12 +118,13 @@ namespace CodeLineCounter.Utils
                     });
                 }
 
-                ExportCollection(filePath, namespaceMetrics, format);
+                ExportCollection(outputPath, namespaceMetrics, format);
             }
             catch (IOException ex)
             {
                 throw new IOException($"Failed to export metrics to {filePath}", ex);
             }
+
         }
 
         public static Dictionary<string, uint> GetDuplicationCounts(List<DuplicationCode> duplications)

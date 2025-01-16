@@ -8,13 +8,13 @@ namespace CodeLineCounter.Services
     public static partial class SolutionAnalyzer
     {
 
-        public static void AnalyzeAndExportSolution(string solutionPath, bool verbose, CoreUtils.ExportFormat format)
+        public static void AnalyzeAndExportSolution(string solutionPath, bool verbose, CoreUtils.ExportFormat format, string? outputPath = null)
         {
             try
             {
                 var analysisResult = PerformAnalysis(solutionPath);
                 OutputAnalysisResults(analysisResult, verbose);
-                ExportResults(analysisResult, solutionPath, format);
+                ExportResults(analysisResult, solutionPath, format, outputPath);
 
             }
             catch (Exception ex)
@@ -65,20 +65,32 @@ namespace CodeLineCounter.Services
             Console.WriteLine($"Time taken: {result.ProcessingTime:m\\:ss\\.fff}");
         }
 
-        public static void ExportResults(AnalysisResult result, string solutionPath, CoreUtils.ExportFormat format)
+        public static void ExportResults(AnalysisResult result, string solutionPath, CoreUtils.ExportFormat format, string? outputPath = null)
         {
-            var metricsOutputFilePath = CoreUtils.GetExportFileNameWithExtension(
-                $"{result.SolutionFileName}-CodeMetrics.xxx", format);
-            var duplicationOutputFilePath = CoreUtils.GetExportFileNameWithExtension(
-                $"{result.SolutionFileName}-CodeDuplications.xxx", format);
-                var dependenciesOutputFilePath = CoreUtils.GetExportFileNameWithExtension(
-                $"{result.SolutionFileName}-CodeDependencies.xxx", format);
+            string baseFileName = Path.GetFileNameWithoutExtension(solutionPath);
+            
+            // Export des métriques
+            string metricsFileName = $"{baseFileName}-CodeMetrics";
+            string metricsOutputPath = CoreUtils.GetExportFileNameWithExtension(metricsFileName, format, outputPath);
+            // Export des métriques...
+
+            // Export des duplications
+            string duplicationsFileName = $"{baseFileName}-CodeDuplication";
+            string duplicationsOutputPath = CoreUtils.GetExportFileNameWithExtension(duplicationsFileName, format, outputPath);
+            // Export des duplications...
+
+            // Export du graphe de dépendances
+            string graphFileName = $"{baseFileName}-Dependencies.dot";
+            string graphOutputPath = outputPath != null 
+                ? Path.Combine(outputPath, graphFileName)
+                : graphFileName;
+            // Export du graphe...
 
             try
             {
                 Parallel.Invoke(
                     () => DataExporter.ExportMetrics(
-                        metricsOutputFilePath,
+                        metricsOutputPath,
                         result.Metrics,
                         result.ProjectTotals,
                         result.TotalLines,
@@ -86,18 +98,18 @@ namespace CodeLineCounter.Services
                         solutionPath,
                         format),
                     () => DataExporter.ExportDuplications(
-                        duplicationOutputFilePath,
+                        duplicationsOutputPath,
                         result.DuplicationMap,
                         format),
                     async () => await DataExporter.ExportDependencies(
-                        dependenciesOutputFilePath,
+                        graphOutputPath,
                         result.DependencyList,
                         format)
                 );
 
-                Console.WriteLine($"The data has been exported to {metricsOutputFilePath}");
-                Console.WriteLine($"The code duplications have been exported to {duplicationOutputFilePath}");
-                Console.WriteLine($"The code dependencies have been exported to {dependenciesOutputFilePath} and the graph has been generated. (dot file can be found in the same directory)");
+                Console.WriteLine($"The data has been exported to {metricsOutputPath}");
+                Console.WriteLine($"The code duplications have been exported to {duplicationsOutputPath}");
+                Console.WriteLine($"The code dependencies have been exported to {graphOutputPath} and the graph has been generated. (dot file can be found in the same directory)");
             }
             catch (AggregateException ae)
             {

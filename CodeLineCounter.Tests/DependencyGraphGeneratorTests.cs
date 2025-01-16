@@ -5,11 +5,23 @@ using DotNetGraph.Extensions;
 
 namespace CodeLineCounter.Tests
 {
-    public class DependencyGraphGeneratorTests
+    public class DependencyGraphGeneratorTests : IDisposable
     {
+
+        private readonly string _testDirectory;
+        private bool _disposed;
+
+        public DependencyGraphGeneratorTests()
+        {
+            _testDirectory = Path.Combine(Path.GetTempPath(), "DependencyGraphGeneratorTests");
+            Directory.CreateDirectory(_testDirectory);
+        }
         [Fact]
         public async Task generate_graph_with_valid_dependencies_creates_dot_file()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
+
             // Arrange
             var dependencies = new List<DependencyRelation>
             {
@@ -17,11 +29,12 @@ namespace CodeLineCounter.Tests
                 new DependencyRelation { SourceClass = "ClassB", SourceNamespace = "NamespaceB", SourceAssembly = "AssemblyB", TargetClass = "ClassC", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB",  FilePath = "path/to/file", StartLine = 1}
             };
 
-            string outputPath = Path.Combine(Path.GetTempPath(), "test_graph.dot");
+            string outputPath = Path.Combine(_testDirectory, "test_graph.dot");
 
             // Act
 
             DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
+            Directory.CreateDirectory(_testDirectory);
             await DependencyGraphGenerator.CompileGraphAndWriteToFile(outputPath, graph);
 
             // Assert
@@ -38,9 +51,12 @@ namespace CodeLineCounter.Tests
         [Fact]
         public async Task generate_graph_with_empty_dependencies_creates_empty_graph()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
+
             // Arrange
             var dependencies = new List<DependencyRelation>();
-            string outputPath = Path.Combine(Path.GetTempPath(), "empty_graph.dot");
+            string outputPath = Path.Combine(_testDirectory, "empty_graph.dot");
 
             // Act
             DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
@@ -58,6 +74,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void create_node_sets_correct_fillcolor_and_style_incoming_greater()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var vertexInfo = new Dictionary<string, (int incoming, int outgoing)>
             {
                 { "TestVertex", (3, 2) }
@@ -72,6 +90,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void create_node_sets_correct_fillcolor_and_style_incoming_lower()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var vertexInfo = new Dictionary<string, (int incoming, int outgoing)>
             {
                 { "TestVertex", (3, 4) }
@@ -87,6 +107,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void enclose_string_in_quotes_returns_empty_quoted_string_for_nonempty_input()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var input = "test string";
 
@@ -101,6 +123,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void enclose_string_in_quotes_returns_quoted_null_for_null_input()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             string? input = null;
 
@@ -115,14 +139,39 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void initialize_graph_sets_default_label_and_identifier()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var graph = DependencyGraphGenerator.InitializeGraph();
 
             Assert.Equal("DependencyGraph", graph.Label.Value);
             Assert.Equal("DependencyGraph", graph.Identifier.Value);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing && Directory.Exists(_testDirectory))
+                {
+                    // Dispose managed resources
+                    Directory.Delete(_testDirectory, true);
+                }
 
+                // Dispose unmanaged resources (if any)
 
+                _disposed = true;
+            }
+        }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~DependencyGraphGeneratorTests()
+        {
+            Dispose(false);
+        }
     }
 }

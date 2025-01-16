@@ -9,6 +9,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void TestCalculateComplexity()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var code = @"
                     public class TestClass
@@ -32,6 +34,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void Calculate_Should_Return_Correct_Complexity()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var syntaxTree = CSharpSyntaxTree.ParseText(@"
                 public class MyClass
@@ -62,6 +66,8 @@ namespace CodeLineCounter.Tests
         [Fact]
          public void Calculate_Should_Return_Correct_Complexity_6()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var syntaxTree = CSharpSyntaxTree.ParseText(@"
             class Program

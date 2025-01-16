@@ -1,6 +1,5 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
-using Moq;
 
 namespace CodeLineCounter.Tests
 {
@@ -20,6 +19,8 @@ namespace CodeLineCounter.Tests
         [InlineData(CoreUtils.ExportFormat.JSON, ".json")]
         public void Export_SingleItem_CreatesFileWithCorrectExtension(CoreUtils.ExportFormat format, string expectedExtension)
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var testItem = new TestClass { Id = 1, Name = "Test" };
             var filePath = Path.Combine(_testDirectory, "test");
@@ -36,6 +37,8 @@ namespace CodeLineCounter.Tests
         [InlineData(CoreUtils.ExportFormat.JSON, ".json")]
         public void ExportCollection_WithMultipleItems_CreatesFile(CoreUtils.ExportFormat format, string expectedExtension)
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var items = new List<TestClass>
             {
@@ -54,6 +57,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void ExportMetrics_CreatesFileWithCorrectData()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var metrics = new List<NamespaceMetrics>
             {
@@ -69,7 +74,7 @@ namespace CodeLineCounter.Tests
             var filePath = Path.Combine(_testDirectory, "metrics");
 
             // Act
-            DataExporter.ExportMetrics(filePath, metrics, projectTotals, 300, duplications, null, CoreUtils.ExportFormat.CSV);
+            DataExporter.ExportMetrics(filePath, metrics, projectTotals, 300, duplications, ".", CoreUtils.ExportFormat.CSV);
 
             // Assert
             Assert.True(File.Exists(filePath + ".csv"));
@@ -78,6 +83,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void ExportDuplications_CreatesFileWithCorrectData()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var duplications = new List<DuplicationCode>
             {
@@ -96,6 +103,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_duplication_counts_returns_correct_counts_for_duplicate_paths()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var duplications = new List<DuplicationCode>
             {
                 new DuplicationCode { FilePath = "file1.cs" },
@@ -113,6 +122,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_duplication_counts_returns_empty_dictionary_for_empty_list()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var duplications = new List<DuplicationCode>();
 
             var result = DataExporter.GetDuplicationCounts(duplications);
@@ -123,6 +134,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_duplication_counts_handles_absolute_paths()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var absolutePath = Path.GetFullPath(@"C:\test\file.cs");
             var duplications = new List<DuplicationCode>
             {
@@ -138,10 +151,12 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_file_duplications_count_returns_correct_count_when_path_exists()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var duplicationCounts = new Dictionary<string, uint>
-    {
-        { Path.Combine(Path.GetFullPath("."), "test.cs"), 5 }
-    };
+            {
+                { Path.Combine(Path.GetFullPath("."), "test.cs"), 5 }
+            };
 
             var metric = new NamespaceMetrics { FilePath = "test.cs" };
 
@@ -153,6 +168,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_file_duplications_count_returns_zero_when_path_not_found()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var duplicationCounts = new Dictionary<string, uint>();
 
             var metric = new NamespaceMetrics { FilePath = "nonexistent.cs" };
@@ -165,6 +182,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_file_duplications_count_returns_zero_when_filepath_null()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var duplicationCounts = new Dictionary<string, uint>
             {
                 { Path.Combine(Path.GetFullPath("."), "test.cs"), 5 }
@@ -181,6 +200,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_file_duplications_count_uses_current_dir_for_empty_solution_path()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
             var duplicationCounts = new Dictionary<string, uint>
             {
@@ -198,6 +219,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void get_file_duplications_count_uses_current_dir_for_null_solution_path()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
             var duplicationCounts = new Dictionary<string, uint>
             {
@@ -215,13 +238,15 @@ namespace CodeLineCounter.Tests
         [Fact]
         public async Task export_dependencies_creates_files_in_correct_formats()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             var dependencies = new List<DependencyRelation>
             {
                 new DependencyRelation { SourceClass = "ClassA", SourceNamespace = "NamespaceA", SourceAssembly = "AssemblyA", TargetClass = "ClassB", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB", FilePath = "file1.cs", StartLine = 10 },
             };
 
-            var testFilePath = "test_export";
+            var testFilePath = Path.Combine(Path.GetFullPath("."),"test_export.dot");
             var format = CoreUtils.ExportFormat.JSON;
 
             // Act
@@ -260,6 +285,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void export_collection_throws_when_filepath_null()
         {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
             // Arrange
             string? filePath = null;
             var testData = new List<TestClass> { new TestClass { Id = 1, Name = "Test" } };
