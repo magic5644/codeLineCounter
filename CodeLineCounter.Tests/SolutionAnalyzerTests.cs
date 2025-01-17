@@ -20,37 +20,44 @@ namespace CodeLineCounter.Tests.Services
         public void analyze_and_export_solution_succeeds_with_valid_inputs()
         {
             // Arrange
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
-            
+
             var verbose = false;
             var format = CoreUtils.ExportFormat.JSON;
 
             // Act & Assert
-            var exception = Record.Exception(() =>
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var exception = Record.Exception(() =>
                 SolutionAnalyzer.AnalyzeAndExportSolution(solutionPath, verbose, format));
 
-            Assert.Null(exception);
+                Assert.Null(exception);
+            }
         }
 
         [Fact]
         public void analyze_and_export_solution_throws_on_invalid_path()
         {
             // Arrange
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
+
             var invalidPath = "";
             var verbose = false;
             var format = CoreUtils.ExportFormat.JSON;
 
             // Act & Assert
-            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var exception = Assert.Throws<UnauthorizedAccessException>(() =>
                 SolutionAnalyzer.AnalyzeAndExportSolution(invalidPath, verbose, format));
 
-            Assert.Contains("Access to the path '' is denied.", exception.Message);
+                Assert.Contains("Access to the path '' is denied.", exception.Message);
+
+            }
+
         }
 
         [Fact]
@@ -60,19 +67,23 @@ namespace CodeLineCounter.Tests.Services
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            Console.WriteLine($"Constructed solution path: {solutionPath}");
-            Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
-            Console.WriteLine($"Constructed solution path: {solutionPath}");
-            Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                Console.WriteLine($"Constructed solution path: {solutionPath}");
+                Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
+                Console.WriteLine($"Constructed solution path: {solutionPath}");
+                Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
 
-            // Act
-            var result = SolutionAnalyzer.PerformAnalysis(solutionPath);
+                // Act
+                var result = SolutionAnalyzer.PerformAnalysis(solutionPath);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("CodeLineCounter.sln", result.SolutionFileName);
+                // Assert
+                Assert.NotNull(result);
+                Assert.Equal("CodeLineCounter.sln", result.SolutionFileName);
+
+            }
+
         }
 
         [Fact]
@@ -188,12 +199,13 @@ namespace CodeLineCounter.Tests.Services
             {
                 Console.SetOut(sw);
                 SolutionAnalyzer.ExportResults(result, solutionPath, format);
+                // Assert
+                Assert.True(File.Exists("TestSolution-CodeMetrics.csv"));
+                Assert.True(File.Exists("TestSolution-CodeDuplications.csv"));
+                Assert.True(File.Exists("TestSolution-CodeDependencies.csv"));
             }
 
-            // Assert
-            Assert.True(File.Exists("TestSolution-CodeMetrics.csv"));
-            Assert.True(File.Exists("TestSolution-CodeDuplications.csv"));
-            Assert.True(File.Exists("TestSolution-CodeDependencies.csv"));
+
         }
 
         protected virtual void Dispose(bool disposing)

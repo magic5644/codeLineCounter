@@ -130,12 +130,9 @@ namespace CodeLineCounter.Tests
                 Console.SetOut(sw);
                 result = CoreUtils.ParseArguments(args);
                 sortieConsole = sw.ToString();
+                Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
+                Assert.Contains("Invalid format", sortieConsole.ToString());
             }
-
-                        // Assert
-            Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
-            Assert.Contains("Invalid format", sortieConsole.ToString());
-
 
         }
 

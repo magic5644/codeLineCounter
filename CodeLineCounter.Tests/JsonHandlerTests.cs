@@ -30,8 +30,8 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void deserialize_valid_json_file_returns_expected_objects()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new()){
+                Console.SetOut(consoleOutput);
 
             // Arrange
             var testFilePath = Path.Combine(_testDirectory, "test.json");
@@ -47,6 +47,9 @@ namespace CodeLineCounter.Tests
             Assert.Equal(expectedData[0].Name, result.First().Name);
 
             File.Delete(testFilePath);
+
+            }
+            
         }
 
          protected virtual void Dispose(bool disposing)

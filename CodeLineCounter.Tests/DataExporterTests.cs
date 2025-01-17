@@ -23,13 +23,13 @@ namespace CodeLineCounter.Tests
             Console.SetOut(sw);
             // Arrange
             var testItem = new TestClass { Id = 1, Name = "Test" };
-            var filePath = Path.Combine(_testDirectory, "test");
+            var filePath = "test";
 
             // Act
-            DataExporter.Export(filePath, testItem, format);
+            DataExporter.Export(filePath, _testDirectory, testItem, format);
 
             // Assert
-            Assert.True(File.Exists(filePath + expectedExtension));
+            Assert.True(File.Exists(Path.Combine(_testDirectory, filePath + expectedExtension)));
         }
 
         [Theory]
@@ -48,7 +48,7 @@ namespace CodeLineCounter.Tests
             var filePath = Path.Combine(_testDirectory, "collection");
 
             // Act
-            DataExporter.ExportCollection(filePath, items, format);
+            DataExporter.ExportCollection(filePath, _testDirectory, items, format);
 
             // Assert
             Assert.True(File.Exists(filePath + expectedExtension));
@@ -71,10 +71,19 @@ namespace CodeLineCounter.Tests
                 { "Project2", 200 }
             };
             var duplications = new List<DuplicationCode>();
-            var filePath = Path.Combine(_testDirectory, "metrics");
+            var filePath = "metrics";
+            AnalysisResult result = new AnalysisResult
+            {
+                Metrics = metrics,
+                ProjectTotals = projectTotals,
+                DuplicationMap = duplications,
+                DependencyList = new List<DependencyRelation>(),
+                TotalLines = 300,
+                SolutionFileName = "TestSolution"
+            };
 
             // Act
-            DataExporter.ExportMetrics(filePath, metrics, projectTotals, 300, duplications, ".", CoreUtils.ExportFormat.CSV);
+            DataExporter.ExportMetrics(filePath, _testDirectory, result, ".",CoreUtils.ExportFormat.CSV);
 
             // Assert
             Assert.True(File.Exists(filePath + ".csv"));
@@ -91,10 +100,10 @@ namespace CodeLineCounter.Tests
                 new() { CodeHash = "hash1", FilePath = "file1.cs", MethodName = "method1", StartLine = 10, NbLines = 20 },
                 new() { CodeHash = "hash2", FilePath = "file2.cs", MethodName = "method2", StartLine = 8, NbLines = 10 }
             };
-            var filePath = Path.Combine(_testDirectory, "duplications");
+            var filePath = "duplications";
 
             // Act
-            DataExporter.ExportDuplications(filePath, duplications, CoreUtils.ExportFormat.CSV);
+            DataExporter.ExportDuplications(filePath, _testDirectory, duplications, CoreUtils.ExportFormat.CSV);
 
             // Assert
             Assert.True(File.Exists(filePath + ".csv"));
@@ -246,14 +255,14 @@ namespace CodeLineCounter.Tests
                 new DependencyRelation { SourceClass = "ClassA", SourceNamespace = "NamespaceA", SourceAssembly = "AssemblyA", TargetClass = "ClassB", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB", FilePath = "file1.cs", StartLine = 10 },
             };
 
-            var testFilePath = Path.Combine(Path.GetFullPath("."),"test_export.dot");
+            var testFilePath = "test_export.dot";
             var format = CoreUtils.ExportFormat.JSON;
 
             // Act
-            await DataExporter.ExportDependencies(testFilePath, dependencies, format);
+            await DataExporter.ExportDependencies(testFilePath, _testDirectory, dependencies, format);
 
             // Assert
-            string expectedJsonPath = CoreUtils.GetExportFileNameWithExtension(testFilePath, format);
+            string expectedJsonPath = Path.Combine(_testDirectory, CoreUtils.GetExportFileNameWithExtension(testFilePath, format));
             string expectedDotPath = Path.ChangeExtension(expectedJsonPath, ".dot");
 
             Assert.True(File.Exists(expectedJsonPath));
@@ -285,17 +294,20 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void export_collection_throws_when_filepath_null()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            // Arrange
-            string? filePath = null;
-            var testData = new List<TestClass> { new TestClass { Id = 1, Name = "Test" } };
-            var format = CoreUtils.ExportFormat.CSV;
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                string? filePath = null;
+                var testData = new List<TestClass> { new TestClass { Id = 1, Name = "Test" } };
+                var format = CoreUtils.ExportFormat.CSV;
 
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                DataExporter.ExportCollection(filePath, testData, format));
-            Assert.Equal("File path cannot be null or empty (Parameter 'filePath')", exception.Message);
+                // Act & Assert
+                var exception = Assert.Throws<ArgumentException>(() =>
+                    DataExporter.ExportCollection(filePath, _testDirectory, testData, format));
+                Assert.Contains("File path cannot be null or empty", exception.Message);
+            }
+
         }
 
         protected virtual void Dispose(bool disposing)

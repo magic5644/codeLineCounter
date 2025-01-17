@@ -80,22 +80,22 @@ dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to
 
 - Select the solution to analyze by entering the corresponding number.
 
-### exemple 
+### Example
 
 ```sh
 CodeLineCounter.exe [-verbose] [-d <directory_path>] [-output <output_path>] [-format <format>] [-help]
 ```
 
-### Arguments disponibles
+### Available Arguments
 
 ```sh
-- `-d <directory_path>` : Chemin du répertoire contenant les solutions à analyser (obligatoire)
-- `-output <output_path>` : Répertoire de destination pour les fichiers de résultats (optionnel, par défaut: répertoire courant)
-- `-format <format>` : Format d'export des résultats (optionnel)
-  - Valeurs possibles : `csv`, `json`
-  - Par défaut : `csv`
-- `-verbose` : Active les logs détaillés (optionnel)
-- `-help` : Affiche l'aide
+- `-d <directory_path>` : Directory path containing the solutions to analyze (required)
+- `-output <output_path>` : Destination directory for result files (optional, default: current directory)
+- `-format <format>` : Export format for results (optional)
+  - Possible values: `csv`, `json`
+  - Default: `csv`
+- `-verbose` : Enable detailed logging (optional)
+- `-help` : Display help
 ```
 
 ## Generated Files

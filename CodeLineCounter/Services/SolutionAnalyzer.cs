@@ -71,11 +71,22 @@ namespace CodeLineCounter.Services
             
             // Export metrics
             string metricsFileName = $"{baseFileName}-CodeMetrics";
-            string metricsOutputPath = CoreUtils.GetExportFileNameWithExtension(metricsFileName, format, outputPath);
+            metricsFileName = CoreUtils.GetExportFileNameWithExtension(metricsFileName, format);
+            if (string.IsNullOrEmpty(outputPath))
+            {
+                outputPath = ".";
+            }   
+
+            string metricsOutputPath = outputPath != null 
+                ? Path.Combine(outputPath, metricsFileName)
+                : metricsFileName;
 
             // Export duplications
             string duplicationsFileName = $"{baseFileName}-CodeDuplication";
-            string duplicationsOutputPath = CoreUtils.GetExportFileNameWithExtension(duplicationsFileName, format, outputPath);
+            duplicationsFileName = CoreUtils.GetExportFileNameWithExtension(duplicationsFileName, format);
+            string duplicationsOutputPath = outputPath != null 
+                ? Path.Combine(outputPath, duplicationsFileName)
+                : duplicationsFileName;
             // Export des duplications...
 
             // Export dependencies graph
@@ -88,19 +99,19 @@ namespace CodeLineCounter.Services
             {
                 Parallel.Invoke(
                     () => DataExporter.ExportMetrics(
-                        metricsOutputPath,
-                        result.Metrics,
-                        result.ProjectTotals,
-                        result.TotalLines,
-                        result.DuplicationMap,
+                        metricsFileName,
+                        outputPath ??".",
+                        result,
                         solutionPath,
                         format),
                     () => DataExporter.ExportDuplications(
-                        duplicationsOutputPath,
+                        duplicationsFileName,
+                        outputPath ?? ".",
                         result.DuplicationMap,
                         format),
                     async () => await DataExporter.ExportDependencies(
-                        graphOutputPath,
+                        graphFileName,
+                        outputPath ?? ".",
                         result.DependencyList,
                         format)
                 );

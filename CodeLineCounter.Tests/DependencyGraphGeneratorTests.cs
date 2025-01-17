@@ -29,13 +29,15 @@ namespace CodeLineCounter.Tests
                 new DependencyRelation { SourceClass = "ClassB", SourceNamespace = "NamespaceB", SourceAssembly = "AssemblyB", TargetClass = "ClassC", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB",  FilePath = "path/to/file", StartLine = 1}
             };
 
-            string outputPath = Path.Combine(_testDirectory, "test_graph.dot");
+            string fileName = "test_graph.dot";
+
+            string outputPath = Path.Combine(_testDirectory, fileName);
 
             // Act
 
             DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
             Directory.CreateDirectory(_testDirectory);
-            await DependencyGraphGenerator.CompileGraphAndWriteToFile(outputPath, graph);
+            await DependencyGraphGenerator.CompileGraphAndWriteToFile(fileName,_testDirectory, graph);
 
             // Assert
             Assert.True(File.Exists(outputPath));
@@ -56,11 +58,12 @@ namespace CodeLineCounter.Tests
 
             // Arrange
             var dependencies = new List<DependencyRelation>();
-            string outputPath = Path.Combine(_testDirectory, "empty_graph.dot");
+            string filename = "empty_graph.dot";
+            string outputPath = Path.Combine(_testDirectory, filename);
 
             // Act
             DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
-            await DependencyGraphGenerator.CompileGraphAndWriteToFile(outputPath, graph);
+            await DependencyGraphGenerator.CompileGraphAndWriteToFile(filename, _testDirectory, graph);
 
             // Assert
             Assert.True(File.Exists(outputPath));

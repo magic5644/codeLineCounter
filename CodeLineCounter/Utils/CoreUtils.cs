@@ -138,13 +138,14 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static string GetExportFileNameWithExtension(string filePath, ExportFormat format, string? outputPath = null)
+        public static string GetExportFileNameWithExtension(string filePath, ExportFormat format)
         {
-            string fileName = Path.GetFileName(filePath);
             if (filePath == null)
             {
-                filePath = ".";
+                filePath = "export.";
             }
+            string fileName = Path.GetFileName(filePath);
+            
             string newExtension = format switch
             {
                 ExportFormat.CSV => ".csv",
@@ -172,9 +173,7 @@ namespace CodeLineCounter.Utils
             }
 
             // If an output directory is specified, combine the path
-            return outputPath != null
-                ? Path.Combine(Path.GetFullPath(outputPath), fileName)
-                : Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetFullPath("."), fileName);
+            return fileName;
         }
     }
 }

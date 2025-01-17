@@ -163,7 +163,7 @@ namespace CodeLineCounter.Services
             }
         }
 
-        public static async Task CompileGraphAndWriteToFile(string outputPath, DotGraph graph)
+        public static async Task CompileGraphAndWriteToFile(string fileName,string outputPath, DotGraph graph)
         {
             // Use memory buffer
             using var memoryStream = new MemoryStream();
@@ -178,7 +178,7 @@ namespace CodeLineCounter.Services
             await writer.FlushAsync(); // Ensure all data is written to memory
 
             memoryStream.Position = 0; // Reset position to start
-            using var fileStream = File.Create(outputPath);
+            using var fileStream = File.Create(Path.Combine(outputPath, fileName));
             await memoryStream.CopyToAsync(fileStream); // Write complete buffer to file
         }
 
@@ -223,6 +223,5 @@ namespace CodeLineCounter.Services
         {
             return str.Replace("\"", "");
         }
-
     }
 }
