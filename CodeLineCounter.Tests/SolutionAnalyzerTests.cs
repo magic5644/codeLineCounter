@@ -177,26 +177,25 @@ namespace CodeLineCounter.Tests.Services
         [Fact]
         public void export_results_with_valid_input_exports_all_files()
         {
-            // Arrange
-            var result = new AnalysisResult
-            {
-                SolutionFileName = "TestSolution",
-                Metrics = new List<NamespaceMetrics>(),
-                ProjectTotals = new Dictionary<string, int>(),
-                TotalLines = 1000,
-                DuplicationMap = new List<DuplicationCode>(),
-                DependencyList = new List<DependencyRelation>()
-            };
-
-            var basePath = _testDirectory;
-            var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
-
-            solutionPath = Path.Combine(solutionPath, "TestSolution.sln");
-            var format = CoreUtils.ExportFormat.CSV;
-
-            // Act
+          // Act
             using (var sw = new StringWriter())
             {
+                // Arrange
+                var result = new AnalysisResult
+                {
+                    SolutionFileName = "TestSolution",
+                    Metrics = new List<NamespaceMetrics>(),
+                    ProjectTotals = new Dictionary<string, int>(),
+                    TotalLines = 1000,
+                    DuplicationMap = new List<DuplicationCode>(),
+                    DependencyList = new List<DependencyRelation>()
+                };
+
+                var basePath = _testDirectory;
+                var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
+
+                solutionPath = Path.Combine(solutionPath, "TestSolution.sln");
+                var format = CoreUtils.ExportFormat.CSV;
                 Console.SetOut(sw);
                 SolutionAnalyzer.ExportResults(result, solutionPath, format);
                 // Assert

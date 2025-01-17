@@ -19,17 +19,20 @@ namespace CodeLineCounter.Tests
         [InlineData(CoreUtils.ExportFormat.JSON, ".json")]
         public void Export_SingleItem_CreatesFileWithCorrectExtension(CoreUtils.ExportFormat format, string expectedExtension)
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            // Arrange
-            var testItem = new TestClass { Id = 1, Name = "Test" };
-            var filePath = "test";
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                var testItem = new TestClass { Id = 1, Name = "Test" };
+                var filePath = "test";
 
-            // Act
-            DataExporter.Export(filePath, _testDirectory, testItem, format);
+                // Act
+                DataExporter.Export(filePath, _testDirectory, testItem, format);
 
-            // Assert
-            Assert.True(File.Exists(Path.Combine(_testDirectory, filePath + expectedExtension)));
+                // Assert
+                Assert.True(File.Exists(Path.Combine(_testDirectory, filePath + expectedExtension)));
+            }
+
         }
 
         [Theory]
@@ -37,257 +40,293 @@ namespace CodeLineCounter.Tests
         [InlineData(CoreUtils.ExportFormat.JSON, ".json")]
         public void ExportCollection_WithMultipleItems_CreatesFile(CoreUtils.ExportFormat format, string expectedExtension)
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            // Arrange
-            var items = new List<TestClass>
+            using (var sw = new StringWriter())
             {
-                new() { Id = 1, Name = "Test1" },
-                new() { Id = 2, Name = "Test2" }
-            };
-            var filePath = Path.Combine(_testDirectory, "collection");
+                Console.SetOut(sw);
+                // Arrange
+                var items = new List<TestClass>
+                {
+                    new() { Id = 1, Name = "Test1" },
+                    new() { Id = 2, Name = "Test2" }
+                };
+                var filePath = Path.Combine(_testDirectory, "collection");
 
-            // Act
-            DataExporter.ExportCollection(filePath, _testDirectory, items, format);
+                // Act
+                DataExporter.ExportCollection(filePath, _testDirectory, items, format);
 
-            // Assert
-            Assert.True(File.Exists(filePath + expectedExtension));
+                // Assert
+                Assert.True(File.Exists(filePath + expectedExtension));
+            }
+
         }
 
         [Fact]
         public void ExportMetrics_CreatesFileWithCorrectData()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            // Arrange
-            var metrics = new List<NamespaceMetrics>
+            using (var sw = new StringWriter())
             {
-                new() { ProjectName = "Project1", LineCount = 100 },
-                new() { ProjectName = "Project2", LineCount = 200 }
-            };
-            var projectTotals = new Dictionary<string, int>
-            {
-                { "Project1", 100 },
-                { "Project2", 200 }
-            };
-            var duplications = new List<DuplicationCode>();
-            var filePath = "metrics";
-            AnalysisResult result = new AnalysisResult
-            {
-                Metrics = metrics,
-                ProjectTotals = projectTotals,
-                DuplicationMap = duplications,
-                DependencyList = new List<DependencyRelation>(),
-                TotalLines = 300,
-                SolutionFileName = "TestSolution"
-            };
+                Console.SetOut(sw);
+                // Arrange
+                var metrics = new List<NamespaceMetrics>
+                {
+                    new() { ProjectName = "Project1", LineCount = 100 },
+                    new() { ProjectName = "Project2", LineCount = 200 }
+                };
+                var projectTotals = new Dictionary<string, int>
+                {
+                    { "Project1", 100 },
+                    { "Project2", 200 }
+                };
+                var duplications = new List<DuplicationCode>();
+                var filePath = "metrics";
+                AnalysisResult result = new AnalysisResult
+                {
+                    Metrics = metrics,
+                    ProjectTotals = projectTotals,
+                    DuplicationMap = duplications,
+                    DependencyList = new List<DependencyRelation>(),
+                    TotalLines = 300,
+                    SolutionFileName = "TestSolution"
+                };
 
-            // Act
-            DataExporter.ExportMetrics(filePath, _testDirectory, result, ".",CoreUtils.ExportFormat.CSV);
+                // Act
+                DataExporter.ExportMetrics(filePath, _testDirectory, result, ".", CoreUtils.ExportFormat.CSV);
 
-            // Assert
-            Assert.True(File.Exists(filePath + ".csv"));
+                // Assert
+                Assert.True(File.Exists(filePath + ".csv"));
+            }
+
         }
 
         [Fact]
         public void ExportDuplications_CreatesFileWithCorrectData()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            // Arrange
-            var duplications = new List<DuplicationCode>
+            using (var sw = new StringWriter())
             {
-                new() { CodeHash = "hash1", FilePath = "file1.cs", MethodName = "method1", StartLine = 10, NbLines = 20 },
-                new() { CodeHash = "hash2", FilePath = "file2.cs", MethodName = "method2", StartLine = 8, NbLines = 10 }
-            };
-            var filePath = "duplications";
+                Console.SetOut(sw);
+                // Arrange
+                var duplications = new List<DuplicationCode>
+                {
+                    new() { CodeHash = "hash1", FilePath = "file1.cs", MethodName = "method1", StartLine = 10, NbLines = 20 },
+                    new() { CodeHash = "hash2", FilePath = "file2.cs", MethodName = "method2", StartLine = 8, NbLines = 10 }
+                };
+                var filePath = "duplications";
 
-            // Act
-            DataExporter.ExportDuplications(filePath, _testDirectory, duplications, CoreUtils.ExportFormat.CSV);
+                // Act
+                DataExporter.ExportDuplications(filePath, _testDirectory, duplications, CoreUtils.ExportFormat.CSV);
 
-            // Assert
-            Assert.True(File.Exists(filePath + ".csv"));
+                // Assert
+                Assert.True(File.Exists(filePath + ".csv"));
+            }
+
         }
 
         [Fact]
         public void get_duplication_counts_returns_correct_counts_for_duplicate_paths()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var duplications = new List<DuplicationCode>
+            using (var sw = new StringWriter())
             {
-                new DuplicationCode { FilePath = "file1.cs" },
-                new DuplicationCode { FilePath = "file1.cs" },
-                new DuplicationCode { FilePath = "file2.cs" },
-                new DuplicationCode { FilePath = "file1.cs" }
-            };
+                Console.SetOut(sw);
+                var duplications = new List<DuplicationCode>
+                {
+                    new DuplicationCode { FilePath = "file1.cs" },
+                    new DuplicationCode { FilePath = "file1.cs" },
+                    new DuplicationCode { FilePath = "file2.cs" },
+                    new DuplicationCode { FilePath = "file1.cs" }
+                };
 
-            var result = DataExporter.GetDuplicationCounts(duplications);
+                var result = DataExporter.GetDuplicationCounts(duplications);
 
-            Assert.Equal(3u, result[Path.GetFullPath("file1.cs")]);
-            Assert.Equal(1u, result[Path.GetFullPath("file2.cs")]);
+                Assert.Equal(3u, result[Path.GetFullPath("file1.cs")]);
+                Assert.Equal(1u, result[Path.GetFullPath("file2.cs")]);
+            }
+
         }
 
         [Fact]
         public void get_duplication_counts_returns_empty_dictionary_for_empty_list()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var duplications = new List<DuplicationCode>();
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var duplications = new List<DuplicationCode>();
 
-            var result = DataExporter.GetDuplicationCounts(duplications);
+                var result = DataExporter.GetDuplicationCounts(duplications);
 
-            Assert.Empty(result);
+                Assert.Empty(result);
+            }
+
         }
 
         [Fact]
         public void get_duplication_counts_handles_absolute_paths()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var absolutePath = Path.GetFullPath(@"C:\test\file.cs");
-            var duplications = new List<DuplicationCode>
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var absolutePath = Path.GetFullPath(@"C:\test\file.cs");
+                var duplications = new List<DuplicationCode>
             {
                 new DuplicationCode { FilePath = absolutePath },
                 new DuplicationCode { FilePath = absolutePath }
             };
 
-            var result = DataExporter.GetDuplicationCounts(duplications);
+                var result = DataExporter.GetDuplicationCounts(duplications);
 
-            Assert.Equal(2u, result[absolutePath]);
+                Assert.Equal(2u, result[absolutePath]);
+            }
+
         }
 
         [Fact]
         public void get_file_duplications_count_returns_correct_count_when_path_exists()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var duplicationCounts = new Dictionary<string, uint>
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var duplicationCounts = new Dictionary<string, uint>
             {
                 { Path.Combine(Path.GetFullPath("."), "test.cs"), 5 }
             };
 
-            var metric = new NamespaceMetrics { FilePath = "test.cs" };
+                var metric = new NamespaceMetrics { FilePath = "test.cs" };
 
-            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+                var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
 
-            Assert.Equal(5, result);
+                Assert.Equal(5, result);
+            }
+
         }
 
         [Fact]
         public void get_file_duplications_count_returns_zero_when_path_not_found()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var duplicationCounts = new Dictionary<string, uint>();
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var duplicationCounts = new Dictionary<string, uint>();
 
-            var metric = new NamespaceMetrics { FilePath = "nonexistent.cs" };
+                var metric = new NamespaceMetrics { FilePath = "nonexistent.cs" };
 
-            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+                var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
 
-            Assert.Equal(0, result);
+                Assert.Equal(0, result);
+            }
+
         }
 
         [Fact]
         public void get_file_duplications_count_returns_zero_when_filepath_null()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var duplicationCounts = new Dictionary<string, uint>
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var duplicationCounts = new Dictionary<string, uint>
             {
                 { Path.Combine(Path.GetFullPath("."), "test.cs"), 5 }
             };
 
-            var metric = new NamespaceMetrics { FilePath = null };
+                var metric = new NamespaceMetrics { FilePath = null };
 
-            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+                var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
 
-            Assert.Equal(0, result);
+                Assert.Equal(0, result);
+            }
+
         }
 
         // Handles empty string solutionPath by using current directory
         [Fact]
         public void get_file_duplications_count_uses_current_dir_for_empty_solution_path()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
-            var duplicationCounts = new Dictionary<string, uint>
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
+                var duplicationCounts = new Dictionary<string, uint>
             {
                 { expectedPath, 3 }
             };
 
-            var metric = new NamespaceMetrics { FilePath = "test.cs" };
+                var metric = new NamespaceMetrics { FilePath = "test.cs" };
 
-            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, string.Empty);
+                var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, string.Empty);
 
-            Assert.Equal(3, result);
+                Assert.Equal(3, result);
+            }
+
         }
 
         // Handles null solutionPath by using current directory
         [Fact]
         public void get_file_duplications_count_uses_current_dir_for_null_solution_path()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
-            var duplicationCounts = new Dictionary<string, uint>
+            using (var sw = new StringWriter())
             {
-                { expectedPath, 4 }
-            };
+                Console.SetOut(sw);
+                var expectedPath = Path.Combine(Path.GetFullPath("."), "test.cs");
+                var duplicationCounts = new Dictionary<string, uint>
+                {
+                    { expectedPath, 4 }
+                };
 
-            var metric = new NamespaceMetrics { FilePath = "test.cs" };
+                var metric = new NamespaceMetrics { FilePath = "test.cs" };
 
-            var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
+                var result = DataExporter.GetFileDuplicationsCount(duplicationCounts, metric, null);
 
-            Assert.Equal(4, result);
+                Assert.Equal(4, result);
+            }
+
         }
 
         // Successfully exports dependencies to specified format (CSV/JSON) and creates DOT file
         [Fact]
         public async Task export_dependencies_creates_files_in_correct_formats()
         {
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-            // Arrange
-            var dependencies = new List<DependencyRelation>
+            using (var sw = new StringWriter())
             {
-                new DependencyRelation { SourceClass = "ClassA", SourceNamespace = "NamespaceA", SourceAssembly = "AssemblyA", TargetClass = "ClassB", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB", FilePath = "file1.cs", StartLine = 10 },
-            };
-
-            var testFilePath = "test_export.dot";
-            var format = CoreUtils.ExportFormat.JSON;
-
-            // Act
-            await DataExporter.ExportDependencies(testFilePath, _testDirectory, dependencies, format);
-
-            // Assert
-            string expectedJsonPath = Path.Combine(_testDirectory, CoreUtils.GetExportFileNameWithExtension(testFilePath, format));
-            string expectedDotPath = Path.ChangeExtension(expectedJsonPath, ".dot");
-
-            Assert.True(File.Exists(expectedJsonPath));
-            Assert.True(File.Exists(expectedDotPath));
-
-            try
-            {
-                if (File.Exists(expectedJsonPath))
+                Console.SetOut(sw);
+                // Arrange
+                var dependencies = new List<DependencyRelation>
                 {
-                    File.Delete(expectedJsonPath);
-                }
+                    new DependencyRelation { SourceClass = "ClassA", SourceNamespace = "NamespaceA", SourceAssembly = "AssemblyA", TargetClass = "ClassB", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB", FilePath = "file1.cs", StartLine = 10 },
+                };
 
-                if (File.Exists(expectedDotPath))
+                var testFilePath = "test_export.dot";
+                var format = CoreUtils.ExportFormat.JSON;
+
+                // Act
+                await DataExporter.ExportDependencies(testFilePath, _testDirectory, dependencies, format);
+
+                // Assert
+                string expectedJsonPath = Path.Combine(_testDirectory, CoreUtils.GetExportFileNameWithExtension(testFilePath, format));
+                string expectedDotPath = Path.ChangeExtension(expectedJsonPath, ".dot");
+
+                Assert.True(File.Exists(expectedJsonPath));
+                Assert.True(File.Exists(expectedDotPath));
+
+                try
                 {
-                    File.Delete(expectedDotPath);
+                    if (File.Exists(expectedJsonPath))
+                    {
+                        File.Delete(expectedJsonPath);
+                    }
+
+                    if (File.Exists(expectedDotPath))
+                    {
+                        File.Delete(expectedDotPath);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    throw new IOException($"Error deleting files: {ex.Message}", ex);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    throw new UnauthorizedAccessException($"Access denied while deleting files: {ex.Message}", ex);
                 }
             }
-            catch (IOException ex)
-            {
-                throw new IOException($"Error deleting files: {ex.Message}", ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new UnauthorizedAccessException($"Access denied while deleting files: {ex.Message}", ex);
-            }
+
         }
 
         // Throws ArgumentException when file path is null

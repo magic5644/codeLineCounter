@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace CodeLineCounter.Tests
 {
-    public class JsonHandlerTests :IDisposable
+    public class JsonHandlerTests : IDisposable
     {
 
         private readonly string _testDirectory;
@@ -30,29 +30,30 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void deserialize_valid_json_file_returns_expected_objects()
         {
-            using (StringWriter consoleOutput = new()){
+            using (StringWriter consoleOutput = new())
+            {
                 Console.SetOut(consoleOutput);
 
-            // Arrange
-            var testFilePath = Path.Combine(_testDirectory, "test.json");
-            var expectedData = new[] { new TestClass(id: 1, name: "Test") };
-            File.WriteAllText(testFilePath, JsonSerializer.Serialize(expectedData));
+                // Arrange
+                var testFilePath = Path.Combine(_testDirectory, "test.json");
+                var expectedData = new[] { new TestClass(id: 1, name: "Test") };
+                File.WriteAllText(testFilePath, JsonSerializer.Serialize(expectedData));
 
-            // Act
-            var result = JsonHandler.Deserialize<TestClass>(testFilePath);
+                // Act
+                var result = JsonHandler.Deserialize<TestClass>(testFilePath);
 
-            // Assert
-            Assert.Equal(expectedData.Length, result.Count());
-            Assert.Equal(expectedData[0].Id, result.First().Id);
-            Assert.Equal(expectedData[0].Name, result.First().Name);
+                // Assert
+                Assert.Equal(expectedData.Length, result.Count());
+                Assert.Equal(expectedData[0].Id, result.First().Id);
+                Assert.Equal(expectedData[0].Name, result.First().Name);
 
-            File.Delete(testFilePath);
+                File.Delete(testFilePath);
 
             }
-            
+
         }
 
-         protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
             {

@@ -23,97 +23,109 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void Serialize_ValidData_WritesToFile()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Arrange
-            var data = new List<TestRecord>
+                // Arrange
+                var data = new List<TestRecord>
             {
                 new() { Id = 1, Name = "Alice" },
                 new() { Id = 2, Name = "Bob" }
             };
-            string filePath = Path.Combine(_testDirectory,"test_1.csv");
+                string filePath = Path.Combine(_testDirectory, "test_1.csv");
 
-            // Act
-            CsvHandler.Serialize(data, filePath);
+                // Act
+                CsvHandler.Serialize(data, filePath);
 
-            // Assert
-            var lines = File.ReadAllLines(filePath);
-            Assert.Equal(3, lines.Length); // Header + 2 records
-            Assert.Contains("Alice", lines[1]);
-            Assert.Contains("Bob", lines[2]);
+                // Assert
+                var lines = File.ReadAllLines(filePath);
+                Assert.Equal(3, lines.Length); // Header + 2 records
+                Assert.Contains("Alice", lines[1]);
+                Assert.Contains("Bob", lines[2]);
 
-            // Cleanup
-            File.Delete(filePath);
+                // Cleanup
+                File.Delete(filePath);
+            }
+
         }
 
         [Fact]
         public void Deserialize_ValidFile_ReturnsData()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
-
-            // Arrange
-            string filePath = Path.Combine(_testDirectory,"test_2.csv");
-            var data = new List<string>
+            using (StringWriter consoleOutput = new())
             {
-                "Id,Name",
-                "1,Alice",
-                "2,Bob"
-            };
-            File.WriteAllLines(filePath, data);
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
+                // Arrange
+                string filePath = Path.Combine(_testDirectory, "test_2.csv");
+                var data = new List<string>
+                {
+                    "Id,Name",
+                    "1,Alice",
+                    "2,Bob"
+                };
+                File.WriteAllLines(filePath, data);
 
-            // Assert
-            Assert.Equal(2, result.Count);
-            Assert.Equal("Alice", result[0].Name);
-            Assert.Equal("Bob", result[1].Name);
+                // Act
+                var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
 
-            // Cleanup
-            File.Delete(filePath);
+                // Assert
+                Assert.Equal(2, result.Count);
+                Assert.Equal("Alice", result[0].Name);
+                Assert.Equal("Bob", result[1].Name);
+
+                // Cleanup
+                File.Delete(filePath);
+            }
+
         }
 
         [Fact]
         public void Serialize_EmptyData_WritesEmptyFile()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Arrange
-            var data = new List<TestRecord>();
-            string filePath = Path.Combine(_testDirectory,"test_3.csv");
+                // Arrange
+                var data = new List<TestRecord>();
+                string filePath = Path.Combine(_testDirectory, "test_3.csv");
 
-            // Act
-            CsvHandler.Serialize(data, filePath);
+                // Act
+                CsvHandler.Serialize(data, filePath);
 
-            // Assert
-            var lines = File.ReadAllLines(filePath);
-            Assert.Single(lines); // Only header
+                // Assert
+                var lines = File.ReadAllLines(filePath);
+                Assert.Single(lines); // Only header
 
-            // Cleanup
-            File.Delete(filePath);
+                // Cleanup
+                File.Delete(filePath);
+            }
+
         }
 
         [Fact]
         public void Deserialize_EmptyFile_ReturnsEmptyList()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
-            
-            // Arrange
-            string filePath = Path.Combine(_testDirectory,"test_4.csv");
-            File.WriteAllText(filePath, "Id,Name");
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
+                // Arrange
+                string filePath = Path.Combine(_testDirectory, "test_4.csv");
+                File.WriteAllText(filePath, "Id,Name");
 
-            // Assert
-            Assert.Empty(result);
+                // Act
+                var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
 
-            // Cleanup
-            File.Delete(filePath);
+                // Assert
+                Assert.Empty(result);
+
+                // Cleanup
+                File.Delete(filePath);
+            }
+
         }
 
         protected virtual void Dispose(bool disposing)

@@ -2,7 +2,7 @@ using CodeLineCounter.Services;
 
 namespace CodeLineCounter.Tests
 {
-    public class CodeDuplicationCheckerTests  : IDisposable
+    public class CodeDuplicationCheckerTests : IDisposable
     {
         private readonly string _testDirectory;
         private bool _disposed;
@@ -12,13 +12,13 @@ namespace CodeLineCounter.Tests
             _testDirectory = Path.Combine(Path.GetTempPath(), "CodeDuplicationCheckerTests");
             Directory.CreateDirectory(_testDirectory);
         }
-        
+
         [Fact]
         public void DetectCodeDuplicationInFiles_ShouldDetectDuplicates()
         {
             using StringWriter consoleOutput = new();
             Console.SetOut(consoleOutput);
-            
+
             // Arrange
             var file1 = Path.Combine(_testDirectory, "TestFile1.cs");
             var file2 = Path.Combine(_testDirectory, "TestFile2.cs");
@@ -70,13 +70,14 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void DetectCodeDuplicationInSourceCode_ShouldDetectDuplicates()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Arrange
-            var checker = new CodeDuplicationChecker();
+                // Arrange
+                var checker = new CodeDuplicationChecker();
 
-            var sourceCode1 = @"
+                var sourceCode1 = @"
                 public class TestClass
                 {
                     public void TestMethod()
@@ -88,7 +89,7 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            var sourceCode2 = @"
+                var sourceCode2 = @"
                 public class AnotherTestClass
                 {
                     public void AnotherTestMethod()
@@ -100,30 +101,33 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            var file1 = Path.Combine(_testDirectory, "TestFile3.cs");
-            var file2 = Path.Combine(_testDirectory, "TestFile4.cs");
+                var file1 = Path.Combine(_testDirectory, "TestFile3.cs");
+                var file2 = Path.Combine(_testDirectory, "TestFile4.cs");
 
-            // Act
-            checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
-            checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
-            var result = checker.GetCodeDuplicationMap();
+                // Act
+                checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
+                checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
+                var result = checker.GetCodeDuplicationMap();
 
-            // Assert
-            Assert.NotEmpty(result);
-            var duplicateEntry = result.First();
-            Assert.Equal(2, duplicateEntry.Value.Count); // Both methods should be detected as duplicates
+                // Assert
+                Assert.NotEmpty(result);
+                var duplicateEntry = result.First();
+                Assert.Equal(2, duplicateEntry.Value.Count); // Both methods should be detected as duplicates
+            }
+
         }
 
         [Fact]
         public void DetectCodeDuplicationInSourceCode_ShouldNotDetectDuplicatesForDifferentCode()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Arrange
-            var checker = new CodeDuplicationChecker();
+                // Arrange
+                var checker = new CodeDuplicationChecker();
 
-            var sourceCode1 = @"
+                var sourceCode1 = @"
                 public class TestClass
                 {
                     public void TestMethod()
@@ -135,7 +139,7 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            var sourceCode2 = @"
+                var sourceCode2 = @"
                 public class AnotherTestClass
                 {
                     public void AnotherTestMethod()
@@ -144,19 +148,21 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            var file1 = Path.Combine(_testDirectory, "TestFile5.cs");
-            var file2 = Path.Combine(_testDirectory, "TestFile6.cs");
+                var file1 = Path.Combine(_testDirectory, "TestFile5.cs");
+                var file2 = Path.Combine(_testDirectory, "TestFile6.cs");
 
-            // Act
-            checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
-            checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
-            var result = checker.GetCodeDuplicationMap();
+                // Act
+                checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
+                checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
+                var result = checker.GetCodeDuplicationMap();
 
-            // Assert
-            Assert.Empty(result); // No duplicates should be detected
+                // Assert
+                Assert.Empty(result); // No duplicates should be detected
+            }
+
         }
 
-         protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
             {
