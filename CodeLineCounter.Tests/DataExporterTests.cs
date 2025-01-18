@@ -93,7 +93,7 @@ namespace CodeLineCounter.Tests
                 DataExporter.ExportMetrics(filePath, _testDirectory, result, ".", CoreUtils.ExportFormat.CSV);
 
                 // Assert
-                Assert.True(File.Exists(filePath + ".csv"));
+                Assert.True(File.Exists(Path.Combine(_testDirectory,filePath + ".csv")));
             }
 
         }
@@ -116,7 +116,7 @@ namespace CodeLineCounter.Tests
                 DataExporter.ExportDuplications(filePath, _testDirectory, duplications, CoreUtils.ExportFormat.CSV);
 
                 // Assert
-                Assert.True(File.Exists(filePath + ".csv"));
+                Assert.True(File.Exists(Path.Combine(_testDirectory,filePath + ".csv")));
             }
 
         }
