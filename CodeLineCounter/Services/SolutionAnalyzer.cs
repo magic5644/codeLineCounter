@@ -82,7 +82,7 @@ namespace CodeLineCounter.Services
                 : metricsFileName;
 
             // Export duplications
-            string duplicationsFileName = $"{baseFileName}-CodeDuplication";
+            string duplicationsFileName = $"{baseFileName}-CodeDuplications";
             duplicationsFileName = CoreUtils.GetExportFileNameWithExtension(duplicationsFileName, format);
             string duplicationsOutputPath = outputPath != null 
                 ? Path.Combine(outputPath, duplicationsFileName)

@@ -214,7 +214,7 @@ EndProject");
                 // Arrange
                 var result = new AnalysisResult
                 {
-                    SolutionFileName = "TestSolution",
+                    SolutionFileName = "CodelineCounter.sln",
                     Metrics = new List<NamespaceMetrics>(),
                     ProjectTotals = new Dictionary<string, int>(),
                     TotalLines = 1000,
@@ -222,17 +222,17 @@ EndProject");
                     DependencyList = new List<DependencyRelation>()
                 };
 
-                var basePath = _testDirectory;
-                var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
+                var basePath = FileUtils.GetBasePath();
+                var baseSolutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
 
-                solutionPath = Path.Combine(solutionPath, "TestSolution.sln");
+                var solutionPath = Path.Combine(baseSolutionPath, "CodelineCounter.sln");
                 var format = CoreUtils.ExportFormat.CSV;
                 Console.SetOut(sw);
-                SolutionAnalyzer.ExportResults(result, solutionPath, format);
+                SolutionAnalyzer.ExportResults(result, solutionPath, format, baseSolutionPath);
                 // Assert
-                Assert.True(File.Exists("TestSolution-CodeMetrics.csv"));
-                Assert.True(File.Exists("TestSolution-CodeDuplications.csv"));
-                Assert.True(File.Exists("TestSolution-CodeDependencies.csv"));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-CodeMetrics.csv")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-CodeDuplications.csv")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-Dependencies.dot")));
             }
 
 
