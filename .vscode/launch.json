@@ -20,6 +20,16 @@
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
+        },
+        {
+            "name": "C#: CodeLineCounter - withOutputPath",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/CodeLineCounter/bin/Debug/net9.0/CodeLineCounter.dll",
+            "args": ["-d", "${workspaceFolder}", "-output", "${workspaceFolder}\\exports" ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         }
     ]
 }

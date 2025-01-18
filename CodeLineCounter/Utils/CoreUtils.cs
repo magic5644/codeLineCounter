@@ -1,3 +1,4 @@
+using CodeLineCounter.Models;
 
 namespace CodeLineCounter.Utils
 {
@@ -8,57 +9,73 @@ namespace CodeLineCounter.Utils
             CSV,
             JSON
         }
-        public static (bool Verbose, string? DirectoryPath, bool Help, ExportFormat format) ParseArguments(string[] args)
+
+        public static Settings ParseArguments(string[] args)
         {
-            bool verbose = false;
-            bool help = false;
-            ExportFormat format = ExportFormat.CSV;
-            string? directoryPath = null;
+            var settings = new Settings();
             int argIndex = 0;
+
             while (argIndex < args.Length)
             {
                 switch (args[argIndex])
                 {
                     case "-help":
-                        help = true;
-                        argIndex++;
+                        settings.Help = true;
                         break;
                     case "-verbose":
-                        verbose = true;
-                        argIndex++;
+                        settings.Verbose = true;
                         break;
                     case "-d":
-                        if (argIndex + 1 < args.Length)
-                        {
-                            directoryPath = args[argIndex + 1];
-                            argIndex += 2; // Increment by 2 to skip the next argument
-                        }
-                        else
-                        {
-                            argIndex++; // Increment by 1 if there's no next argument
-                        }
+                        HandleDirectory(args, settings, ref argIndex);
                         break;
                     case "-format":
-                        if (argIndex + 1 < args.Length)
-                        {
-                            string formatString = args[argIndex + 1];
-                            argIndex += 2; // Increment by 2 to skip the next argument
-                            if (Enum.TryParse<ExportFormat>(formatString, true, out ExportFormat result))
-                            {
-                                format = result;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames<ExportFormat>())}. Using default format {format}");
-                            }
-                        }
+                        HandleFormat(args, settings, ref argIndex);
+                        break;
+                    case "-output":
+                        HandleOutput(args, settings, ref argIndex);
                         break;
                     default:
-                        argIndex++;
                         break;
                 }
+                argIndex++;
             }
-            return (verbose, directoryPath, help, format);
+            return settings;
+        }
+
+        private static void HandleDirectory(string[] args, Settings settings, ref int argIndex)
+        {
+            if (argIndex + 1 < args.Length)
+            {
+                settings.DirectoryPath = args[argIndex + 1];
+                argIndex++;
+            }
+
+        }
+
+        private static void HandleFormat(string[] args, Settings settings, ref int argIndex)
+        {
+            if (argIndex + 1 < args.Length)
+            {
+                string formatString = args[argIndex + 1];
+                argIndex++;
+                if (Enum.TryParse<ExportFormat>(formatString, true, out ExportFormat result))
+                {
+                    settings.Format = result;
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames<ExportFormat>())}. Using default format {settings.Format}");
+                }
+            }
+        }
+
+        private static void HandleOutput(string[] args, Settings settings, ref int argIndex)
+        {
+            if (argIndex + 1 < args.Length)
+            {
+                settings.OutputPath = args[argIndex + 1];
+                argIndex++;
+            }
         }
 
         /// <summary>
@@ -121,49 +138,42 @@ namespace CodeLineCounter.Utils
             }
         }
 
-        public static bool CheckSettings((bool Verbose, string? DirectoryPath, bool Help, ExportFormat format) settings)
+        public static string GetExportFileNameWithExtension(string filePath, ExportFormat format)
         {
-            if (settings.Help)
+            if (filePath == null)
             {
-                Console.WriteLine("Usage: CodeLineCounter.exe [-verbose] [-d <directory_path>] [-help, -h] (-format <csv, json>)");
-                return false;
+                filePath = "export.";
             }
-
-            if (settings.DirectoryPath == null)
-            {
-                Console.WriteLine("Please provide the directory path containing the solutions to analyze using the -d switch.");
-                return false;
-            }
-
-            return true;
-        }
-
-        public static string GetExportFileNameWithExtension(string filePath, CoreUtils.ExportFormat format)
-        {
+            string fileName = Path.GetFileName(filePath);
+            
             string newExtension = format switch
             {
-                CoreUtils.ExportFormat.CSV => ".csv",
-                CoreUtils.ExportFormat.JSON => ".json",
+                ExportFormat.CSV => ".csv",
+                ExportFormat.JSON => ".json",
                 _ => throw new ArgumentException($"Unsupported format: {format}", nameof(format))
             };
 
             string currentExtension = Path.GetExtension(filePath);
 
-            // If the file already has the desired extension (case-insensitive)
-            if (currentExtension.Equals(newExtension, StringComparison.OrdinalIgnoreCase))
+            // If file already has the desired extension, keep it, otherwise change it
+            if (!currentExtension.Equals(newExtension, StringComparison.OrdinalIgnoreCase))
             {
-                return filePath;
+                if (!string.IsNullOrEmpty(currentExtension))
+                {
+                    fileName = Path.ChangeExtension(fileName, newExtension);
+                }
+                else
+                {
+                    fileName = fileName + newExtension;
+                }
+            }
+            else 
+            {
+                fileName = filePath;
             }
 
-            // If the file has no extension, add the new one
-            if (string.IsNullOrEmpty(currentExtension))
-            {
-                return filePath + newExtension;
-            }
-
-            // If the file has a different extension, replace it
-            return Path.ChangeExtension(filePath, newExtension);
+            // If an output directory is specified, combine the path
+            return fileName;
         }
     }
-
 }

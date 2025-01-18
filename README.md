@@ -80,6 +80,24 @@ dotnet run --project CodeLineCounter/CodeLineCounter.csproj -verbose -d "path/to
 
 - Select the solution to analyze by entering the corresponding number.
 
+### Example
+
+```sh
+CodeLineCounter.exe [-verbose] [-d <directory_path>] [-output <output_path>] [-format <format>] [-help]
+```
+
+### Available Arguments
+
+```sh
+- `-d <directory_path>` : Directory path containing the solutions to analyze (required)
+- `-output <output_path>` : Destination directory for result files (optional, default: current directory)
+- `-format <format>` : Export format for results (optional)
+  - Possible values: `csv`, `json`
+  - Default: `csv`
+- `-verbose` : Enable detailed logging (optional)
+- `-help` : Display help
+```
+
 ## Generated Files
 
 The program generates a CSV file named `<SolutionName>-CodeMetrics.csv` containing the following metrics:
@@ -177,6 +195,7 @@ CodeLineCounter/
 │   │   └── Dependencies.cs
 │   │   └── DuplicationCode.cs
 │   │   └── NamespaceMetrics.cs
+│   │   └── Settings.cs
 │   ├── Services/
 │   │   ├── CodeMetricsAnalyzer.cs
 │   │   ├── CodeDuplicationChecker.cs

@@ -7,56 +7,80 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void ComputeHash_EmptyString_ReturnsEmptyString()
         {
-            // Arrange
-            string input = "";
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            string result = HashUtils.ComputeHash(input);
+                // Arrange
+                string input = "";
 
-            // Assert
-            Assert.Equal("", result);
+                // Act
+                string result = HashUtils.ComputeHash(input);
+
+                // Assert
+                Assert.Equal("", result);
+            }
+
         }
 
         [Fact]
         public void ComputeHash_NullString_ReturnsEmptyString()
         {
-            // Arrange
-            string? input = null;
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            string result = HashUtils.ComputeHash(input);
+                // Arrange
+                string? input = null;
 
-            // Assert
-            Assert.Equal("", result);
+                // Act
+                string result = HashUtils.ComputeHash(input);
+
+                // Assert
+                Assert.Equal("", result);
+            }
+
         }
 
         [Fact]
         public void ComputeHash_ValidString_ReturnsHash()
         {
-            // Arrange
-            string input = "Hello, World!";
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            string result = HashUtils.ComputeHash(input);
+                // Arrange
+                string input = "Hello, World!";
 
-            // Assert
-            Assert.NotEmpty(result);
-            Assert.IsType<string>(result);
+                // Act
+                string result = HashUtils.ComputeHash(input);
+
+                // Assert
+                Assert.NotEmpty(result);
+                Assert.IsType<string>(result);
+            }
+
         }
 
         [Fact]
         public void ComputeHash_DuplicateStrings_ReturnSameHash()
         {
-            // Arrange
-            string input1 = "Hello, World!";
-            string input2 = "Hello, World!";
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            string result1 = HashUtils.ComputeHash(input1);
-            string result2 = HashUtils.ComputeHash(input2);
+                // Arrange
+                string input1 = "Hello, World!";
+                string input2 = "Hello, World!";
 
-            // Assert
-            Assert.Equal(result1, result2);
+                // Act
+                string result1 = HashUtils.ComputeHash(input1);
+                string result2 = HashUtils.ComputeHash(input2);
+
+                // Assert
+                Assert.Equal(result1, result2);
+            }
+
         }
     }
 }

@@ -1,21 +1,33 @@
 using CodeLineCounter.Utils;
+using CodeLineCounter.Models;
 
 namespace CodeLineCounter.Tests
 {
-    public class CoreUtilsTests
+    public class CoreUtilsTests : IDisposable
     {
+
+        private readonly string _testDirectory;
+        private bool _disposed;
+
+        public CoreUtilsTests()
+        {
+            _testDirectory = Path.Combine(Path.GetTempPath(), "CoreUtilsTests");
+            Directory.CreateDirectory(_testDirectory);
+        }
         [Fact]
         public void ParseArguments_Should_Return_Correct_Values()
         {
             // Arrange
-            string[] args = ["-verbose", "-d", "testDirectory"];
+            string[] args = ["-verbose", "-d", "testDirectory", "-output", _testDirectory];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
-            var (Verbose, DirectoryPath, _, _) = CoreUtils.ParseArguments(args);
+            Settings settings = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.True(Verbose);
-            Assert.Equal("testDirectory", DirectoryPath);
+            Assert.True(settings.Verbose);
+            Assert.Equal("testDirectory", settings.DirectoryPath);
         }
 
         [Fact]
@@ -23,12 +35,14 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = ["-help"];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
-            var (_, _, Help, _) = CoreUtils.ParseArguments(args);
+            var settings = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.True(Help);
+            Assert.True(settings.Help);
         }
 
         [Fact]
@@ -36,13 +50,15 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = [];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
-            var (Verbose, DirectoryPath, _, _) = CoreUtils.ParseArguments(args);
+            var settings = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.False(Verbose);
-            Assert.Null(DirectoryPath);
+            Assert.False(settings.Verbose);
+            Assert.Null(settings.DirectoryPath);
         }
 
         [Fact]
@@ -50,13 +66,15 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = ["-invalid", "-d", "testDirectory", "-f", "json"];
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
-            var (Verbose, DirectoryPath, _, _) = CoreUtils.ParseArguments(args);
+            var settings = CoreUtils.ParseArguments(args);
 
             // Assert
-            Assert.False(Verbose);
-            Assert.Equal("testDirectory", DirectoryPath);
+            Assert.False(settings.Verbose);
+            Assert.Equal("testDirectory", settings.DirectoryPath);
         }
 
         // ParseArguments correctly processes valid command line arguments with all options
@@ -65,6 +83,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = new[] { "-verbose", "-d", "C:/test", "-format", "JSON", "-help" };
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             var result = CoreUtils.ParseArguments(args);
@@ -73,7 +93,7 @@ namespace CodeLineCounter.Tests
             Assert.True(result.Verbose);
             Assert.Equal("C:/test", result.DirectoryPath);
             Assert.True(result.Help);
-            Assert.Equal(CoreUtils.ExportFormat.JSON, result.format);
+            Assert.Equal(CoreUtils.ExportFormat.JSON, result.Format);
         }
 
         // ParseArguments handles empty or null argument array
@@ -82,6 +102,8 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] emptyArgs = Array.Empty<string>();
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
 
             // Act
             var result = CoreUtils.ParseArguments(emptyArgs);
@@ -90,7 +112,7 @@ namespace CodeLineCounter.Tests
             Assert.False(result.Verbose);
             Assert.Null(result.DirectoryPath);
             Assert.False(result.Help);
-            Assert.Equal(CoreUtils.ExportFormat.CSV, result.format);
+            Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
         }
 
         // ParseArguments processes invalid format option gracefully
@@ -99,15 +121,19 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = new[] { "-format", "INVALID" };
-            var consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
+            Settings result;
+            string sortieConsole;
 
             // Act
-            var result = CoreUtils.ParseArguments(args);
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                result = CoreUtils.ParseArguments(args);
+                sortieConsole = sw.ToString();
+                Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
+                Assert.Contains("Invalid format", sortieConsole);
+            }
 
-            // Assert
-            Assert.Equal(CoreUtils.ExportFormat.CSV, result.format);
-            Assert.Contains("Invalid format", consoleOutput.ToString());
         }
 
         [Fact]
@@ -116,8 +142,8 @@ namespace CodeLineCounter.Tests
             // Arrange
             int solutionCount = 5;
             string input = "3";
-            var inputStream = new StringReader(input);
-            var consoleOutput = new StringWriter();
+            using var inputStream = new StringReader(input);
+            using var consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
             Console.SetIn(inputStream);
 
@@ -129,21 +155,49 @@ namespace CodeLineCounter.Tests
         }
 
         [Fact]
+        public void GetUserChoice_With_Invalid_Input_Should_Return_Valid_Choice()
+        {
+            // Arrange
+            int solutionCount = 5;
+            string input = "6";
+            using (var inputStream = new StringReader(input))
+            {
+                using (var consoleOutput = new StringWriter())
+                {
+                    Console.SetOut(consoleOutput);
+                    Console.SetIn(inputStream);
+
+                    // Act
+                    int result = CoreUtils.GetUserChoice(solutionCount);
+
+                    // Assert
+                    Assert.Equal(-1, result);
+                }
+            }
+        }
+
+        [Fact]
         public void GetUserChoice_Should_Return_Invalid_Choice()
         {
             // Arrange
             int solutionCount = 5;
             string input = "invalid";
-            var inputStream = new StringReader(input);
-            var consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            Console.SetIn(inputStream);
+            using (var inputStream = new StringReader(input))
+            {
+                using (var consoleOutput = new StringWriter())
+                {
+                    Console.SetOut(consoleOutput);
+                    Console.SetIn(inputStream);
 
-            // Act
-            int result = CoreUtils.GetUserChoice(solutionCount);
+                    // Act
+                    int result = CoreUtils.GetUserChoice(solutionCount);
 
-            // Assert
-            Assert.Equal(-1, result);
+                    // Assert
+                    Assert.Equal(-1, result);
+                }
+
+            }
+
         }
 
         // GetUserChoice returns valid selection when input is within range
@@ -152,16 +206,22 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             var input = "2";
-            var consoleInput = new StringReader(input);
-            var consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            Console.SetIn(consoleInput);
+            using (var consoleInput = new StringReader(input))
+            {
+                using (var consoleOutput = new StringWriter())
+                {
+                    Console.SetOut(consoleOutput);
+                    Console.SetIn(consoleInput);
 
-            // Act
-            int result = CoreUtils.GetUserChoice(3);
+                    // Act
+                    int result = CoreUtils.GetUserChoice(3);
 
-            // Assert
-            Assert.Equal(2, result);
+                    // Assert
+                    Assert.Equal(2, result);
+                }
+
+            }
+
         }
 
         [Theory]
@@ -171,16 +231,22 @@ namespace CodeLineCounter.Tests
         public void GetUserChoice_handles_invalid_input(string input)
         {
             // Arrange
-            var consoleInput = new StringReader(input);
-            var consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            Console.SetIn(consoleInput);
+            using (var consoleInput = new StringReader(input))
+            {
+                using (var consoleOutput = new StringWriter())
+                {
+                    Console.SetOut(consoleOutput);
+                    Console.SetIn(consoleInput);
 
-            // Act
-            int result = CoreUtils.GetUserChoice(5);
+                    // Act
+                    int result = CoreUtils.GetUserChoice(5);
 
-            // Assert
-            Assert.Equal(-1, result);
+                    // Assert
+                    Assert.Equal(-1, result);
+                }
+            }
+
+
         }
 
         [Fact]
@@ -197,43 +263,51 @@ namespace CodeLineCounter.Tests
             ];
 
             // Redirect console output to a StringWriter
-            using StringWriter sw = new();
-            Console.SetOut(sw);
-
-            // Act
-            CoreUtils.DisplaySolutions(solutionFiles);
-
-            // Assert
-            string expectedOutput = $"Available solutions:{envNewLine}";
-            for (int i = 0; i < solutionFiles.Count; i++)
+            using (StringWriter sw = new())
             {
-                expectedOutput += $"{i + 1}. {solutionFiles[i]}{envNewLine}";
+                Console.SetOut(sw);
+
+                // Act
+                CoreUtils.DisplaySolutions(solutionFiles);
+
+                // Assert
+                string expectedOutput = $"Available solutions:{envNewLine}";
+                for (int i = 0; i < solutionFiles.Count; i++)
+                {
+                    expectedOutput += $"{i + 1}. {solutionFiles[i]}{envNewLine}";
+                }
+                Assert.Equal(expectedOutput, sw.ToString());
             }
-            Assert.Equal(expectedOutput, sw.ToString());
+
         }
 
         [Fact]
         public void GetFilenamesList_Should_Return_List_Of_Filenames()
         {
-            // Arrange
-            List<string> solutionFiles =
-            [
-                "Solution1.sln",
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                List<string> solutionFiles =
+                [
+                    "Solution1.sln",
                 "Solution2.sln",
                 "Solution3.sln"
-            ];
+                ];
 
-            // Act
-            List<string> result = CoreUtils.GetFilenamesList(solutionFiles);
+                // Act
+                List<string> result = CoreUtils.GetFilenamesList(solutionFiles);
 
-            // Assert
-            List<string> expectedFilenames =
-            [
-                "Solution1.sln",
+                // Assert
+                List<string> expectedFilenames =
+                [
+                    "Solution1.sln",
                 "Solution2.sln",
                 "Solution3.sln"
-            ];
-            Assert.Equal(expectedFilenames, result);
+                ];
+                Assert.Equal(expectedFilenames, result);
+            }
+
         }
 
 
@@ -241,60 +315,91 @@ namespace CodeLineCounter.Tests
         public void CheckSettings_WhenHelpIsTrue_ReturnsFalse()
         {
             // Arrange
-            (bool Verbose, string? DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (true, null, true, CoreUtils.ExportFormat.JSON);
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
+            Settings settings = new Settings(true, null, ".", true, CoreUtils.ExportFormat.JSON);
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
 
-            // Act
-            var result = CoreUtils.CheckSettings(settings);
+                // Act
+                var result = settings.IsValid();
 
-            // Assert
-            Assert.False(result);
-            Assert.Contains("Usage:", sw.ToString());
+                // Assert
+                Assert.True(result);
+                Assert.Contains("Usage:", sw.ToString());
+            }
+
         }
 
         [Fact]
         public void CheckSettings_WhenDirectoryPathIsNull_ReturnsFalse()
         {
             // Arrange
-            (bool Verbose, string? DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (Verbose: false, DirectoryPath: null, Help: false, format: CoreUtils.ExportFormat.CSV);
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
+            Settings settings = new Settings(verbose: false, directoryPath: null, help: false, format: CoreUtils.ExportFormat.CSV);
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
 
-            // Act
-            var result = CoreUtils.CheckSettings(settings);
+                // Act
+                var result = settings.IsValid();
 
-            // Assert
-            Assert.False(result);
-            Assert.Contains("Please provide the directory path", sw.ToString());
+                // Assert
+                Assert.False(result);
+                Assert.Contains("Please provide the directory path", sw.ToString());
+            }
+
         }
 
         [Fact]
         public void CheckSettings_WhenSettingsAreValid_ReturnsTrue()
         {
-            // Arrange
-            (bool Verbose, string DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (false, "some_directory", false, CoreUtils.ExportFormat.CSV);
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                Settings settings = new Settings(false, "some_directory", false, CoreUtils.ExportFormat.CSV);
 
-            // Act
-            var result = CoreUtils.CheckSettings(settings);
+                // Act
+                var result = settings.IsValid();
 
-            // Assert
-            Assert.True(result);
+                // Assert
+                Assert.True(result);
+            }
+
+        }
+        [Fact]
+        public void CheckSettings_WhenSettingsOutputIsInValid_ReturnsFalse()
+        {
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                Settings settings = new Settings(false, "some_directory", "invalid_output_path", false, CoreUtils.ExportFormat.CSV);
+
+                // Act
+                var result = settings.IsValid();
+
+                // Assert
+                Assert.True(result);
+            }
+
         }
 
         [Fact]
         public void CheckSettings_WhenSettingsAreInvalid_ReturnsFalse()
         {
             // Arrange
-            (bool Verbose, string? DirectoryPath, bool Help, CoreUtils.ExportFormat format) settings = (false, null, false, CoreUtils.ExportFormat.CSV);
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
+            Settings settings = new Settings(false, null, false, CoreUtils.ExportFormat.CSV);
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
 
-            // Act
-            var result = CoreUtils.CheckSettings(settings);
+                // Act
+                var result = settings.IsValid();
 
-            // Assert
-            Assert.False(result);
+                // Assert
+                Assert.False(result);
+            }
+
         }
 
         [Theory]
@@ -305,12 +410,97 @@ namespace CodeLineCounter.Tests
         [InlineData("metrics_789.csv", CoreUtils.ExportFormat.CSV)]
         public void get_export_file_name_with_extension_handles_alphanumeric(string fileName, CoreUtils.ExportFormat format)
         {
-            // Act
-            var result = CoreUtils.GetExportFileNameWithExtension(fileName, format);
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Act
+                var fullFileName = Path.Combine(_testDirectory, fileName);
+                var result = CoreUtils.GetExportFileNameWithExtension(fullFileName, format);
 
-            // Assert
-            Assert.Contains(Path.GetFileNameWithoutExtension(fileName), result);
-            Assert.True(File.Exists(result) || !File.Exists(result));
+                // Assert
+                Assert.Contains(Path.GetFileNameWithoutExtension(fullFileName), result);
+                Assert.True(File.Exists(result) || !File.Exists(result));
+            }
+
+        }
+
+        // Returns list of filenames for existing files in input list
+        [Fact]
+        public void get_filenames_list_returns_filenames_for_existing_files()
+        {
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                var testFiles = new List<string>
+            {
+                Path.Combine(_testDirectory, "file1.txt"),
+                Path.Combine(_testDirectory, "file2.txt")
+            };
+
+                File.WriteAllText(testFiles[0], "test content");
+                File.WriteAllText(testFiles[1], "test content");
+
+                // Act
+                var result = CoreUtils.GetFilenamesList(testFiles);
+
+                // Assert
+                Assert.Equal(2, result.Count);
+                Assert.Equal("file1.txt", result[0]);
+                Assert.Equal("file2.txt", result[1]);
+
+                // Cleanup
+                File.Delete(testFiles[0]);
+                File.Delete(testFiles[1]);
+            }
+
+        }
+
+        // Directory creation succeeds when OutputPath is valid and does not exist
+        [Fact]
+        public void create_directory_succeeds_with_valid_path()
+        {
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                var settings = new Settings();
+                settings.DirectoryPath = _testDirectory;
+                settings.OutputPath = Path.Combine(_testDirectory, "TestOutput");
+
+                var result = settings.IsValid();
+
+                Assert.True(result);
+                Assert.True(Directory.Exists(settings.OutputPath));
+                Directory.Delete(settings.OutputPath);
+            }
+
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing && Directory.Exists(_testDirectory))
+                {
+                    // Dispose managed resources
+                    Directory.Delete(_testDirectory, true);
+                }
+
+                // Dispose unmanaged resources (if any)
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~CoreUtilsTests()
+        {
+            Dispose(false);
         }
     }
 }

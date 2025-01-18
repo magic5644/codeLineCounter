@@ -20,6 +20,7 @@
 /codeql*
 /*.dot
 /*snyk*
+/exports
 
 # Mac OS
 .DS_Store

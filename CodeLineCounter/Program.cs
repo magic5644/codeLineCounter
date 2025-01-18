@@ -8,7 +8,7 @@ namespace CodeLineCounter
         static void Main(string[] args)
         {
             var settings = CoreUtils.ParseArguments(args);
-            if (!CoreUtils.CheckSettings(settings) || settings.DirectoryPath == null)
+            if (!settings.IsValid() || settings.DirectoryPath == null)
                 return;
 
             // file deepcode ignore PT: Not a web server. This software is a console application.
@@ -23,7 +23,7 @@ namespace CodeLineCounter
             // if more than one waiting for user selection
             if (solutionFiles.Count == 1)
             {
-                SolutionAnalyzer.AnalyzeAndExportSolution(solutionFiles[0], settings.Verbose, settings.format);
+                SolutionAnalyzer.AnalyzeAndExportSolution(solutionFiles[0], settings.Verbose, settings.Format, settings.OutputPath);
                 return;
             }
 
@@ -35,7 +35,7 @@ namespace CodeLineCounter
                 return;
 
             var solutionPath = Path.GetFullPath(solutionFiles[choice - 1]);
-            SolutionAnalyzer.AnalyzeAndExportSolution(solutionPath, settings.Verbose, settings.format);
+            SolutionAnalyzer.AnalyzeAndExportSolution(solutionPath, settings.Verbose, settings.Format, settings.OutputPath);
         }
     }
 }

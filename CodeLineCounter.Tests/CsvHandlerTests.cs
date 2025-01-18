@@ -2,96 +2,157 @@ using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Tests
 {
-    public class CsvHandlerTests
+    public class CsvHandlerTests : IDisposable
     {
+
+        private readonly string _testDirectory;
+        private bool _disposed;
+
         private class TestRecord
         {
             public int Id { get; set; }
             public string? Name { get; set; }
         }
 
+        public CsvHandlerTests()
+        {
+            _testDirectory = Path.Combine(Path.GetTempPath(), "CsvHandlerTests");
+            Directory.CreateDirectory(_testDirectory);
+        }
+
         [Fact]
         public void Serialize_ValidData_WritesToFile()
         {
-            // Arrange
-            var data = new List<TestRecord>
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
+
+                // Arrange
+                var data = new List<TestRecord>
             {
                 new() { Id = 1, Name = "Alice" },
                 new() { Id = 2, Name = "Bob" }
             };
-            string filePath = "test_1.csv";
+                string filePath = Path.Combine(_testDirectory, "test_1.csv");
 
-            // Act
-            CsvHandler.Serialize(data, filePath);
+                // Act
+                CsvHandler.Serialize(data, filePath);
 
-            // Assert
-            var lines = File.ReadAllLines(filePath);
-            Assert.Equal(3, lines.Length); // Header + 2 records
-            Assert.Contains("Alice", lines[1]);
-            Assert.Contains("Bob", lines[2]);
+                // Assert
+                var lines = File.ReadAllLines(filePath);
+                Assert.Equal(3, lines.Length); // Header + 2 records
+                Assert.Contains("Alice", lines[1]);
+                Assert.Contains("Bob", lines[2]);
 
-            // Cleanup
-            File.Delete(filePath);
+                // Cleanup
+                File.Delete(filePath);
+            }
+
         }
 
         [Fact]
         public void Deserialize_ValidFile_ReturnsData()
         {
-            // Arrange
-            string filePath = "test_2.csv";
-            var data = new List<string>
+            using (StringWriter consoleOutput = new())
             {
-                "Id,Name",
-                "1,Alice",
-                "2,Bob"
-            };
-            File.WriteAllLines(filePath, data);
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
+                // Arrange
+                string filePath = Path.Combine(_testDirectory, "test_2.csv");
+                var data = new List<string>
+                {
+                    "Id,Name",
+                    "1,Alice",
+                    "2,Bob"
+                };
+                File.WriteAllLines(filePath, data);
 
-            // Assert
-            Assert.Equal(2, result.Count);
-            Assert.Equal("Alice", result[0].Name);
-            Assert.Equal("Bob", result[1].Name);
+                // Act
+                var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
 
-            // Cleanup
-            File.Delete(filePath);
+                // Assert
+                Assert.Equal(2, result.Count);
+                Assert.Equal("Alice", result[0].Name);
+                Assert.Equal("Bob", result[1].Name);
+
+                // Cleanup
+                File.Delete(filePath);
+            }
+
         }
 
         [Fact]
         public void Serialize_EmptyData_WritesEmptyFile()
         {
-            // Arrange
-            var data = new List<TestRecord>();
-            string filePath = "test_3.csv";
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            CsvHandler.Serialize(data, filePath);
+                // Arrange
+                var data = new List<TestRecord>();
+                string filePath = Path.Combine(_testDirectory, "test_3.csv");
 
-            // Assert
-            var lines = File.ReadAllLines(filePath);
-            Assert.Single(lines); // Only header
+                // Act
+                CsvHandler.Serialize(data, filePath);
 
-            // Cleanup
-            File.Delete(filePath);
+                // Assert
+                var lines = File.ReadAllLines(filePath);
+                Assert.Single(lines); // Only header
+
+                // Cleanup
+                File.Delete(filePath);
+            }
+
         }
 
         [Fact]
         public void Deserialize_EmptyFile_ReturnsEmptyList()
         {
-            // Arrange
-            string filePath = "test_4.csv";
-            File.WriteAllText(filePath, "Id,Name");
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
+                // Arrange
+                string filePath = Path.Combine(_testDirectory, "test_4.csv");
+                File.WriteAllText(filePath, "Id,Name");
 
-            // Assert
-            Assert.Empty(result);
+                // Act
+                var result = CsvHandler.Deserialize<TestRecord>(filePath).ToList();
 
-            // Cleanup
-            File.Delete(filePath);
+                // Assert
+                Assert.Empty(result);
+
+                // Cleanup
+                File.Delete(filePath);
+            }
+
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing && Directory.Exists(_testDirectory))
+                {
+                    // Dispose managed resources
+                    Directory.Delete(_testDirectory, true);
+                }
+
+                // Dispose unmanaged resources (if any)
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~CsvHandlerTests()
+        {
+            Dispose(false);
         }
     }
 }

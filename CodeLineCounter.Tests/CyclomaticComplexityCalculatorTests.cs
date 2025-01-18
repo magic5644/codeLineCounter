@@ -9,8 +9,11 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void TestCalculateComplexity()
         {
-            // Arrange
-            var code = @"
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                var code = @"
                     public class TestClass
                     {
                         public void TestMethod()
@@ -19,21 +22,26 @@ namespace CodeLineCounter.Tests
                             for (int i = 0; i < 10; i++) {}
                         }
                     }
-            ";
-            var tree = CSharpSyntaxTree.ParseText(code);
+                ";
+                var tree = CSharpSyntaxTree.ParseText(code);
 
-            // Act
-            var complexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot());
+                // Act
+                var complexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot());
 
-            // Assert
-            Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
+                // Assert
+                Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
+            }
+
         }
 
         [Fact]
         public void Calculate_Should_Return_Correct_Complexity()
         {
-            // Arrange
-            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Arrange
+                var syntaxTree = CSharpSyntaxTree.ParseText(@"
                 public class MyClass
                 {
                     public void MyMethod()
@@ -48,54 +56,61 @@ namespace CodeLineCounter.Tests
                         }
                     }
                 }
-            ");
-            var root = syntaxTree.GetRoot();
-            var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
+                ");
+                var root = syntaxTree.GetRoot();
+                var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
 
-            // Act
-            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
+                // Act
+                var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
 
-            // Assert
-            Assert.Equal(3, complexity);
+                // Assert
+                Assert.Equal(3, complexity);
+            }
+
         }
 
         [Fact]
-         public void Calculate_Should_Return_Correct_Complexity_6()
+        public void Calculate_Should_Return_Correct_Complexity_6()
         {
-            // Arrange
-            var syntaxTree = CSharpSyntaxTree.ParseText(@"
-            class Program
+            using (var sw = new StringWriter())
             {
-                static void Main(string[] args)
+                Console.SetOut(sw);
+                // Arrange
+                var syntaxTree = CSharpSyntaxTree.ParseText(@"
+                class Program
                 {
-                    int x = 5;
-
-                    switch (x)
+                    static void Main(string[] args)
                     {
-                    case 1:
-                    Console.WriteLine(1);
-                    break;
-                    case 2:
-                    Console.WriteLine(2);  
-                    break;
-                    case 3:
-                    Console.WriteLine(3);
-                    break;
-                    case 4:
-                    Console.WriteLine(4);
-                    break;
+                        int x = 5;
+
+                        switch (x)
+                        {
+                        case 1:
+                        Console.WriteLine(1);
+                        break;
+                        case 2:
+                        Console.WriteLine(2);  
+                        break;
+                        case 3:
+                        Console.WriteLine(3);
+                        break;
+                        case 4:
+                        Console.WriteLine(4);
+                        break;
+                        }
                     }
                 }
+                ");
+                var root = syntaxTree.GetRoot();
+                var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
+
+                // Act
+                var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
+
+                // Assert
+                Assert.Equal(6, complexity);
             }
-            ");
-            var root = syntaxTree.GetRoot();
-            var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
 
-            // Act
-            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
-
-            // Assert
-            Assert.Equal(6, complexity);
         }
     }
 }

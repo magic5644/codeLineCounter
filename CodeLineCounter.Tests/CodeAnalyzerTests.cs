@@ -9,6 +9,9 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void TestAnalyzeSolution()
         {
+            using StringWriter consoleOutput = new();
+            Console.SetOut(consoleOutput);
+
             string basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
 
@@ -28,61 +31,80 @@ namespace CodeLineCounter.Tests
         [Fact]
         public void AnalyzeSourceCode_Should_Set_CurrentNamespace()
         {
-            // Arrange
-            var projectNamespaceMetrics = new Dictionary<string, int>();
-            var lines = new string[]
+            using (StringWriter consoleOutput = new())
             {
+                Console.SetOut(consoleOutput);
+
+                // Arrange
+                var projectNamespaceMetrics = new Dictionary<string, int>();
+                var lines = new string[]
+                {
                 "namespace MyNamespace",
                 "{",
                 "    // Code goes here",
                 "}"
-            };
+                };
 
-            // Act
-            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out string? currentNamespace, out _, out _);
+                // Act
+                CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out string? currentNamespace, out _, out _);
 
-            // Assert
-            Assert.Equal("MyNamespace", currentNamespace);
+                // Assert
+                Assert.Equal("MyNamespace", currentNamespace);
+
+            }
+
         }
 
         [Fact]
         public void AnalyzeSourceCode_Should_Set_FileLineCount()
         {
-            // Arrange
-            var projectNamespaceMetrics = new Dictionary<string, int>();
-            var lines = new string[]
+            using (StringWriter consoleOutput = new())
             {
+                Console.SetOut(consoleOutput);
+
+                // Arrange
+                var projectNamespaceMetrics = new Dictionary<string, int>();
+                var lines = new string[]
+                {
                 "namespace MyNamespace",
                 "{",
                 "    // Code goes here",
                 "}"
-            };
+                };
 
-            // Act
-            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out int fileLineCount, out _);
+                // Act
+                CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out int fileLineCount, out _);
 
-            // Assert - 3 lines only because comment lines are ignored
-            Assert.Equal(3, fileLineCount);
+                // Assert - 3 lines only because comment lines are ignored
+                Assert.Equal(3, fileLineCount);
+            }
+
         }
 
         [Fact]
         public void AnalyzeSourceCode_Should_Set_FileCyclomaticComplexity()
         {
-            // Arrange
-            var projectNamespaceMetrics = new Dictionary<string, int>();
-            var lines = new string[]
+            using (StringWriter consoleOutput = new())
             {
+                Console.SetOut(consoleOutput);
+
+                // Arrange
+                var projectNamespaceMetrics = new Dictionary<string, int>();
+                var lines = new string[]
+                {
                 "namespace MyNamespace",
                 "{",
                 "    // Code goes here",
                 "}"
-            };
+                };
 
-            // Act
-            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out _, out int fileCyclomaticComplexity);
+                // Act
+                CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out _, out int fileCyclomaticComplexity);
 
-            // Assert
-            Assert.Equal(1, fileCyclomaticComplexity);
+                // Assert
+                Assert.Equal(1, fileCyclomaticComplexity);
+            }
+
         }
 
         [Fact]
