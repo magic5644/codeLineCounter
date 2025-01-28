@@ -70,7 +70,7 @@ namespace CodeLineCounter.Services
             string baseFileName = Path.GetFileNameWithoutExtension(solutionPath);
             
             // Export metrics
-            string metricsFileName = $"{baseFileName}-CodeMetrics";
+            string metricsFileName = $"{baseFileName}.CodeMetrics.json";
             metricsFileName = CoreUtils.GetExportFileNameWithExtension(metricsFileName, format);
             if (string.IsNullOrEmpty(outputPath))
             {
@@ -82,7 +82,7 @@ namespace CodeLineCounter.Services
                 : metricsFileName;
 
             // Export duplications
-            string duplicationsFileName = $"{baseFileName}-CodeDuplications";
+            string duplicationsFileName = $"{baseFileName}.CodeDuplications.json";
             duplicationsFileName = CoreUtils.GetExportFileNameWithExtension(duplicationsFileName, format);
             string duplicationsOutputPath = outputPath != null 
                 ? Path.Combine(outputPath, duplicationsFileName)
@@ -90,7 +90,7 @@ namespace CodeLineCounter.Services
             // Export des duplications...
 
             // Export dependencies graph
-            string graphFileName = $"{baseFileName}-Dependencies.dot";
+            string graphFileName = $"{baseFileName}.Dependencies.dot";
             string graphOutputPath = outputPath != null 
                 ? Path.Combine(outputPath, graphFileName)
                 : graphFileName;
