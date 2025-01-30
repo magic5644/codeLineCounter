@@ -164,7 +164,7 @@ namespace CodeLineCounter.Utils
                 }
                 else
                 {
-                    fileName = fileName + newExtension;
+                    fileName += newExtension;
                 }
             }
             else 
