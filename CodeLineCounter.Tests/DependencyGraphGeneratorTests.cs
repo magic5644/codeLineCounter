@@ -30,7 +30,7 @@ namespace CodeLineCounter.Tests
                 new DependencyRelation { SourceClass = "ClassB", SourceNamespace = "NamespaceB", SourceAssembly = "AssemblyB", TargetClass = "ClassC", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB",  FilePath = "path/to/file", StartLine = 1}
             };
 
-                string fileName = "test_graph.dot";
+                string fileName = "testGraph.dot";
 
                 string outputPath = Path.Combine(_testDirectory, fileName);
 

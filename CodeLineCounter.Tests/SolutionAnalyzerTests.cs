@@ -56,7 +56,7 @@ EndProject");
 
                     // Assert
                     Assert.Null(exception);
-                    Assert.True(File.Exists(Path.Combine(outputPath, "TestSolution-CodeMetrics.csv")));
+                    Assert.True(File.Exists(Path.Combine(outputPath, "TestSolution.CodeMetrics.csv")));
                 }
 
             }
@@ -230,8 +230,8 @@ EndProject");
                 Console.SetOut(sw);
                 SolutionAnalyzer.ExportResults(result, solutionPath, format, baseSolutionPath);
                 // Assert
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-CodeMetrics.csv")));
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-CodeDuplications.csv")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.csv")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.csv")));
                 Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-Dependencies.dot")));
             }
 
