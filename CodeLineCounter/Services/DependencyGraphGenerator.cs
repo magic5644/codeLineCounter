@@ -12,9 +12,10 @@ namespace CodeLineCounter.Services
     {
         public static DotGraph GenerateGraphOnly(List<DependencyRelation> dependencies, string? filterNamespace = null, string? filterAssembly = null)
         {
-            var filteredDependencies = dependencies;
-            filteredDependencies = FilterNamespaceFromDependencies(dependencies, filterNamespace, filteredDependencies);
-            filteredDependencies = FilterAssemblyFromDependencies(filterAssembly, filteredDependencies);
+            var filteredDependencies = dependencies
+                .Where(d => (string.IsNullOrEmpty(filterNamespace) || d.SourceNamespace.Contains(filterNamespace) || d.TargetNamespace.Contains(filterNamespace)) &&
+                             (string.IsNullOrEmpty(filterAssembly) || d.SourceAssembly.Equals(filterAssembly) || d.TargetAssembly.Equals(filterAssembly)))
+                .ToList();
 
             var vertexInfo = new Dictionary<string, (int incoming, int outgoing)>();
             var namespaceGroups = new Dictionary<string, List<string>>();
@@ -50,7 +51,6 @@ namespace CodeLineCounter.Services
                 foreach (var vertex in nsGroup.Value)
                 {
                     DotNode node = CreateNode(vertexInfo, EncloseNotEmptyOrNullStringInQuotes(vertex));
-
                     cluster.Elements.Add(node);
                 }
 
@@ -62,7 +62,39 @@ namespace CodeLineCounter.Services
         {
             foreach (var dep in filteredDependencies)
             {
-                GroupByNamespace(vertexInfo, namespaceGroups, dep);
+                var sourceLabel = dep.SourceClass;
+                var targetLabel = dep.TargetClass;
+
+                if (!vertexInfo.ContainsKey(sourceLabel))
+                {
+                    vertexInfo[sourceLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
+                }
+                if (!vertexInfo.ContainsKey(targetLabel))
+                {
+                    vertexInfo[targetLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
+                }
+
+                // Group by namespace
+                if (!namespaceGroups.TryGetValue(dep.SourceNamespace, out var sourceNamespaceList))
+                {
+                    sourceNamespaceList = new List<string>();
+                    namespaceGroups[dep.SourceNamespace] = sourceNamespaceList;
+                }
+                if (!sourceNamespaceList.Contains(dep.SourceClass))
+                {
+                    sourceNamespaceList.Add(dep.SourceClass);
+                }
+
+                if (!namespaceGroups.TryGetValue(dep.TargetNamespace, out var targetNamespaceList))
+                {
+                    targetNamespaceList = new List<string>();
+                    namespaceGroups[dep.TargetNamespace] = targetNamespaceList;
+                }
+
+                if (!targetNamespaceList.Contains(dep.TargetClass))
+                {
+                    targetNamespaceList.Add(dep.TargetClass);
+                }
             }
         }
 
@@ -125,45 +157,7 @@ namespace CodeLineCounter.Services
             return node;
         }
 
-        private static void GroupByNamespace(Dictionary<string, (int incoming, int outgoing)> vertexInfo, Dictionary<string, List<string>> namespaceGroups, DependencyRelation dep)
-        {
-            var sourceLabel = dep.SourceClass;
-            var targetLabel = dep.TargetClass;
-
-            if (!vertexInfo.ContainsKey(sourceLabel))
-            {
-                vertexInfo[sourceLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
-            }
-            if (!vertexInfo.ContainsKey(targetLabel))
-            {
-                vertexInfo[targetLabel] = (dep.IncomingDegree, dep.OutgoingDegree);
-            }
-
-            // Group by namespace
-            if (!namespaceGroups.TryGetValue(dep.SourceNamespace, out var sourceNamespaceList))
-            {
-                sourceNamespaceList = [];
-                namespaceGroups[dep.SourceNamespace] = sourceNamespaceList;
-
-            }
-            if (!sourceNamespaceList.Contains(dep.SourceClass))
-            {
-                sourceNamespaceList.Add(dep.SourceClass);
-            }
-
-            if (!namespaceGroups.TryGetValue(dep.TargetNamespace, out var targetNamespaceList))
-            {
-                targetNamespaceList = [];
-                namespaceGroups[dep.TargetNamespace] = targetNamespaceList;
-            }
-
-            if (!targetNamespaceList.Contains(dep.TargetClass))
-            {
-                targetNamespaceList.Add(dep.TargetClass);
-            }
-        }
-
-        public static async Task CompileGraphAndWriteToFile(string fileName,string outputPath, DotGraph graph)
+        public static async Task CompileGraphAndWriteToFile(string fileName, string outputPath, DotGraph graph)
         {
             // Use memory buffer
             using var memoryStream = new MemoryStream();
@@ -182,30 +176,6 @@ namespace CodeLineCounter.Services
             await memoryStream.CopyToAsync(fileStream); // Write complete buffer to file
         }
 
-        private static List<DependencyRelation> FilterAssemblyFromDependencies(string? filterAssembly, List<DependencyRelation> filteredDependencies)
-        {
-            if (!string.IsNullOrEmpty(filterAssembly))
-            {
-                filteredDependencies = filteredDependencies.Where(d =>
-                    d.SourceAssembly.Equals(filterAssembly) ||
-                    d.TargetAssembly.Equals(filterAssembly)).ToList();
-            }
-
-            return filteredDependencies;
-        }
-
-        private static List<DependencyRelation> FilterNamespaceFromDependencies(List<DependencyRelation> dependencies, string? filterNamespace, List<DependencyRelation> filteredDependencies)
-        {
-            if (!string.IsNullOrEmpty(filterNamespace))
-            {
-                filteredDependencies = dependencies.Where(d =>
-                    d.SourceNamespace.Contains(filterNamespace) ||
-                    d.TargetNamespace.Contains(filterNamespace)).ToList();
-            }
-
-            return filteredDependencies;
-        }
-
         public static string EncloseNotEmptyOrNullStringInQuotes(string? str)
         {
             if (!string.IsNullOrEmpty(str))
@@ -216,7 +186,6 @@ namespace CodeLineCounter.Services
             {
                 return string.Empty;
             }
-
         }
 
         public static string RemoveQuotes(string str)

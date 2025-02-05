@@ -40,13 +40,15 @@ EndProject");
             var format = CoreUtils.ExportFormat.CSV;
             var outputPath = _outputPath;
 
-            try
-            {
-                // Redirect console output
-                using (StringWriter stringWriter = new StringWriter())
-                {
 
-                    Console.SetOut(stringWriter);
+            // Redirect console output
+            using (StringWriter stringWriter = new StringWriter())
+            {
+
+                Console.SetOut(stringWriter);
+
+                try
+                {
 
                     // Act
                     var exception = Record.Exception(() =>
@@ -57,18 +59,20 @@ EndProject");
                     // Assert
                     Assert.Null(exception);
                     Assert.True(File.Exists(Path.Combine(outputPath, "TestSolution.CodeMetrics.csv")));
+
                 }
-
-            }
-            finally
-            {
-                // Cleanup
-
-                if (File.Exists(solutionPath))
+                finally
                 {
-                    File.Delete(solutionPath);
+                    // Cleanup
+
+                    if (File.Exists(solutionPath))
+                    {
+                        File.Delete(solutionPath);
+                    }
                 }
             }
+
+
         }
 
         [Fact]

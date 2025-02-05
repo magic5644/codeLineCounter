@@ -2,6 +2,7 @@ using CodeLineCounter.Models;
 using CodeLineCounter.Services;
 using DotNetGraph.Core;
 using DotNetGraph.Extensions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeLineCounter.Tests
 {
@@ -13,7 +14,7 @@ namespace CodeLineCounter.Tests
 
         public DependencyGraphGeneratorTests()
         {
-            _testDirectory = Path.Combine(Path.GetTempPath(), "DependencyGraphGeneratorTests");
+            _testDirectory = Path.Combine(Path.GetTempPath(), "dependencygraphgeneratortests");
             Directory.CreateDirectory(_testDirectory);
         }
         [Fact]
@@ -21,8 +22,8 @@ namespace CodeLineCounter.Tests
         {
             using (var sw = new StringWriter())
             {
-                Console.SetOut(sw);
-
+                var testDirectory = _testDirectory;
+                string fileName = "testgraph.dot";
                 // Arrange
                 var dependencies = new List<DependencyRelation>
             {
@@ -30,24 +31,27 @@ namespace CodeLineCounter.Tests
                 new DependencyRelation { SourceClass = "ClassB", SourceNamespace = "NamespaceB", SourceAssembly = "AssemblyB", TargetClass = "ClassC", TargetNamespace = "NamespaceB", TargetAssembly = "AssemblyB",  FilePath = "path/to/file", StartLine = 1}
             };
 
-                string fileName = "testGraph.dot";
+                string outputPath = Path.Combine(testDirectory, fileName);
+                try
+                {
+                    Console.SetOut(sw);
 
-                string outputPath = Path.Combine(_testDirectory, fileName);
+                    // Act
+                    DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
+                    Directory.CreateDirectory(testDirectory);
+                    await DependencyGraphGenerator.CompileGraphAndWriteToFile(fileName, testDirectory, graph);
 
-                // Act
-
-                DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
-                Directory.CreateDirectory(_testDirectory);
-                await DependencyGraphGenerator.CompileGraphAndWriteToFile(fileName, _testDirectory, graph);
-
-                // Assert
-                Assert.True(File.Exists(outputPath));
-                string content = await File.ReadAllTextAsync(outputPath);
-                Assert.Contains("ClassA", content);
-                Assert.Contains("ClassB", content);
-                Assert.Contains("ClassC", content);
-
-                File.Delete(outputPath);
+                    // Assert
+                    Assert.True(File.Exists(outputPath));
+                    string content = await File.ReadAllTextAsync(outputPath);
+                    Assert.Contains("ClassA", content);
+                    Assert.Contains("ClassB", content);
+                    Assert.Contains("ClassC", content);
+                }
+                finally
+                {
+                    File.Delete(outputPath);
+                }
             }
 
         }
