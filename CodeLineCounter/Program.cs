@@ -11,7 +11,6 @@ namespace CodeLineCounter
             if (!settings.IsValid() || settings.DirectoryPath == null)
                 return;
 
-            // file deepcode ignore PT: Not a web server. This software is a console application.
             List <string> solutionFiles = FileUtils.GetSolutionFiles(settings.DirectoryPath);
             if (solutionFiles.Count == 0)
             {
