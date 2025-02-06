@@ -236,7 +236,7 @@ EndProject");
                 // Assert
                 Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json")));
                 Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")));
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-Dependencies.dot")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot")));
             }
 
 
