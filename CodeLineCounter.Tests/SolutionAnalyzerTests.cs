@@ -230,12 +230,12 @@ EndProject");
                 var baseSolutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
 
                 var solutionPath = Path.Combine(baseSolutionPath, "CodelineCounter.sln");
-                var format = CoreUtils.ExportFormat.CSV;
+                var format = CoreUtils.ExportFormat.JSON;
                 Console.SetOut(sw);
                 SolutionAnalyzer.ExportResults(result, solutionPath, format, baseSolutionPath);
                 // Assert
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.csv")));
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.csv")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")));
                 Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter-Dependencies.dot")));
             }
 
