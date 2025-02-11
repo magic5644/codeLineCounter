@@ -10,7 +10,7 @@ namespace CodeLineCounter.Tests
 
         public FileUtilsTests()
         {
-            _testDirectory = Path.Combine(Path.GetTempPath(), "DependencyGraphGeneratorTests");
+            _testDirectory = Path.Combine(Path.GetTempPath(), "FileUtilsTests");
             Directory.CreateDirectory(_testDirectory);
             _originalConsoleOut = Console.Out;
         }
