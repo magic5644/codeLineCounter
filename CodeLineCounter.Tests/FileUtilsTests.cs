@@ -99,11 +99,16 @@ namespace CodeLineCounter.Tests
             if (!_disposed)
             {
                 // Ensure the file is closed before attempting to delete it
-                Task.Delay(100).Wait();
-                if (disposing && Directory.Exists(_testDirectory))
+                if (disposing)
                 {
-                    // Dispose managed resources
-                    Directory.Delete(_testDirectory, true);
+
+                    Task.Delay(100).Wait();
+
+                    if (Directory.Exists(_testDirectory))
+                    {
+                        // Dispose managed resources
+                        Directory.Delete(_testDirectory, true);
+                    }
                 }
 
                 // Dispose unmanaged resources (if any)

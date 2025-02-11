@@ -270,11 +270,16 @@ EndProject");
         {
             if (!_disposed)
             {
-                if (disposing && Directory.Exists(_testDirectory))
+                if (disposing)
                 {
-                    // Dispose managed resources
-                    File.Delete(_testSolutionPath);
-                    Directory.Delete(_testDirectory, true);
+                    Task.Delay(100).Wait();
+
+                    if (Directory.Exists(_testDirectory))
+                    {
+                        // Dispose managed resources
+                        File.Delete(_testSolutionPath);
+                        Directory.Delete(_testDirectory, true);
+                    }
                 }
 
                 // Dispose unmanaged resources (if any)
