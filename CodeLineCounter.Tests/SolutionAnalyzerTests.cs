@@ -11,12 +11,14 @@ namespace CodeLineCounter.Tests.Services
         private readonly string _testSolutionPath;
         private readonly string _outputPath;
         private bool _disposed;
+        private readonly TextWriter _originalConsoleOut;
 
         public SolutionAnalyzerTest()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "SolutionAnalyzerTest");
             _testSolutionPath = Path.Combine(_testDirectory, "TestSolution.sln");
             _outputPath = _testDirectory;
+            _originalConsoleOut = Console.Out;
             Directory.CreateDirectory(_testDirectory);
             // Create minimal test solution if it doesn't exist
             if (!File.Exists(_testSolutionPath))
@@ -71,6 +73,8 @@ EndProject");
                     }
                 }
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
 
         }
@@ -94,6 +98,8 @@ EndProject");
                 Assert.Contains("Access to the path '' is denied.", exception.Message);
 
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -120,6 +126,8 @@ EndProject");
                 Assert.Equal("CodeLineCounter.sln", result.SolutionFileName);
 
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -155,6 +163,8 @@ EndProject");
                 Assert.Contains("Percentage of duplicated code: 10.00 %", output);
                 Assert.Contains("Time taken: 0:10.000", output);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -206,6 +216,8 @@ EndProject");
 
                 Assert.Equal(expectedOutput, sw.ToString());
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         // Export metrics, duplications and dependencies data in parallel for valid input
@@ -244,10 +256,12 @@ EndProject");
                 finally
                 {
                     File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json"));
-                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")); 
+                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json"));
                     File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot"));
                 }
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
 
         }

@@ -11,11 +11,13 @@ namespace CodeLineCounter.Tests
 
         private readonly string _testDirectory;
         private bool _disposed;
+        private readonly TextWriter _originalConsoleOut;
 
         public DependencyGraphGeneratorTests()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "dependencygraphgeneratortests");
             Directory.CreateDirectory(_testDirectory);
+            _originalConsoleOut = Console.Out;
         }
         [Fact]
         public async Task generate_graph_with_valid_dependencies_creates_dot_file()
@@ -50,9 +52,15 @@ namespace CodeLineCounter.Tests
                 }
                 finally
                 {
-                    File.Delete(outputPath);
+                    await Task.Delay(100);
+                    if (File.Exists(outputPath))
+                    {
+                        File.Delete(outputPath);
+                    }
                 }
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -79,8 +87,15 @@ namespace CodeLineCounter.Tests
                 Assert.Contains("digraph", content);
                 Assert.DoesNotContain("->", content);
 
-                File.Delete(outputPath);
+                await Task.Delay(100);
+
+                if (File.Exists(outputPath))
+                {
+                    File.Delete(outputPath);
+                }
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -100,6 +115,8 @@ namespace CodeLineCounter.Tests
                 Assert.Equal(DotColor.MediumSeaGreen.ToHexString(), node.FillColor.Value);
                 Assert.Equal(DotNodeStyle.Filled.FlagsToString(), node.Style.Value);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -119,6 +136,8 @@ namespace CodeLineCounter.Tests
                 Assert.Equal(DotColor.Salmon.ToHexString(), node.FillColor.Value);
                 Assert.Equal(DotNodeStyle.Filled.FlagsToString(), node.Style.Value);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -138,6 +157,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal("\"test string\"", result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -157,6 +178,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal(string.Empty, result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -172,6 +195,8 @@ namespace CodeLineCounter.Tests
                 Assert.Equal("DependencyGraph", graph.Label.Value);
                 Assert.Equal("DependencyGraph", graph.Identifier.Value);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 

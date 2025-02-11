@@ -6,11 +6,13 @@ namespace CodeLineCounter.Tests
     {
         private readonly string _testDirectory;
         private bool _disposed;
+        private readonly TextWriter _originalConsoleOut;
 
         public FileUtilsTests()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "DependencyGraphGeneratorTests");
             Directory.CreateDirectory(_testDirectory);
+            _originalConsoleOut = Console.Out;
         }
         [Fact]
         public void GetSolutionFiles_Should_Return_List_Of_Solution_Files()
@@ -31,6 +33,8 @@ namespace CodeLineCounter.Tests
                 Assert.NotEmpty(result);
                 Assert.All(result, file => Assert.EndsWith(".sln", file));
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -47,6 +51,8 @@ namespace CodeLineCounter.Tests
                 Assert.False(string.IsNullOrEmpty(basePath), "Base path should not be null or empty.");
                 Assert.True(Directory.Exists(basePath), "Base path should be a valid directory.");
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -62,6 +68,8 @@ namespace CodeLineCounter.Tests
                 // Act & Assert
                 Assert.Throws<UnauthorizedAccessException>(() => FileUtils.GetSolutionFiles(nonExistentPath));
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -81,6 +89,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Contains(nonExistentPath, exception.Message);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -88,6 +98,8 @@ namespace CodeLineCounter.Tests
         {
             if (!_disposed)
             {
+                // Ensure the file is closed before attempting to delete it
+                Task.Delay(100).Wait();
                 if (disposing && Directory.Exists(_testDirectory))
                 {
                     // Dispose managed resources

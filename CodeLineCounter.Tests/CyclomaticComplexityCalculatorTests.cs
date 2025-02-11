@@ -6,6 +6,12 @@ namespace CodeLineCounter.Tests
 {
     public class CyclomaticComplexityCalculatorTests
     {
+        private readonly TextWriter _originalConsoleOut;
+
+        public CyclomaticComplexityCalculatorTests()
+        {
+            _originalConsoleOut = Console.Out;
+        }
         [Fact]
         public void TestCalculateComplexity()
         {
@@ -31,6 +37,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -66,6 +74,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal(3, complexity);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -110,6 +120,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal(6, complexity);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
     }

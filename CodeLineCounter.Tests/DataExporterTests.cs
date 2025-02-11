@@ -7,11 +7,13 @@ namespace CodeLineCounter.Tests
     {
         private readonly string _testDirectory;
         private bool _disposed;
+        private readonly TextWriter _originalConsoleOut;
 
         public DataExporterTests()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "DataExporterTests");
             Directory.CreateDirectory(_testDirectory);
+            _originalConsoleOut = Console.Out;
         }
 
         [Theory]
@@ -32,6 +34,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.True(File.Exists(Path.Combine(_testDirectory, filePath + expectedExtension)));
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -57,6 +61,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.True(File.Exists(filePath + expectedExtension));
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -93,8 +99,10 @@ namespace CodeLineCounter.Tests
                 DataExporter.ExportMetrics(filePath, _testDirectory, result, ".", CoreUtils.ExportFormat.CSV);
 
                 // Assert
-                Assert.True(File.Exists(Path.Combine(_testDirectory,filePath + ".csv")));
+                Assert.True(File.Exists(Path.Combine(_testDirectory, filePath + ".csv")));
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -116,8 +124,10 @@ namespace CodeLineCounter.Tests
                 DataExporter.ExportDuplications(filePath, _testDirectory, duplications, CoreUtils.ExportFormat.CSV);
 
                 // Assert
-                Assert.True(File.Exists(Path.Combine(_testDirectory,filePath + ".csv")));
+                Assert.True(File.Exists(Path.Combine(_testDirectory, filePath + ".csv")));
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -140,6 +150,8 @@ namespace CodeLineCounter.Tests
                 Assert.Equal(3u, result[Path.GetFullPath("file1.cs")]);
                 Assert.Equal(1u, result[Path.GetFullPath("file2.cs")]);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -155,6 +167,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Empty(result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -175,6 +189,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Equal(2u, result[absolutePath]);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -195,6 +211,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Equal(5, result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -212,6 +230,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Equal(0, result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -232,6 +252,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Equal(0, result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -254,6 +276,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Equal(3, result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -276,6 +300,8 @@ namespace CodeLineCounter.Tests
 
                 Assert.Equal(4, result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -326,6 +352,8 @@ namespace CodeLineCounter.Tests
                     throw new UnauthorizedAccessException($"Access denied while deleting files: {ex.Message}", ex);
                 }
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -346,6 +374,8 @@ namespace CodeLineCounter.Tests
                     DataExporter.ExportCollection(filePath, _testDirectory, testData, format));
                 Assert.Contains("File path cannot be null or empty", exception.Message);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 

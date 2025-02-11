@@ -7,23 +7,27 @@ namespace CodeLineCounter.Tests
         private readonly string _testDirectory;
         private bool _disposed;
 
+        private readonly TextWriter _originalConsoleOut;
+
         public CodeDuplicationCheckerTests()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "CodeDuplicationCheckerTests");
             Directory.CreateDirectory(_testDirectory);
+            _originalConsoleOut = Console.Out;
         }
 
         [Fact]
         public void DetectCodeDuplicationInFiles_ShouldDetectDuplicates()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Arrange
-            var file1 = Path.Combine(_testDirectory, "TestFile1.cs");
-            var file2 = Path.Combine(_testDirectory, "TestFile2.cs");
+                // Arrange
+                var file1 = Path.Combine(_testDirectory, "TestFile1.cs");
+                var file2 = Path.Combine(_testDirectory, "TestFile2.cs");
 
-            var code1 = @"
+                var code1 = @"
                 public class TestClass
                 {
                     public void TestMethod()
@@ -35,7 +39,7 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            var code2 = @"
+                var code2 = @"
                 public class AnotherTestClass
                 {
                     public void AnotherTestMethod()
@@ -47,24 +51,27 @@ namespace CodeLineCounter.Tests
                     }
                 }";
 
-            File.WriteAllText(file1, code1);
-            File.WriteAllText(file2, code2);
+                File.WriteAllText(file1, code1);
+                File.WriteAllText(file2, code2);
 
-            var files = new List<string> { file1, file2 };
-            var checker = new CodeDuplicationChecker();
+                var files = new List<string> { file1, file2 };
+                var checker = new CodeDuplicationChecker();
 
-            // Act
-            checker.DetectCodeDuplicationInFiles(files);
-            var result = checker.GetCodeDuplicationMap();
+                // Act
+                checker.DetectCodeDuplicationInFiles(files);
+                var result = checker.GetCodeDuplicationMap();
 
-            // Assert
-            Assert.NotEmpty(result);
-            var duplicateEntry = result.First();
-            Assert.Equal(2, duplicateEntry.Value.Count); // Both files should be detected as duplicates
+                // Assert
+                Assert.NotEmpty(result);
+                var duplicateEntry = result.First();
+                Assert.Equal(2, duplicateEntry.Value.Count); // Both files should be detected as duplicates
 
-            // Clean up
-            File.Delete(file1);
-            File.Delete(file2);
+                // Clean up
+                File.Delete(file1);
+                File.Delete(file2);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -114,6 +121,8 @@ namespace CodeLineCounter.Tests
                 var duplicateEntry = result.First();
                 Assert.Equal(2, duplicateEntry.Value.Count); // Both methods should be detected as duplicates
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -159,6 +168,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Empty(result); // No duplicates should be detected
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 

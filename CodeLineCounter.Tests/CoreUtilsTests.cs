@@ -9,25 +9,32 @@ namespace CodeLineCounter.Tests
         private readonly string _testDirectory;
         private bool _disposed;
 
+        private readonly TextWriter _originalConsoleOut;
+
         public CoreUtilsTests()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "CoreUtilsTests");
             Directory.CreateDirectory(_testDirectory);
+            _originalConsoleOut = Console.Out;
         }
         [Fact]
         public void ParseArguments_Should_Return_Correct_Values()
         {
             // Arrange
             string[] args = ["-verbose", "-d", "testDirectory", "-output", _testDirectory];
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            Settings settings = CoreUtils.ParseArguments(args);
+                // Act
+                Settings settings = CoreUtils.ParseArguments(args);
 
-            // Assert
-            Assert.True(settings.Verbose);
-            Assert.Equal("testDirectory", settings.DirectoryPath);
+                // Assert
+                Assert.True(settings.Verbose);
+                Assert.Equal("testDirectory", settings.DirectoryPath);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -35,14 +42,18 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = ["-help"];
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var settings = CoreUtils.ParseArguments(args);
+                // Act
+                var settings = CoreUtils.ParseArguments(args);
 
-            // Assert
-            Assert.True(settings.Help);
+                // Assert
+                Assert.True(settings.Help);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -50,15 +61,19 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = [];
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var settings = CoreUtils.ParseArguments(args);
+                // Act
+                var settings = CoreUtils.ParseArguments(args);
 
-            // Assert
-            Assert.False(settings.Verbose);
-            Assert.Null(settings.DirectoryPath);
+                // Assert
+                Assert.False(settings.Verbose);
+                Assert.Null(settings.DirectoryPath);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -66,15 +81,19 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = ["-invalid", "-d", "testDirectory", "-f", "json"];
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var settings = CoreUtils.ParseArguments(args);
+                // Act
+                var settings = CoreUtils.ParseArguments(args);
 
-            // Assert
-            Assert.False(settings.Verbose);
-            Assert.Equal("testDirectory", settings.DirectoryPath);
+                // Assert
+                Assert.False(settings.Verbose);
+                Assert.Equal("testDirectory", settings.DirectoryPath);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         // ParseArguments correctly processes valid command line arguments with all options
@@ -83,17 +102,21 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] args = new[] { "-verbose", "-d", "C:/test", "-format", "JSON", "-help" };
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var result = CoreUtils.ParseArguments(args);
+                // Act
+                var result = CoreUtils.ParseArguments(args);
 
-            // Assert
-            Assert.True(result.Verbose);
-            Assert.Equal("C:/test", result.DirectoryPath);
-            Assert.True(result.Help);
-            Assert.Equal(CoreUtils.ExportFormat.JSON, result.Format);
+                // Assert
+                Assert.True(result.Verbose);
+                Assert.Equal("C:/test", result.DirectoryPath);
+                Assert.True(result.Help);
+                Assert.Equal(CoreUtils.ExportFormat.JSON, result.Format);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         // ParseArguments handles empty or null argument array
@@ -102,17 +125,23 @@ namespace CodeLineCounter.Tests
         {
             // Arrange
             string[] emptyArgs = Array.Empty<string>();
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            // Act
-            var result = CoreUtils.ParseArguments(emptyArgs);
+                // Act
+                var result = CoreUtils.ParseArguments(emptyArgs);
 
-            // Assert
-            Assert.False(result.Verbose);
-            Assert.Null(result.DirectoryPath);
-            Assert.False(result.Help);
-            Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
+                // Assert
+                Assert.False(result.Verbose);
+                Assert.Null(result.DirectoryPath);
+                Assert.False(result.Help);
+                Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
+
+
         }
 
         // ParseArguments processes invalid format option gracefully
@@ -133,7 +162,8 @@ namespace CodeLineCounter.Tests
                 Assert.Equal(CoreUtils.ExportFormat.CSV, result.Format);
                 Assert.Contains("Invalid format", sortieConsole);
             }
-
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -142,16 +172,22 @@ namespace CodeLineCounter.Tests
             // Arrange
             int solutionCount = 5;
             string input = "3";
-            using var inputStream = new StringReader(input);
-            using var consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            Console.SetIn(inputStream);
+            using (var inputStream = new StringReader(input))
+            {
+                using (var consoleOutput = new StringWriter())
+                {
+                    Console.SetOut(consoleOutput);
+                    Console.SetIn(inputStream);
 
-            // Act
-            int result = CoreUtils.GetUserChoice(solutionCount);
+                    // Act
+                    int result = CoreUtils.GetUserChoice(solutionCount);
 
-            // Assert
-            Assert.Equal(3, result);
+                    // Assert
+                    Assert.Equal(3, result);
+                }
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -174,6 +210,8 @@ namespace CodeLineCounter.Tests
                     Assert.Equal(-1, result);
                 }
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -197,6 +235,8 @@ namespace CodeLineCounter.Tests
                 }
 
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -221,6 +261,8 @@ namespace CodeLineCounter.Tests
                 }
 
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -245,7 +287,8 @@ namespace CodeLineCounter.Tests
                     Assert.Equal(-1, result);
                 }
             }
-
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -278,6 +321,8 @@ namespace CodeLineCounter.Tests
                 }
                 Assert.Equal(expectedOutput, sw.ToString());
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -307,6 +352,8 @@ namespace CodeLineCounter.Tests
                 ];
                 Assert.Equal(expectedFilenames, result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -328,6 +375,9 @@ namespace CodeLineCounter.Tests
                 Assert.Contains("Usage:", sw.ToString());
             }
 
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
+
         }
 
         [Fact]
@@ -347,6 +397,9 @@ namespace CodeLineCounter.Tests
                 Assert.Contains("Please provide the directory path", sw.ToString());
             }
 
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
+
         }
 
         [Fact]
@@ -365,6 +418,9 @@ namespace CodeLineCounter.Tests
                 Assert.True(result);
             }
 
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
+
         }
         [Fact]
         public void CheckSettings_WhenSettingsOutputIsInValid_ReturnsFalse()
@@ -381,6 +437,9 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.True(result);
             }
+
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -399,6 +458,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.False(result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -421,6 +482,8 @@ namespace CodeLineCounter.Tests
                 Assert.Contains(Path.GetFileNameWithoutExtension(fullFileName), result);
                 Assert.True(File.Exists(result) || !File.Exists(result));
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -453,6 +516,8 @@ namespace CodeLineCounter.Tests
                 File.Delete(testFiles[0]);
                 File.Delete(testFiles[1]);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -473,6 +538,8 @@ namespace CodeLineCounter.Tests
                 Assert.True(Directory.Exists(settings.OutputPath));
                 Directory.Delete(settings.OutputPath);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -480,10 +547,15 @@ namespace CodeLineCounter.Tests
         {
             if (!_disposed)
             {
-                if (disposing && Directory.Exists(_testDirectory))
+
+                if (disposing)
                 {
-                    // Dispose managed resources
-                    Directory.Delete(_testDirectory, true);
+                    Task.Delay(100).Wait();
+                    if (Directory.Exists(_testDirectory))
+                    {
+                        // Dispose managed resources
+                        Directory.Delete(_testDirectory, true);
+                    }
                 }
 
                 // Dispose unmanaged resources (if any)

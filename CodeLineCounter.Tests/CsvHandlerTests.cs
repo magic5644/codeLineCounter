@@ -7,6 +7,7 @@ namespace CodeLineCounter.Tests
 
         private readonly string _testDirectory;
         private bool _disposed;
+        private readonly TextWriter _originalConsoleOut;
 
         private class TestRecord
         {
@@ -18,6 +19,7 @@ namespace CodeLineCounter.Tests
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "CsvHandlerTests");
             Directory.CreateDirectory(_testDirectory);
+            _originalConsoleOut = Console.Out;
         }
 
         [Fact]
@@ -47,6 +49,8 @@ namespace CodeLineCounter.Tests
                 // Cleanup
                 File.Delete(filePath);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -78,6 +82,8 @@ namespace CodeLineCounter.Tests
                 // Cleanup
                 File.Delete(filePath);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -102,6 +108,8 @@ namespace CodeLineCounter.Tests
                 // Cleanup
                 File.Delete(filePath);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -125,6 +133,8 @@ namespace CodeLineCounter.Tests
                 // Cleanup
                 File.Delete(filePath);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 

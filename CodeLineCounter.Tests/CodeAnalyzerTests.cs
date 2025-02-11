@@ -6,26 +6,37 @@ namespace CodeLineCounter.Tests
 {
     public class CodeAnalyzerTests
     {
+        private readonly TextWriter _originalConsoleOut;
+
+        public CodeAnalyzerTests()
+        {
+            _originalConsoleOut = Console.Out;
+        }
+
         [Fact]
         public void TestAnalyzeSolution()
         {
-            using StringWriter consoleOutput = new();
-            Console.SetOut(consoleOutput);
+            using (StringWriter consoleOutput = new())
+            {
+                Console.SetOut(consoleOutput);
 
-            string basePath = FileUtils.GetBasePath();
-            var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
+                string basePath = FileUtils.GetBasePath();
+                var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
 
-            // Act
-            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap, dependencies) = CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
+                // Act
+                var (metrics, projectTotals, totalLines, totalFiles, duplicationMap, dependencies) = CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
 
-            // Assert
-            Assert.NotNull(metrics);
-            Assert.NotEmpty(metrics);
-            Assert.NotEmpty(projectTotals);
-            Assert.NotEqual(0, totalLines);
-            Assert.NotEqual(0, totalFiles);
-            Assert.NotNull(duplicationMap);
-            Assert.NotNull(dependencies);
+                // Assert
+                Assert.NotNull(metrics);
+                Assert.NotEmpty(metrics);
+                Assert.NotEmpty(projectTotals);
+                Assert.NotEqual(0, totalLines);
+                Assert.NotEqual(0, totalFiles);
+                Assert.NotNull(duplicationMap);
+                Assert.NotNull(dependencies);
+            }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
         }
 
         [Fact]
@@ -52,6 +63,8 @@ namespace CodeLineCounter.Tests
                 Assert.Equal("MyNamespace", currentNamespace);
 
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -78,6 +91,8 @@ namespace CodeLineCounter.Tests
                 // Assert - 3 lines only because comment lines are ignored
                 Assert.Equal(3, fileLineCount);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -104,6 +119,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal(1, fileCyclomaticComplexity);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 

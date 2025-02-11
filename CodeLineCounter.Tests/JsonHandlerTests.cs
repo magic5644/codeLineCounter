@@ -8,11 +8,13 @@ namespace CodeLineCounter.Tests
 
         private readonly string _testDirectory;
         private bool _disposed;
+        private readonly TextWriter _originalConsoleOut;
 
         public JsonHandlerTests()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "JsonHandlerTests");
             Directory.CreateDirectory(_testDirectory);
+            _originalConsoleOut = Console.Out;
         }
 
         public class TestClass
@@ -50,6 +52,8 @@ namespace CodeLineCounter.Tests
                 File.Delete(testFilePath);
 
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 

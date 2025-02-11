@@ -4,6 +4,12 @@ namespace CodeLineCounter.Tests
 {
     public class HashUtilsTests
     {
+        private readonly TextWriter _originalConsoleOut;
+
+        public HashUtilsTests()
+        {
+            _originalConsoleOut = Console.Out;
+        }
         [Fact]
         public void ComputeHash_EmptyString_ReturnsEmptyString()
         {
@@ -20,6 +26,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal("", result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -39,6 +47,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal("", result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -59,6 +69,8 @@ namespace CodeLineCounter.Tests
                 Assert.NotEmpty(result);
                 Assert.IsType<string>(result);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
 
@@ -80,6 +92,8 @@ namespace CodeLineCounter.Tests
                 // Assert
                 Assert.Equal(result1, result2);
             }
+            // Reset console output
+            Console.SetOut(_originalConsoleOut);
 
         }
     }
