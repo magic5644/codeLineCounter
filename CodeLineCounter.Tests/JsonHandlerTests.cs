@@ -61,10 +61,15 @@ namespace CodeLineCounter.Tests
         {
             if (!_disposed)
             {
-                if (disposing && Directory.Exists(_testDirectory))
+                if (disposing)
                 {
-                    // Dispose managed resources
-                    Directory.Delete(_testDirectory, true);
+                    Task.Delay(100).Wait();
+
+                    if (Directory.Exists(_testDirectory))
+                    {
+                        // Dispose managed resources
+                        Directory.Delete(_testDirectory, true);
+                    }
                 }
 
                 // Dispose unmanaged resources (if any)

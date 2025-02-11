@@ -22,10 +22,11 @@ namespace CodeLineCounter.Tests
         [Fact]
         public async Task generate_graph_with_valid_dependencies_creates_dot_file()
         {
+            var testDirectory = _testDirectory;
+            string fileName = "testgraph.dot";
             using (var sw = new StringWriter())
             {
-                var testDirectory = _testDirectory;
-                string fileName = "testgraph.dot";
+
                 // Arrange
                 var dependencies = new List<DependencyRelation>
             {
