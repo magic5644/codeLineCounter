@@ -162,7 +162,7 @@ namespace CodeLineCounter.Services
         public static async Task CompileGraphAndWriteToFile(string fileName, string outputPath, DotGraph graph)
         {
             // Use memory buffer
-            using var memoryStream = MemoryStreamManager.GetStream();//new MemoryStream();
+            using var memoryStream = MemoryStreamManager.GetStream();
             using var writer = new StreamWriter(memoryStream);
 
             var options = new CompilationOptions { Indented = true };
