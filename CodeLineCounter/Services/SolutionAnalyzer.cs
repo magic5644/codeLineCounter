@@ -7,7 +7,6 @@ namespace CodeLineCounter.Services
 {
     public static partial class SolutionAnalyzer
     {
-
         public static void AnalyzeAndExportSolution(string solutionPath, bool verbose, CoreUtils.ExportFormat format, string? outputPath = null)
         {
             try
@@ -15,7 +14,16 @@ namespace CodeLineCounter.Services
                 var analysisResult = PerformAnalysis(solutionPath);
                 OutputAnalysisResults(analysisResult, verbose);
                 ExportResults(analysisResult, solutionPath, format, outputPath);
-
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.Error.WriteLine($"Access denied: {ex.Message}");
+                throw;
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.Error.WriteLine($"File not found: {ex.Message}");
+                throw;
             }
             catch (Exception ex)
             {
@@ -56,7 +64,7 @@ namespace CodeLineCounter.Services
             }
 
             var percentageDuplication = (result.DuplicatedLines / (double)result.TotalLines) * 100;
-            NumberFormatInfo nfi = new System.Globalization.CultureInfo( "en-US", false ).NumberFormat;
+            NumberFormatInfo nfi = new System.Globalization.CultureInfo("en-US", false).NumberFormat;
 
             Console.WriteLine($"Processing completed, number of source files processed: {result.TotalFiles}");
             Console.WriteLine($"Total lines of code: {result.TotalLines}");
@@ -68,52 +76,23 @@ namespace CodeLineCounter.Services
         public static void ExportResults(AnalysisResult result, string solutionPath, CoreUtils.ExportFormat format, string? outputPath = null)
         {
             string baseFileName = Path.GetFileNameWithoutExtension(solutionPath);
-            
-            // Export metrics
             string metricsFileName = $"{baseFileName}.CodeMetrics.json";
             metricsFileName = CoreUtils.GetExportFileNameWithExtension(metricsFileName, format);
-            if (string.IsNullOrEmpty(outputPath))
-            {
-                outputPath = ".";
-            }   
+            outputPath ??= ".";
 
-            string metricsOutputPath = outputPath != null 
-                ? Path.Combine(outputPath, metricsFileName)
-                : metricsFileName;
-
-            // Export duplications
+            string metricsOutputPath = Path.Combine(outputPath, metricsFileName);
             string duplicationsFileName = $"{baseFileName}.CodeDuplications.json";
             duplicationsFileName = CoreUtils.GetExportFileNameWithExtension(duplicationsFileName, format);
-            string duplicationsOutputPath = outputPath != null 
-                ? Path.Combine(outputPath, duplicationsFileName)
-                : duplicationsFileName;
-            // Export des duplications...
-
-            // Export dependencies graph
+            string duplicationsOutputPath = Path.Combine(outputPath, duplicationsFileName);
             string graphFileName = $"{baseFileName}.Dependencies.dot";
-            string graphOutputPath = outputPath != null 
-                ? Path.Combine(outputPath, graphFileName)
-                : graphFileName;
+            string graphOutputPath = Path.Combine(outputPath, graphFileName);
 
             try
             {
                 Parallel.Invoke(
-                    () => DataExporter.ExportMetrics(
-                        metricsFileName,
-                        outputPath ??".",
-                        result,
-                        solutionPath,
-                        format),
-                    () => DataExporter.ExportDuplications(
-                        duplicationsFileName,
-                        outputPath ?? ".",
-                        result.DuplicationMap,
-                        format),
-                    async () => await DataExporter.ExportDependencies(
-                        graphFileName,
-                        outputPath ?? ".",
-                        result.DependencyList,
-                        format)
+                    () => DataExporter.ExportMetrics(metricsFileName, outputPath, result, solutionPath, format),
+                    () => DataExporter.ExportDuplications(duplicationsFileName, outputPath, result.DuplicationMap, format),
+                    async () => await DataExporter.ExportDependencies(graphFileName, outputPath, result.DependencyList, format)
                 );
 
                 Console.WriteLine($"The data has been exported to {metricsOutputPath}");
@@ -144,6 +123,5 @@ namespace CodeLineCounter.Services
                 Console.WriteLine($"Project {projectTotal.Key} has {projectTotal.Value} total lines of code.");
             }
         }
-
     }
 }

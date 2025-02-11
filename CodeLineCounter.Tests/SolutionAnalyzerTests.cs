@@ -232,11 +232,21 @@ EndProject");
                 var solutionPath = Path.Combine(baseSolutionPath, "CodelineCounter.sln");
                 var format = CoreUtils.ExportFormat.JSON;
                 Console.SetOut(sw);
-                SolutionAnalyzer.ExportResults(result, solutionPath, format, baseSolutionPath);
-                // Assert
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json")));
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")));
-                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot")));
+
+                try
+                {
+                    SolutionAnalyzer.ExportResults(result, solutionPath, format, baseSolutionPath);
+                    // Assert
+                    Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json")));
+                    Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")));
+                    Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot")));
+                }
+                finally
+                {
+                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json"));
+                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")); 
+                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot"));
+                }
             }
 
 
