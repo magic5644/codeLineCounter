@@ -42,26 +42,18 @@ namespace CodeLineCounter.Utils
 
         public static void ExportDuplications(string baseFileName, string outputPath, List<DuplicationCode> duplications, CoreUtils.ExportFormat format)
         {
-            string? directory = Path.GetDirectoryName(outputPath);
-            if (!string.IsNullOrEmpty(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            PrepareDirectoryForOutput(outputPath);
 
             ExportCollection(baseFileName,outputPath, duplications, format);
         }
 
         public static async Task ExportDependencies(string baseFileName,string outputPath, List<DependencyRelation> dependencies, CoreUtils.ExportFormat format)
         {
-            string? directory = Path.GetDirectoryName(outputPath);
-            if (!string.IsNullOrEmpty(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            PrepareDirectoryForOutput(outputPath);
             string filename = CoreUtils.GetExportFileNameWithExtension(baseFileName, format);
-            
 
-            ExportCollection(filename,outputPath, dependencies, format);
+
+            ExportCollection(filename, outputPath, dependencies, format);
 
             DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
 
@@ -70,13 +62,10 @@ namespace CodeLineCounter.Utils
             await DependencyGraphGenerator.CompileGraphAndWriteToFile(filename, outputPath, graph);
         }
 
+
         public static void ExportMetrics(string baseFilename, string outputPath, AnalysisResult analyzeMetrics, string solutionPath,CoreUtils.ExportFormat format)
         {
-            string? directory = Path.GetDirectoryName(outputPath);
-            if (!string.IsNullOrEmpty(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            PrepareDirectoryForOutput(outputPath);
             string TOTAL = "Total";
             var filePath = CoreUtils.GetExportFileNameWithExtension(baseFilename, format);
 
@@ -152,6 +141,14 @@ namespace CodeLineCounter.Utils
                 metric.FilePath ?? string.Empty);
 
             return (int)duplicationCounts.GetValueOrDefault(normalizedPath);
+        }
+        private static void PrepareDirectoryForOutput(string outputPath)
+        {
+            string? directory = Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
         }
     }
 

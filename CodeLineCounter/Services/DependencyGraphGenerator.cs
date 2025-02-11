@@ -5,11 +5,13 @@ using DotNetGraph.Attributes;
 using DotNetGraph.Compilation;
 using DotNetGraph.Core;
 using DotNetGraph.Extensions;
+using Microsoft.IO;
 
 namespace CodeLineCounter.Services
 {
     public static class DependencyGraphGenerator
     {
+        private static readonly RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
         public static DotGraph GenerateGraphOnly(List<DependencyRelation> dependencies, string? filterNamespace = null, string? filterAssembly = null)
         {
             var filteredDependencies = dependencies
@@ -160,7 +162,7 @@ namespace CodeLineCounter.Services
         public static async Task CompileGraphAndWriteToFile(string fileName, string outputPath, DotGraph graph)
         {
             // Use memory buffer
-            using var memoryStream = new MemoryStream();
+            using var memoryStream = MemoryStreamManager.GetStream();//new MemoryStream();
             using var writer = new StreamWriter(memoryStream);
 
             var options = new CompilationOptions { Indented = true };
