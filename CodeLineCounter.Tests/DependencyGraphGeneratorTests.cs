@@ -1,5 +1,6 @@
 using CodeLineCounter.Models;
 using CodeLineCounter.Services;
+using DotNetGraph.Attributes;
 using DotNetGraph.Core;
 using DotNetGraph.Extensions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

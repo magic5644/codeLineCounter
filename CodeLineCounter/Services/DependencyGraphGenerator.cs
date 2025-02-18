@@ -18,102 +18,7 @@ namespace CodeLineCounter.Services
 
     public static class DependencyGraphGenerator
     {
-        public static void UnflattenGraph(DotGraph graph, GraphvizUnflattenOptions options)
-        {
-            var nodeDegrees = new Dictionary<string, int>();
 
-            DotNode? chainNode = null;
-            int chainSize = 0;
-
-            // Extraire les arêtes du graphe
-            List<DotEdge> edges;
-            List<DotNode> nodes;
-            ExtractNodesAndEdges(graph, out edges, out nodes);
-
-            // Calculer le degré de chaque nœud
-            CalculateDegrees(nodeDegrees, edges, nodes);
-
-            // Traiter les nœuds du graphe
-            foreach (var node in nodes)
-            {
-                DotIdentifier nodeId = node.Identifier;
-                int degree = nodeDegrees[nodeId.Value];
-
-                if (degree == 0 && options.ChainLimit >= 1)
-                {
-                    AddEdgeAndStyleToUnflatten(graph, options, ref chainNode, ref chainSize, node, nodeId);
-                }
-                else if (degree > 1 && options.MaxMinlen >= 1)
-                {
-                    SetMinLenAttributeWhenUnflatting(options, edges, nodeId);
-                }
-            }
-        }
-
-        private static void AddEdgeAndStyleToUnflatten(DotGraph graph, GraphvizUnflattenOptions options, ref DotNode? chainNode, ref int chainSize, DotNode node, DotIdentifier nodeId)
-        {
-            if (chainNode != null)
-            {
-                var edge = new DotEdge { From = chainNode.Identifier, To = nodeId, Style = DotEdgeStyle.Invis };
-                graph.Elements.Add(edge);
-                chainSize++;
-
-                if (chainSize < options.ChainLimit)
-                    chainNode = node;
-                else
-                {
-                    chainNode = null;
-                    chainSize = 0;
-                }
-            }
-            else
-            {
-                chainNode = node;
-            }
-        }
-
-        private static void SetMinLenAttributeWhenUnflatting(GraphvizUnflattenOptions options, List<DotEdge> edges, DotIdentifier nodeId)
-        {
-            int cnt = 0;
-            foreach (var edge in edges)
-            {
-                if (edge.To == nodeId && IsLeaf(edges, edge.From.Value))
-                {
-                    DotAttribute minLen = edge.GetAttribute<DotAttribute>("minlen");
-                    minLen.Value = (cnt % options.MaxMinlen + 1).ToString();
-                    edge.SetAttribute("minLen", minLen);
-                    cnt++;
-                }
-            }
-        }
-
-        private static void CalculateDegrees(Dictionary<string, int> nodeDegrees, List<DotEdge> edges, List<DotNode> nodes)
-        {
-            foreach (var nodeId in nodes.Select(node => node.Identifier.Value))
-            {
-                int degree = GetNodeDegree(edges, nodeId);
-                nodeDegrees[nodeId] = degree;
-            }
-        }
-
-        private static void ExtractNodesAndEdges(DotGraph graph, out List<DotEdge> edges, out List<DotNode> nodes)
-        {
-            edges = graph.Elements.OfType<DotEdge>().ToList();
-            nodes = graph.Elements.OfType<DotNode>().ToList();
-            var subgraphes = graph.Elements.OfType<DotSubgraph>().ToList();
-            edges.AddRange(subgraphes.SelectMany(s => s.Elements.OfType<DotEdge>()));
-            nodes.AddRange(subgraphes.SelectMany(s => s.Elements.OfType<DotNode>()));
-        }
-
-        private static int GetNodeDegree(List<DotEdge> edges, string nodeId)
-        {
-            return edges.Count(e => e.From.ToString() == nodeId || e.To.ToString() == nodeId);
-        }
-
-        private static bool IsLeaf(List<DotEdge> edges, string nodeId)
-        {
-            return !edges.Any(e => e.From.ToString() == nodeId);
-        }
         private static readonly RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
         public static DotGraph GenerateGraphOnly(List<DependencyRelation> dependencies, string? filterNamespace = null, string? filterAssembly = null)
         {
@@ -134,8 +39,6 @@ namespace CodeLineCounter.Services
 
             // Add edges
             AddEdgesBetweenDependencies(filteredDependencies, graph);
-
-            UnflattenGraph(graph, new GraphvizUnflattenOptions { ChainLimit = 10, MaxMinlen = 10, DoFans = false });
 
             return graph;
         }
