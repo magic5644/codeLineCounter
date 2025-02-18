@@ -9,12 +9,6 @@ using Microsoft.IO;
 
 namespace CodeLineCounter.Services
 {
-    public class GraphvizUnflattenOptions
-    {
-        public int ChainLimit { get; set; } = 0;
-        public int MaxMinlen { get; set; } = 0;
-        public bool DoFans { get; set; } = false;
-    }
 
     public static class DependencyGraphGenerator
     {
