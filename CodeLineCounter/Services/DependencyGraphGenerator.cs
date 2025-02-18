@@ -26,21 +26,12 @@ namespace CodeLineCounter.Services
             int chainSize = 0;
 
             // Extraire les arêtes du graphe
-            var edges = graph.Elements.OfType<DotEdge>().ToList();
-            var nodes = graph.Elements.OfType<DotNode>().ToList();
-            var subgraphes = graph.Elements.OfType<DotSubgraph>().ToList();
-            foreach (var subgraphe in subgraphes)
-            {
-                edges.AddRange(subgraphe.Elements.OfType<DotEdge>());
-                nodes.AddRange(subgraphe.Elements.OfType<DotNode>());
-            }
+            List<DotEdge> edges;
+            List<DotNode> nodes;
+            ExtractNodesAndEdges(graph, out edges, out nodes);
 
             // Calculer le degré de chaque nœud
-            foreach (var node in nodes)
-            {
-                int degree = GetNodeDegree(edges, node.Identifier.Value);
-                nodeDegrees[node.Identifier.Value] = degree;
-            }
+            CalculateDegrees(nodeDegrees, edges, nodes);
 
             // Traiter les nœuds du graphe
             foreach (var node in nodes)
@@ -48,48 +39,70 @@ namespace CodeLineCounter.Services
                 DotIdentifier nodeId = node.Identifier;
                 int degree = nodeDegrees[nodeId.Value];
 
-                if (degree == 0)
+                if (degree == 0 && options.ChainLimit >= 1)
                 {
-                    if (options.ChainLimit < 1)
-                        continue;
-
-                    if (chainNode != null)
-                    {
-                        var edge = new DotEdge { From = chainNode.Identifier, To = nodeId, Style = DotEdgeStyle.Invis };
-                        graph.Elements.Add(edge);
-                        chainSize++;
-
-                        if (chainSize < options.ChainLimit)
-                            chainNode = node;
-                        else
-                        {
-                            chainNode = null;
-                            chainSize = 0;
-                        }
-                    }
-                    else
-                    {
-                        chainNode = node;
-                    }
+                    AddEdgeAndStyleToUnflatten(graph, options, ref chainNode, ref chainSize, node, nodeId);
                 }
-                else if (degree > 1)
+                else if (degree > 1 && options.MaxMinlen >= 1)
                 {
-                    if (options.MaxMinlen < 1)
-                        continue;
-
-                    int cnt = 0;
-                    foreach (var edge in edges)
-                    {
-                        if (edge.To == nodeId && IsLeaf(edges, edge.From.Value))
-                        {
-                            DotAttribute minLen = edge.GetAttribute<DotAttribute>("minlen");
-                            minLen.Value = (cnt % options.MaxMinlen + 1).ToString();
-                            edge.SetAttribute("minLen", minLen);
-                            cnt++;
-                        }
-                    }
+                    SetMinLenAttributeWhenUnflatting(options, edges, nodeId);
                 }
             }
+        }
+
+        private static void AddEdgeAndStyleToUnflatten(DotGraph graph, GraphvizUnflattenOptions options, ref DotNode? chainNode, ref int chainSize, DotNode node, DotIdentifier nodeId)
+        {
+            if (chainNode != null)
+            {
+                var edge = new DotEdge { From = chainNode.Identifier, To = nodeId, Style = DotEdgeStyle.Invis };
+                graph.Elements.Add(edge);
+                chainSize++;
+
+                if (chainSize < options.ChainLimit)
+                    chainNode = node;
+                else
+                {
+                    chainNode = null;
+                    chainSize = 0;
+                }
+            }
+            else
+            {
+                chainNode = node;
+            }
+        }
+
+        private static void SetMinLenAttributeWhenUnflatting(GraphvizUnflattenOptions options, List<DotEdge> edges, DotIdentifier nodeId)
+        {
+            int cnt = 0;
+            foreach (var edge in edges)
+            {
+                if (edge.To == nodeId && IsLeaf(edges, edge.From.Value))
+                {
+                    DotAttribute minLen = edge.GetAttribute<DotAttribute>("minlen");
+                    minLen.Value = (cnt % options.MaxMinlen + 1).ToString();
+                    edge.SetAttribute("minLen", minLen);
+                    cnt++;
+                }
+            }
+        }
+
+        private static void CalculateDegrees(Dictionary<string, int> nodeDegrees, List<DotEdge> edges, List<DotNode> nodes)
+        {
+            foreach (var nodeId in nodes.Select(node => node.Identifier.Value))
+            {
+                int degree = GetNodeDegree(edges, nodeId);
+                nodeDegrees[nodeId] = degree;
+            }
+        }
+
+        private static void ExtractNodesAndEdges(DotGraph graph, out List<DotEdge> edges, out List<DotNode> nodes)
+        {
+            edges = graph.Elements.OfType<DotEdge>().ToList();
+            nodes = graph.Elements.OfType<DotNode>().ToList();
+            var subgraphes = graph.Elements.OfType<DotSubgraph>().ToList();
+            edges.AddRange(subgraphes.SelectMany(s => s.Elements.OfType<DotEdge>()));
+            nodes.AddRange(subgraphes.SelectMany(s => s.Elements.OfType<DotNode>()));
         }
 
         private static int GetNodeDegree(List<DotEdge> edges, string nodeId)

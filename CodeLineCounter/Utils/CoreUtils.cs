@@ -98,7 +98,7 @@ namespace CodeLineCounter.Utils
 
             if (string.IsNullOrWhiteSpace(input))
             {
-                throw new ArgumentNullException("No input provided. Please enter a valid number.");
+                throw new ArgumentNullException("inputFromConsole", "No input provided. Please enter a valid number.");
             }
 
             if (!int.TryParse(input, out choice))
