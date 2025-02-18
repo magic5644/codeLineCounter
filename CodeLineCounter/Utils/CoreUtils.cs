@@ -1,3 +1,4 @@
+using CodeLineCounter.Exceptions;
 using CodeLineCounter.Models;
 
 namespace CodeLineCounter.Utils
@@ -64,7 +65,7 @@ namespace CodeLineCounter.Utils
                 }
                 else
                 {
-                    Console.WriteLine($"Invalid format: {formatString}. Valid formats are: {string.Join(", ", Enum.GetNames<ExportFormat>())}. Using default format {settings.Format}");
+                    throw new InvalidExportFormatException(formatString, settings);
                 }
             }
         }
@@ -78,35 +79,36 @@ namespace CodeLineCounter.Utils
             }
         }
 
+
         /// <summary>
-        /// Gets a valid user selection from the available solutions.
+        /// Checks user input and returns a valid choice.
         /// </summary>
-        /// <param name="solutionCount">The total number of available solutions</param>
-        /// <returns>Selected solution number (1-based index) or -1 if invalid</returns>
-        public static int GetUserChoice(int solutionCount)
+        /// <param name="inputFromConsole">The user input from the console.</param>
+        /// <param name="solutionCount">The number of solutions to choose from.</param>
+        /// <returns>The user's choice.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="inputFromConsole"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="solutionCount"/> is less than 1.</exception>
+        public static int CheckInputUserChoice(string? inputFromConsole, int solutionCount)
         {
             ArgumentOutOfRangeException.ThrowIfLessThan(solutionCount, 1);
 
-            Console.Write($"Choose a solution to analyze (1-{solutionCount}): ");
+            int choice = -1;
 
-            string? input = Console.ReadLine();
+            string? input = inputFromConsole;
 
             if (string.IsNullOrWhiteSpace(input))
             {
-                Console.WriteLine("No input provided. Please enter a valid number.");
-                return -1;
+                throw new ArgumentNullException(nameof(inputFromConsole), "No input provided. Please enter a valid number.");
             }
 
-            if (!int.TryParse(input, out int choice))
+            if (!int.TryParse(input, out choice))
             {
-                Console.WriteLine("Invalid input. Please enter a numeric value.");
-                return -1;
+                throw new InvalidNumberException();
             }
 
             if (choice < 1 || choice > solutionCount)
             {
-                Console.WriteLine($"Selection must be between 1 and {solutionCount}.");
-                return -1;
+                throw new InvalidSelectionException(solutionCount);
             }
 
             return choice;

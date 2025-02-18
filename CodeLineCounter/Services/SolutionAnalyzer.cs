@@ -17,17 +17,17 @@ namespace CodeLineCounter.Services
             }
             catch (UnauthorizedAccessException ex)
             {
-                Console.Error.WriteLine($"Access denied: {ex.Message}");
+                Console.WriteLine($"Access denied: {ex.Message}");
                 throw;
             }
             catch (FileNotFoundException ex)
             {
-                Console.Error.WriteLine($"File not found: {ex.Message}");
+                Console.WriteLine($"File not found: {ex.Message}");
                 throw;
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Error analyzing solution: {ex.Message}");
+                Console.WriteLine($"Error analyzing solution: {ex.Message}");
                 throw;
             }
         }
@@ -101,12 +101,12 @@ namespace CodeLineCounter.Services
             }
             catch (AggregateException ae)
             {
-                Console.Error.WriteLine($"Error during parallel export operations: {ae.InnerException?.Message}");
+                Console.WriteLine($"Error during parallel export operations: {ae.InnerException?.Message}");
                 throw;
             }
             catch (IOException ioe)
             {
-                Console.Error.WriteLine($"IO error during file operations: {ioe.Message}");
+                Console.WriteLine($"IO error during file operations: {ioe.Message}");
                 throw;
             }
         }

@@ -2,23 +2,22 @@ using CodeLineCounter.Services;
 using CodeLineCounter.Models;
 using CodeLineCounter.Utils;
 
-namespace CodeLineCounter.Tests.Services
+namespace CodeLineCounter.Tests
 {
-    public class SolutionAnalyzerTest : IDisposable
+    public class SolutionAnalyzerTest : TestBase
     {
 
         private readonly string _testDirectory;
         private readonly string _testSolutionPath;
         private readonly string _outputPath;
-        private bool _disposed;
-        private readonly TextWriter _originalConsoleOut;
 
         public SolutionAnalyzerTest()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "SolutionAnalyzerTest");
             _testSolutionPath = Path.Combine(_testDirectory, "TestSolution.sln");
             _outputPath = _testDirectory;
-            _originalConsoleOut = Console.Out;
+            initialization();
+            RedirectConsoleInputOutput();
             Directory.CreateDirectory(_testDirectory);
             // Create minimal test solution if it doesn't exist
             if (!File.Exists(_testSolutionPath))
@@ -43,63 +42,48 @@ EndProject");
             var outputPath = _outputPath;
 
 
-            // Redirect console output
-            using (StringWriter stringWriter = new StringWriter())
+
+            try
             {
 
-                Console.SetOut(stringWriter);
-
-                try
+                // Act
+                var exception = Record.Exception(() =>
                 {
+                    SolutionAnalyzer.AnalyzeAndExportSolution(_testSolutionPath, verbose, format, outputPath);
+                });
 
-                    // Act
-                    var exception = Record.Exception(() =>
-                    {
-                        SolutionAnalyzer.AnalyzeAndExportSolution(_testSolutionPath, verbose, format, outputPath);
-                    });
+                // Assert
+                Assert.Null(exception);
+                Assert.True(File.Exists(Path.Combine(outputPath, "TestSolution.CodeMetrics.csv")));
 
-                    // Assert
-                    Assert.Null(exception);
-                    Assert.True(File.Exists(Path.Combine(outputPath, "TestSolution.CodeMetrics.csv")));
+            }
+            finally
+            {
+                // Cleanup
 
-                }
-                finally
+
+                if (File.Exists(solutionPath))
                 {
-                    // Cleanup
-
-                    if (File.Exists(solutionPath))
-                    {
-                        File.Delete(solutionPath);
-                    }
+                    File.Delete(solutionPath);
                 }
             }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
-
 
         }
 
         [Fact]
         public void analyze_and_export_solution_throws_on_invalid_path()
         {
-            using (var sw = new StringWriter())
-            {
-                Console.SetOut(sw);
-                // Arrange
+            // Arrange
 
-                var invalidPath = "";
-                var verbose = false;
-                var format = CoreUtils.ExportFormat.JSON;
+            var invalidPath = "";
+            var verbose = false;
+            var format = CoreUtils.ExportFormat.JSON;
 
-                // Act & Assert
-                var exception = Assert.Throws<UnauthorizedAccessException>(() =>
-                SolutionAnalyzer.AnalyzeAndExportSolution(invalidPath, verbose, format));
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+            SolutionAnalyzer.AnalyzeAndExportSolution(invalidPath, verbose, format));
 
-                Assert.Contains("Access to the path '' is denied.", exception.Message);
-
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            Assert.Contains("Access to the path '' is denied.", exception.Message);
 
         }
 
@@ -110,71 +94,58 @@ EndProject");
             var basePath = FileUtils.GetBasePath();
             var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
             solutionPath = Path.Combine(solutionPath, "CodeLineCounter.sln");
-            using (var sw = new StringWriter())
-            {
-                Console.SetOut(sw);
-                Console.WriteLine($"Constructed solution path: {solutionPath}");
-                Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
-                Console.WriteLine($"Constructed solution path: {solutionPath}");
-                Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
+            Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
+            Assert.True(File.Exists(solutionPath), $"The solution file '{solutionPath}' does not exist.");
 
-                // Act
-                var result = SolutionAnalyzer.PerformAnalysis(solutionPath);
+            // Act
+            var result = SolutionAnalyzer.PerformAnalysis(solutionPath);
 
-                // Assert
-                Assert.NotNull(result);
-                Assert.Equal("CodeLineCounter.sln", result.SolutionFileName);
-
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("CodeLineCounter.sln", result.SolutionFileName);
 
         }
 
         [Fact]
         public void OutputAnalysisResults_ShouldPrintCorrectOutput()
         {
-            using (var sw = new StringWriter())
+
+            // Arrange
+            var result = new AnalysisResult
             {
-                Console.SetOut(sw);
-                // Arrange
-                var result = new AnalysisResult
-                {
-                    Metrics = new List<NamespaceMetrics>(),
-                    ProjectTotals = new Dictionary<string, int>(),
-                    TotalLines = 1000,
-                    TotalFiles = 10,
-                    DuplicationMap = new List<DuplicationCode>(),
-                    DependencyList = new List<DependencyRelation>(),
-                    ProcessingTime = TimeSpan.FromSeconds(10),
-                    SolutionFileName = "CodeLineCounter.sln",
-                    DuplicatedLines = 100
-                };
-                var verbose = true;
+                Metrics = new List<NamespaceMetrics>(),
+                ProjectTotals = new Dictionary<string, int>(),
+                TotalLines = 1000,
+                TotalFiles = 10,
+                DuplicationMap = new List<DuplicationCode>(),
+                DependencyList = new List<DependencyRelation>(),
+                ProcessingTime = TimeSpan.FromSeconds(10),
+                SolutionFileName = "CodeLineCounter.sln",
+                DuplicatedLines = 100
+            };
+            var verbose = false;
 
-                // Act
-                SolutionAnalyzer.OutputAnalysisResults(result, verbose);
+            // Act
 
-                // Assert
-                var output = sw.ToString();
-                Assert.Contains("Processing completed, number of source files processed: 10", output);
-                Assert.Contains("Total lines of code: 1000", output);
-                Assert.Contains("Solution CodeLineCounter.sln has 100 duplicated lines of code.", output);
-                Assert.Contains("Percentage of duplicated code: 10.00 %", output);
-                Assert.Contains("Time taken: 0:10.000", output);
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            SolutionAnalyzer.OutputAnalysisResults(result, verbose);
+            // Get console output
+            var output = GetConsoleOutput();
+
+
+            // Assert
+
+            Assert.Contains("Processing completed, number of source files processed: 10", output);
+            Assert.Contains("Total lines of code: 1000", output);
+            Assert.Contains("Solution CodeLineCounter.sln has 100 duplicated lines of code.", output);
+            Assert.Contains("Percentage of duplicated code: 10.00 %", output);
+            Assert.Contains("Time taken: 0:10.000", output);
         }
 
         [Fact]
         public void OutputDetailedMetrics_ShouldPrintMetricsAndProjectTotals()
         {
-            using (var sw = new StringWriter())
-            {
-                Console.SetOut(sw);
-                // Arrange
-                var metrics = new List<NamespaceMetrics>
+            // Arrange
+            var metrics = new List<NamespaceMetrics>
                 {
                     new NamespaceMetrics
                     {
@@ -198,26 +169,24 @@ EndProject");
                     }
                 };
 
-                var projectTotals = new Dictionary<string, int>
+            var projectTotals = new Dictionary<string, int>
                 {
                     { "Project1", 100 },
                     { "Project2", 200 }
                 };
 
-                // Act
-                SolutionAnalyzer.OutputDetailedMetrics(metrics, projectTotals);
+            // Act
+            SolutionAnalyzer.OutputDetailedMetrics(metrics, projectTotals);
 
-                // Assert
-                var expectedOutput =
-                    $"Project Project1 (/path/to/project1) - Namespace Namespace1 in file File1.cs (/path/to/project1/File1.cs) has 100 lines of code and a cyclomatic complexity of 10.{Environment.NewLine}" +
-                    $"Project Project2 (/path/to/project2) - Namespace Namespace2 in file File2.cs (/path/to/project2/File2.cs) has 200 lines of code and a cyclomatic complexity of 20.{Environment.NewLine}" +
-                    $"Project Project1 has 100 total lines of code.{Environment.NewLine}" +
-                    $"Project Project2 has 200 total lines of code.{Environment.NewLine}";
+            // Assert
+            var expectedOutput =
+                $"Project Project1 (/path/to/project1) - Namespace Namespace1 in file File1.cs (/path/to/project1/File1.cs) has 100 lines of code and a cyclomatic complexity of 10.{Environment.NewLine}" +
+                $"Project Project2 (/path/to/project2) - Namespace Namespace2 in file File2.cs (/path/to/project2/File2.cs) has 200 lines of code and a cyclomatic complexity of 20.{Environment.NewLine}" +
+                $"Project Project1 has 100 total lines of code.{Environment.NewLine}" +
+                $"Project Project2 has 200 total lines of code.{Environment.NewLine}";
 
-                Assert.Equal(expectedOutput, sw.ToString());
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            Assert.Equal(expectedOutput, GetConsoleOutput());
+
         }
 
         // Export metrics, duplications and dependencies data in parallel for valid input
@@ -225,78 +194,59 @@ EndProject");
         public void export_results_with_valid_input_exports_all_files()
         {
             // Act
-            using (var sw = new StringWriter())
+            // Arrange
+            var result = new AnalysisResult
             {
-                // Arrange
-                var result = new AnalysisResult
-                {
-                    SolutionFileName = "CodelineCounter.sln",
-                    Metrics = new List<NamespaceMetrics>(),
-                    ProjectTotals = new Dictionary<string, int>(),
-                    TotalLines = 1000,
-                    DuplicationMap = new List<DuplicationCode>(),
-                    DependencyList = new List<DependencyRelation>()
-                };
+                SolutionFileName = "CodelineCounter.sln",
+                Metrics = new List<NamespaceMetrics>(),
+                ProjectTotals = new Dictionary<string, int>(),
+                TotalLines = 1000,
+                DuplicationMap = new List<DuplicationCode>(),
+                DependencyList = new List<DependencyRelation>()
+            };
 
-                var basePath = FileUtils.GetBasePath();
-                var baseSolutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
+            var basePath = FileUtils.GetBasePath();
+            var baseSolutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", ".."));
 
-                var solutionPath = Path.Combine(baseSolutionPath, "CodelineCounter.sln");
-                var format = CoreUtils.ExportFormat.JSON;
-                Console.SetOut(sw);
+            var solutionPath = Path.Combine(baseSolutionPath, "CodelineCounter.sln");
+            var format = CoreUtils.ExportFormat.JSON;
 
-                try
+            try
+            {
+                SolutionAnalyzer.ExportResults(result, solutionPath, format, baseSolutionPath);
+                // Assert
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")));
+                Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot")));
+            }
+            finally
+            {
+                // Cleanup
+                File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json"));
+                File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json"));
+                File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot"));
+            }
+
+
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+
+            if (disposing)
+            {
+                if (Directory.Exists(_testDirectory))
                 {
-                    SolutionAnalyzer.ExportResults(result, solutionPath, format, baseSolutionPath);
-                    // Assert
-                    Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json")));
-                    Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json")));
-                    Assert.True(File.Exists(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot")));
-                }
-                finally
-                {
-                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeMetrics.json"));
-                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.CodeDuplications.json"));
-                    File.Delete(Path.Combine(baseSolutionPath, "CodelineCounter.Dependencies.dot"));
+                    // Dispose managed resources
+                    File.Delete(_testSolutionPath);
+                    Directory.Delete(_testDirectory, true);
                 }
             }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+
+            // Dispose unmanaged resources (if any)
+            base.Dispose(disposing);
 
 
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    Task.Delay(100).Wait();
-
-                    if (Directory.Exists(_testDirectory))
-                    {
-                        // Dispose managed resources
-                        File.Delete(_testSolutionPath);
-                        Directory.Delete(_testDirectory, true);
-                    }
-                }
-
-                // Dispose unmanaged resources (if any)
-
-                _disposed = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~SolutionAnalyzerTest()
-        {
-            Dispose(false);
         }
 
     }

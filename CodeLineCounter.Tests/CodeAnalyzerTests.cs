@@ -4,123 +4,92 @@ using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Tests
 {
-    public class CodeAnalyzerTests
+    public class CodeAnalyzerTests : TestBase
     {
-        private readonly TextWriter _originalConsoleOut;
-
-        public CodeAnalyzerTests()
-        {
-            _originalConsoleOut = Console.Out;
-        }
-
         [Fact]
         public void TestAnalyzeSolution()
         {
-            using (StringWriter consoleOutput = new())
-            {
-                Console.SetOut(consoleOutput);
 
-                string basePath = FileUtils.GetBasePath();
-                var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
+            string basePath = FileUtils.GetBasePath();
+            var solutionPath = Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", "CodeLineCounter.sln"));
 
-                // Act
-                var (metrics, projectTotals, totalLines, totalFiles, duplicationMap, dependencies) = CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
+            // Act
+            var (metrics, projectTotals, totalLines, totalFiles, duplicationMap, dependencies) = CodeMetricsAnalyzer.AnalyzeSolution(solutionPath);
 
-                // Assert
-                Assert.NotNull(metrics);
-                Assert.NotEmpty(metrics);
-                Assert.NotEmpty(projectTotals);
-                Assert.NotEqual(0, totalLines);
-                Assert.NotEqual(0, totalFiles);
-                Assert.NotNull(duplicationMap);
-                Assert.NotNull(dependencies);
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            // Assert
+            Assert.NotNull(metrics);
+            Assert.NotEmpty(metrics);
+            Assert.NotEmpty(projectTotals);
+            Assert.NotEqual(0, totalLines);
+            Assert.NotEqual(0, totalFiles);
+            Assert.NotNull(duplicationMap);
+            Assert.NotNull(dependencies);
+
         }
 
         [Fact]
         public void AnalyzeSourceCode_Should_Set_CurrentNamespace()
         {
-            using (StringWriter consoleOutput = new())
-            {
-                Console.SetOut(consoleOutput);
 
-                // Arrange
-                var projectNamespaceMetrics = new Dictionary<string, int>();
-                var lines = new string[]
-                {
+            // Arrange
+            var projectNamespaceMetrics = new Dictionary<string, int>();
+            var lines = new string[]
+            {
                 "namespace MyNamespace",
                 "{",
                 "    // Code goes here",
                 "}"
-                };
+            };
 
-                // Act
-                CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out string? currentNamespace, out _, out _);
+            // Act
+            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out string? currentNamespace, out _, out _);
 
-                // Assert
-                Assert.Equal("MyNamespace", currentNamespace);
-
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            // Assert
+            Assert.Equal("MyNamespace", currentNamespace);
 
         }
 
         [Fact]
         public void AnalyzeSourceCode_Should_Set_FileLineCount()
         {
-            using (StringWriter consoleOutput = new())
-            {
-                Console.SetOut(consoleOutput);
 
-                // Arrange
-                var projectNamespaceMetrics = new Dictionary<string, int>();
-                var lines = new string[]
-                {
+            // Arrange
+            var projectNamespaceMetrics = new Dictionary<string, int>();
+            var lines = new string[]
+            {
                 "namespace MyNamespace",
                 "{",
                 "    // Code goes here",
                 "}"
-                };
+            };
 
-                // Act
-                CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out int fileLineCount, out _);
+            // Act
+            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out int fileLineCount, out _);
 
-                // Assert - 3 lines only because comment lines are ignored
-                Assert.Equal(3, fileLineCount);
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            // Assert - 3 lines only because comment lines are ignored
+            Assert.Equal(3, fileLineCount);
 
         }
 
         [Fact]
         public void AnalyzeSourceCode_Should_Set_FileCyclomaticComplexity()
         {
-            using (StringWriter consoleOutput = new())
-            {
-                Console.SetOut(consoleOutput);
 
-                // Arrange
-                var projectNamespaceMetrics = new Dictionary<string, int>();
-                var lines = new string[]
-                {
+            // Arrange
+            var projectNamespaceMetrics = new Dictionary<string, int>();
+            var lines = new string[]
+            {
                 "namespace MyNamespace",
                 "{",
                 "    // Code goes here",
                 "}"
-                };
+            };
 
-                // Act
-                CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out _, out int fileCyclomaticComplexity);
+            // Act
+            CodeMetricsAnalyzer.AnalyzeSourceCode(projectNamespaceMetrics, lines, out _, out _, out int fileCyclomaticComplexity);
 
-                // Assert
-                Assert.Equal(1, fileCyclomaticComplexity);
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            // Assert
+            Assert.Equal(1, fileCyclomaticComplexity);
 
         }
 

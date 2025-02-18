@@ -9,8 +9,10 @@ using Microsoft.IO;
 
 namespace CodeLineCounter.Services
 {
+
     public static class DependencyGraphGenerator
     {
+
         private static readonly RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
         public static DotGraph GenerateGraphOnly(List<DependencyRelation> dependencies, string? filterNamespace = null, string? filterAssembly = null)
         {

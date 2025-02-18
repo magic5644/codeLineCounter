@@ -4,22 +4,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeLineCounter.Tests
 {
-    public class CyclomaticComplexityCalculatorTests
+    public class CyclomaticComplexityCalculatorTests : TestBase
     {
-        private readonly TextWriter _originalConsoleOut;
-
-        public CyclomaticComplexityCalculatorTests()
-        {
-            _originalConsoleOut = Console.Out;
-        }
         [Fact]
         public void TestCalculateComplexity()
         {
-            using (var sw = new StringWriter())
-            {
-                Console.SetOut(sw);
-                // Arrange
-                var code = @"
+            // Arrange
+            var code = @"
                     public class TestClass
                     {
                         public void TestMethod()
@@ -29,27 +20,21 @@ namespace CodeLineCounter.Tests
                         }
                     }
                 ";
-                var tree = CSharpSyntaxTree.ParseText(code);
+            var tree = CSharpSyntaxTree.ParseText(code);
 
-                // Act
-                var complexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot());
+            // Act
+            var complexity = CyclomaticComplexityCalculator.Calculate(tree.GetRoot());
 
-                // Assert
-                Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            // Assert
+            Assert.Equal(3, complexity); // 1 (default) + 1 (if) + 1 (for)
 
         }
 
         [Fact]
         public void Calculate_Should_Return_Correct_Complexity()
         {
-            using (var sw = new StringWriter())
-            {
-                Console.SetOut(sw);
-                // Arrange
-                var syntaxTree = CSharpSyntaxTree.ParseText(@"
+            // Arrange
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
                 public class MyClass
                 {
                     public void MyMethod()
@@ -65,28 +50,22 @@ namespace CodeLineCounter.Tests
                     }
                 }
                 ");
-                var root = syntaxTree.GetRoot();
-                var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
+            var root = syntaxTree.GetRoot();
+            var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
 
-                // Act
-                var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
+            // Act
+            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
 
-                // Assert
-                Assert.Equal(3, complexity);
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
+            // Assert
+            Assert.Equal(3, complexity);
 
         }
 
         [Fact]
         public void Calculate_Should_Return_Correct_Complexity_6()
         {
-            using (var sw = new StringWriter())
-            {
-                Console.SetOut(sw);
-                // Arrange
-                var syntaxTree = CSharpSyntaxTree.ParseText(@"
+            // Arrange
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
                 class Program
                 {
                     static void Main(string[] args)
@@ -111,18 +90,14 @@ namespace CodeLineCounter.Tests
                     }
                 }
                 ");
-                var root = syntaxTree.GetRoot();
-                var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
+            var root = syntaxTree.GetRoot();
+            var methodDeclaration = root.DescendantNodes().OfType<MethodDeclarationSyntax>().First();
 
-                // Act
-                var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
+            // Act
+            var complexity = CyclomaticComplexityCalculator.Calculate(methodDeclaration);
 
-                // Assert
-                Assert.Equal(6, complexity);
-            }
-            // Reset console output
-            Console.SetOut(_originalConsoleOut);
-
+            // Assert
+            Assert.Equal(6, complexity);
         }
     }
 }
