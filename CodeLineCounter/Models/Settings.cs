@@ -1,3 +1,4 @@
+using CodeLineCounter.Exceptions;
 using CodeLineCounter.Utils;
 
 namespace CodeLineCounter.Models
@@ -42,14 +43,12 @@ namespace CodeLineCounter.Models
         {
             if (Help)
             {
-                Console.WriteLine("Usage: CodeLineCounter.exe [-verbose] [-d <directory_path>] [-output <output_path>] [-help, -h] (-format <csv, json>)");
-                return true;
+                throw new HelpRequestedException();
             }
 
             if (DirectoryPath == null)
             {
-                Console.WriteLine("Please provide the directory path containing the solutions to analyze using the -d switch.");
-                return false;
+                throw new ArgumentNullException(DirectoryPath, "Directory path cannot be null");
             }
 
             if (OutputPath != null && !Directory.Exists(OutputPath))
@@ -60,8 +59,7 @@ namespace CodeLineCounter.Models
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine($"Cannot create or access output directory: {OutputPath}");
-                    return false;
+                    throw new UnauthorizedAccessException($"Cannot create or access output directory: {OutputPath}");
                 }
             }
 
