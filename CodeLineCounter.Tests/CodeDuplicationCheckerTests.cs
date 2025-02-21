@@ -102,6 +102,7 @@ namespace CodeLineCounter.Tests
             // Act
             checker.DetectCodeDuplicationInSourceCode(file1, sourceCode1);
             checker.DetectCodeDuplicationInSourceCode(file2, sourceCode2);
+            checker.UpdateDuplicationMap();
             var result = checker.GetCodeDuplicationMap();
 
             // Assert

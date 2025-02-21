@@ -34,47 +34,57 @@ namespace CodeLineCounter.Services
         {
             var tree = CSharpSyntaxTree.ParseText(sourceCode);
             var root = tree.GetRoot();
+            // Get all method declarations
             var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
             Parallel.ForEach(methods, method =>
             {
+                // Extract code blocks from each method.
                 var blocks = ExtractBlocks(method);
 
                 foreach (var block in blocks)
                 {
-                    var code = NormalizeCode(block.ToFullString());
+                    // Optimize normalization using string.Concat filtering whitespace.
+                    var originalCode = block.ToFullString();
+                    var code = NormalizeCode(originalCode);
                     var hash = HashUtils.ComputeHash(code);
-                    var location = block.GetLocation().GetLineSpan().StartLinePosition.Line;
-                    var nbLines = block.GetLocation().GetLineSpan().EndLinePosition.Line - location + 1;
+
+                    // Compute start line and number of lines efficiently using location spans.
+                    var span = block.GetLocation().GetLineSpan();
+                    var startLine = span.StartLinePosition.Line;
+                    var nbLines = span.EndLinePosition.Line - startLine + 1;
 
                     var duplicationCode = new DuplicationCode
                     {
                         CodeHash = hash,
                         FilePath = normalizedPath,
                         MethodName = method.Identifier.Text,
-                        StartLine = location,
+                        StartLine = startLine,
                         NbLines = nbLines
                     };
 
-                    hashMap.AddOrUpdate(hash, [duplicationCode],
-                        (key, set) =>
+                    // Update the hash map with the new duplication code using thread-safe operations.
+                    hashMap.AddOrUpdate(hash, 
+                        key => new HashSet<DuplicationCode> { duplicationCode },
+                        (key, existingSet) =>
                         {
-                            lock (set)
+                            lock (existingSet)
                             {
-                                set.Add(duplicationCode);
+                                existingSet.Add(duplicationCode);
                             }
-                            return set;
+                            return existingSet;
                         });
                 }
             });
 
-            UpdateDuplicationMap();
         }
 
-        private void UpdateDuplicationMap()
+        public void UpdateDuplicationMap()
         {
             lock (duplicationLock)
             {
+                // Clear previous results to avoid stale data.
+                duplicationMap.Clear();
                 foreach (var entry in hashMap)
                 {
                     if (entry.Value.Count > 1)
@@ -97,15 +107,8 @@ namespace CodeLineCounter.Services
 
         private static string NormalizeCode(string code)
         {
-            var stringBuilder = new StringBuilder();
-            foreach (char c in code)
-            {
-                if (!char.IsWhiteSpace(c))
-                {
-                    stringBuilder.Append(c);
-                }
-            }
-            return stringBuilder.ToString();
+            // Use string.Concat with LINQ to filter out whitespace characters.
+            return string.Concat(code.Where(c => !char.IsWhiteSpace(c)));
         }
     }
 }
