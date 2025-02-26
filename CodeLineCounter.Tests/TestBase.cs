@@ -7,7 +7,7 @@ namespace CodeLineCounter.Tests
 {
     public abstract class TestBase : IDisposable
     {
-        private static readonly object _consoleLock = new object();
+        private static readonly Lock _consoleLock = new ();
         private readonly ThreadLocal<StringWriter> _stringWriter = new ThreadLocal<StringWriter>(() => new StringWriter());
         private readonly ThreadLocal<StringReader> _stringReader = new ThreadLocal<StringReader>(() => new StringReader(string.Empty));
         private readonly ThreadLocal<TextWriter> _originalConsoleOut = new ThreadLocal<TextWriter>();
@@ -22,7 +22,7 @@ namespace CodeLineCounter.Tests
 
         protected void initialization()
         {
-            lock (_consoleLock)
+            using (_consoleLock.EnterScope())
             {
                 _originalConsoleOut.Value = Console.Out;
                 _originalConsoleIn.Value = Console.In;
@@ -32,7 +32,7 @@ namespace CodeLineCounter.Tests
 
         protected void RedirectConsoleInputOutput()
         {
-            lock (_consoleLock)
+            using (_consoleLock.EnterScope())
             {
                 if (_stringWriter.Value != null)
                 {
@@ -47,7 +47,7 @@ namespace CodeLineCounter.Tests
 
         protected string GetConsoleOutput()
         {
-            lock (_consoleLock)
+            using (_consoleLock.EnterScope())
             {
                 if (_stringWriter.Value != null)
                 {
@@ -57,17 +57,10 @@ namespace CodeLineCounter.Tests
             }
         }
 
-        protected void SetConsoleInput(string input)
-        {
-            lock (_consoleLock)
-            {
-                _stringReader.Value = new StringReader(input);
-            }
-        }
 
         protected void ResetConsoleInputOutput()
         {
-            lock (_consoleLock)
+            using (_consoleLock.EnterScope())
             {
                 if (_originalConsoleOut != null && _originalConsoleOut.Value != null)
                 {
