@@ -163,21 +163,36 @@ namespace CodeLineCounter.Services
 
         public static async Task CompileGraphAndWriteToFile(string fileName, string outputPath, DotGraph graph)
         {
-            // Use memory buffer
-            using var memoryStream = MemoryStreamManager.GetStream();
-            using var writer = new StreamWriter(memoryStream);
 
-            var options = new CompilationOptions { Indented = true };
-            var context = new CompilationContext(writer, options);
-            graph.Directed = true;
-            context.DirectedGraph = true;
+                // Use memory buffer
+                using var memoryStream = MemoryStreamManager.GetStream();
+                using var writer = new StreamWriter(memoryStream);
 
-            await graph.CompileAsync(context);
-            await writer.FlushAsync(); // Ensure all data is written to memory
+                var options = new CompilationOptions { Indented = true };
+                var context = new CompilationContext(writer, options);
+                graph.Directed = true;
+                context.DirectedGraph = true;
 
-            memoryStream.Position = 0; // Reset position to start
-            using var fileStream = File.Create(Path.Combine(outputPath, fileName));
-            await memoryStream.CopyToAsync(fileStream); // Write complete buffer to file
+                await graph.CompileAsync(context);
+                await writer.FlushAsync(); // Ensure all data is written to memory
+
+                memoryStream.Position = 0; // Reset position to start
+                await WriteMemoryStreamToFile(fileName, outputPath, memoryStream);
+
+        }
+
+        private static async Task WriteMemoryStreamToFile(string fileName, string outputPath, RecyclableMemoryStream memoryStream)
+        {
+            try
+            {
+                using var fileStream = File.Create(Path.Combine(outputPath, fileName));
+                await memoryStream.CopyToAsync(fileStream); // Write complete buffer to file
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception as needed
+                await Console.Error.WriteLineAsync($"Error writing memory stream to file: {ex.Message}");
+            }
         }
 
         public static string EncloseNotEmptyOrNullStringInQuotes(string? str)

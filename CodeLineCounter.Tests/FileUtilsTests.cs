@@ -48,7 +48,7 @@ namespace CodeLineCounter.Tests
             var nonExistentPath = Path.Combine(_testDirectory, Guid.NewGuid().ToString());
 
             // Act & Assert
-            Assert.Throws<UnauthorizedAccessException>(() => FileUtils.GetSolutionFiles(nonExistentPath));
+            Assert.Throws<DirectoryNotFoundException>(() => FileUtils.GetSolutionFiles(nonExistentPath));
         }
 
         // Throws UnauthorizedAccessException when solution file does not exist
@@ -59,7 +59,7 @@ namespace CodeLineCounter.Tests
             var nonExistentPath = Path.Combine(_testDirectory, "nonexistent.sln");
 
             // Act & Assert
-            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+            var exception = Assert.Throws<FileNotFoundException>(() =>
                 FileUtils.GetProjectFiles(nonExistentPath));
 
             Assert.Contains(nonExistentPath, exception.Message);
@@ -67,21 +67,15 @@ namespace CodeLineCounter.Tests
 
         protected override void Dispose(bool disposing)
         {
-
             // Ensure the file is closed before attempting to delete it
-            if (disposing)
+            if (disposing && Directory.Exists(_testDirectory))
             {
-                if (Directory.Exists(_testDirectory))
-                {
-                    // Dispose managed resources
-                    Directory.Delete(_testDirectory, true);
-                }
+                // Dispose managed resources
+                Directory.Delete(_testDirectory, true);
             }
 
             // Dispose unmanaged resources (if any)
             base.Dispose(disposing);
-
         }
-
     }
 }

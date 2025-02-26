@@ -4,28 +4,37 @@ namespace CodeLineCounter.Utils
 {
     public static partial class FileUtils
     {
-        public static List<string> GetAllCsFiles(string rootPath)
+        // Default file extensions
+        private const string DEFAULT_CODE_EXTENSION = "*.cs";
+        private const string DEFAULT_SOLUTION_EXTENSION = "*.sln";
+        private const string DEFAULT_PROJECT_EXTENSION = ".csproj";
+
+        public static List<string> GetAllCodeFiles(string rootPath, string fileExtension = DEFAULT_CODE_EXTENSION)
         {
-            return Directory.GetFiles(rootPath, "*.cs", SearchOption.AllDirectories)
-                            .Where(f => !f.Contains(@"\obj\"))
-                            .ToList();
+            var excludeFolders = new[] { @"\obj\", @"\bin\", @"\.*" };
+            return Directory.GetFiles(rootPath, fileExtension, SearchOption.AllDirectories)
+                           .Where(f => !excludeFolders.Any(ef => f.Contains(ef)))
+                           .ToList();
         }
 
-        public static List<string> GetSolutionFiles(string rootPath)
+        // For backward compatibility
+        public static List<string> GetAllCsFiles(string rootPath) => GetAllCodeFiles(rootPath);
+
+        public static List<string> GetSolutionFiles(string rootPath, string fileExtension = DEFAULT_SOLUTION_EXTENSION)
         {
             if (!Directory.Exists(rootPath))
             {
-                throw new UnauthorizedAccessException($"Access to the path '{rootPath}' is denied.");
+                throw new DirectoryNotFoundException($"Directory '{rootPath}' not found.");
             }
 
-            return Directory.GetFiles(rootPath, "*.sln", SearchOption.TopDirectoryOnly).ToList();
+            return Directory.GetFiles(rootPath, fileExtension, SearchOption.TopDirectoryOnly).ToList();
         }
 
-        public static List<string> GetProjectFiles(string solutionFilePath)
+        public static List<string> GetProjectFiles(string solutionFilePath, string projectExtension = DEFAULT_PROJECT_EXTENSION)
         {
             if (!File.Exists(solutionFilePath))
             {
-                throw new UnauthorizedAccessException($"Access to the path '{solutionFilePath}' is denied.");
+                throw new FileNotFoundException($"File '{solutionFilePath}' not found.");
             }
 
             var projectFiles = new List<string>();
@@ -33,8 +42,8 @@ namespace CodeLineCounter.Utils
 
             foreach (var line in lines)
             {
-                // Search for lines containing projects (Project("...") = "...", "...", "...")
-                var match = MyRegex().Match(line);
+                // Search for lines containing projects with the specified extension
+                var match = GenerateProjectRegex(projectExtension).Match(line);
                 if (match.Success)
                 {
                     var relativePath = match.Groups[1].Value;
@@ -48,8 +57,12 @@ namespace CodeLineCounter.Utils
 
         public static string GetBasePath()
         {
-            // Arrange
             return Path.GetDirectoryName(AppContext.BaseDirectory) ?? string.Empty;
+        }
+
+        private static Regex GenerateProjectRegex(string projectExtension)
+        {
+            return new Regex($@"Project\(""{{.*}}""\) = "".*"", ""(.*{Regex.Escape(projectExtension)})""");
         }
 
         [GeneratedRegex(@"Project\(""{.*}""\) = "".*"", ""(.*\.csproj)""")]

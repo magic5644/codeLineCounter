@@ -47,18 +47,14 @@ namespace CodeLineCounter.Tests
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && Directory.Exists(_testDirectory))
             {
-                if (Directory.Exists(_testDirectory))
-                {
-                    // Dispose managed resources
-                    Directory.Delete(_testDirectory, true);
-                }
+                // Dispose managed resources
+                Directory.Delete(_testDirectory, true);
             }
 
             // Dispose unmanaged resources (if any)
             base.Dispose(disposing);
-
         }
 
 

@@ -86,6 +86,31 @@ namespace CodeLineCounter.Tests
         }
 
         [Fact]
+        public async Task CompileGraphAndWriteToFile_HandlesInvalidOutputPathGracefully()
+        {
+            // Arrange
+                var dependencies = new List<DependencyRelation>
+        {
+            new DependencyRelation { SourceClass = "ClassA", SourceNamespace = "NamespaceA",
+                SourceAssembly = "AssemblyA", TargetClass = "ClassB", TargetNamespace = "NamespaceB",
+                TargetAssembly = "AssemblyB", FilePath = "path/to/file", StartLine = 1 }
+        };
+            DotGraph graph = DependencyGraphGenerator.GenerateGraphOnly(dependencies);
+
+            // Invalid path with characters that aren't allowed in file paths
+            string invalidOutputPath = Path.Combine(_testDirectory, "invalid_path*?:|<>\\");
+            string fileName = "test.dot";
+
+            // Act & Assert
+            // The method should handle the exception internally and not throw it to the caller
+            await DependencyGraphGenerator.CompileGraphAndWriteToFile(fileName, invalidOutputPath, graph);
+
+            // Verify the file wasn't created due to the invalid path
+            Assert.False(File.Exists(Path.Combine(invalidOutputPath, fileName)));
+        }
+
+
+        [Fact]
         public void create_node_sets_correct_fillcolor_and_style_incoming_greater()
         {
 
