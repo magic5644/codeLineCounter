@@ -12,7 +12,7 @@ namespace CodeLineCounter.Services
     {
         private static readonly ConcurrentDictionary<string, HashSet<DependencyRelation>> _dependencyMap = new();
         private static readonly HashSet<string> _solutionClasses = new();
-        private static readonly object _dependencyLock = new();
+        private static readonly Lock _dependencyLock = new();
 
         public static void AnalyzeSolution(string solutionFilePath)
         {
@@ -39,7 +39,7 @@ namespace CodeLineCounter.Services
                         .OfType<ClassDeclarationSyntax>()
                         .Select(c => GetFullTypeName(c));
 
-                    lock (_dependencyLock)
+                    using (_dependencyLock.EnterScope())
                     {
                         foreach (var className in classes)
                         {
