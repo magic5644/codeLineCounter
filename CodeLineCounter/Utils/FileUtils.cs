@@ -62,7 +62,7 @@ namespace CodeLineCounter.Utils
 
         private static Regex GenerateProjectRegex(string projectExtension)
         {
-            return new Regex($@"Project\(""{{.*}}""\) = "".*"", ""(.*{Regex.Escape(projectExtension)})""");
+            return new Regex($@"Project\(""{{.*}}""\) = "".*"", ""(.*{Regex.Escape(projectExtension)})""", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
         }
 
         [GeneratedRegex(@"Project\(""{.*}""\) = "".*"", ""(.*\.csproj)""")]
