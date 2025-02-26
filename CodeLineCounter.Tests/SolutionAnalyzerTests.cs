@@ -41,8 +41,6 @@ EndProject");
             var format = CoreUtils.ExportFormat.CSV;
             var outputPath = _outputPath;
 
-
-
             try
             {
 
@@ -80,10 +78,10 @@ EndProject");
             var format = CoreUtils.ExportFormat.JSON;
 
             // Act & Assert
-            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+            var exception = Assert.Throws<FileNotFoundException>(() =>
             SolutionAnalyzer.AnalyzeAndExportSolution(invalidPath, verbose, format));
 
-            Assert.Contains("Access to the path '' is denied.", exception.Message);
+            Assert.Contains("File '' not found.", exception.Message);
 
         }
 
@@ -147,8 +145,7 @@ EndProject");
             // Arrange
             var metrics = new List<NamespaceMetrics>
                 {
-                    new NamespaceMetrics
-                    {
+                    new() {
                         ProjectName = "Project1",
                         ProjectPath = "/path/to/project1",
                         NamespaceName = "Namespace1",
@@ -157,7 +154,7 @@ EndProject");
                         LineCount = 100,
                         CyclomaticComplexity = 10
                     },
-                    new NamespaceMetrics
+                    new ()
                     {
                         ProjectName = "Project2",
                         ProjectPath = "/path/to/project2",
@@ -233,14 +230,11 @@ EndProject");
         protected override void Dispose(bool disposing)
         {
 
-            if (disposing)
+            if (disposing && Directory.Exists(_testDirectory))
             {
-                if (Directory.Exists(_testDirectory))
-                {
-                    // Dispose managed resources
-                    File.Delete(_testSolutionPath);
-                    Directory.Delete(_testDirectory, true);
-                }
+                // Dispose managed resources
+                File.Delete(_testSolutionPath);
+                Directory.Delete(_testDirectory, true);
             }
 
             // Dispose unmanaged resources (if any)
