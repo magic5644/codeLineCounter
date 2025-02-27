@@ -4,7 +4,7 @@ namespace CodeLineCounter.Tests
 {
     public class HashUtilsServiceTests
     {
-        private readonly IHashUtils _hashUtils;
+        private readonly HashUtilsService _hashUtils;
 
         public HashUtilsServiceTests()
         {
