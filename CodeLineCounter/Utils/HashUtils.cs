@@ -5,23 +5,12 @@ namespace CodeLineCounter.Utils
 {
     public static class HashUtils
     {
+        private static readonly IHashUtils _defaultImplementation = new HashUtilsService();
+        
+        internal static IHashUtils Implementation { get; set; } = _defaultImplementation;
         public static string ComputeHash(string? input)
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return "";
-            }
-
-            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
-
-            return string.Create(bytes.Length * 2, bytes, static (span, byteArray) =>
-            {
-              const string format = "x2";
-              for (int i = 0; i < byteArray.Length; i++)
-              {
-                  byteArray[i].TryFormat(span.Slice(i * 2, 2), out _, format);
-                }
-            });
+            return Implementation.ComputeHash(input);
         }
     }
 }
