@@ -68,7 +68,7 @@ namespace CodeLineCounter.Tests
         {
             // Act & Assert
             Assert.NotNull(HashUtils.Implementation);
-            Assert.IsAssignableFrom<IHashUtils>(HashUtils.Implementation);
+            Assert.IsType<IHashUtils>(HashUtils.Implementation, exactMatch: false);
         }
     }
 }

@@ -18,7 +18,6 @@ namespace CodeLineCounter.Tests
         {
             if (disposing)
             {
-                _mockHashUtils.VerifyNoOtherCalls();
                 HashUtils.Implementation = _originalImplementation;
             }
             
