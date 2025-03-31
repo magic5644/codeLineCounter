@@ -26,3 +26,4 @@
 .DS_Store
 .AppleDouble
 .qodo/history.sqlite
+.qodo
